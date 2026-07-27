@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Theme management functions
   function setTheme(themeName) {
     const themes = [
+      "theme-rutgers-scarlet",
       "theme-cosmic-dark",
       "theme-sunset-glow",
       "theme-aurora-wave",
@@ -72,13 +73,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const triggerText = document.querySelector(".active-theme-name");
     if (triggerText) {
       const themeLabels = {
+        "theme-rutgers-scarlet": "Rutgers Scarlet",
         "theme-cosmic-dark": "Crimson Dark",
         "theme-sunset-glow": "Sunset Glow",
         "theme-aurora-wave": "Aurora Mint",
         "theme-cyberpunk-neon": "Cyberpunk",
         "theme-solar-light": "Solar Light"
       };
-      triggerText.textContent = themeLabels[themeName] || "Crimson Dark";
+      triggerText.textContent = themeLabels[themeName] || "Rutgers Scarlet";
     }
 
     const options = document.querySelectorAll(".theme-option");
@@ -117,13 +119,23 @@ document.addEventListener("DOMContentLoaded", () => {
     if (savedRecentLookups) state.recentLookups = JSON.parse(savedRecentLookups);
 
     // Maintain Theme preference
-    const savedTheme = localStorage.getItem("vocab_theme") || "theme-cosmic-dark";
+    const savedTheme = localStorage.getItem("vocab_theme") || "theme-rutgers-scarlet";
     if (savedTheme === "light" || savedTheme === "light-theme") {
       setTheme("theme-solar-light");
     } else if (savedTheme === "dark" || savedTheme === "dark-theme") {
-      setTheme("theme-cosmic-dark");
+      setTheme("theme-rutgers-scarlet");
     } else {
       setTheme(savedTheme);
+    }
+
+    // Maintain Mode (Light/Dark) preference
+    const savedMode = localStorage.getItem("vocab_mode") || "dark";
+    if (savedMode === "light") {
+      document.body.classList.add("mode-light");
+      updateModeUI("light");
+    } else {
+      document.body.classList.remove("mode-light");
+      updateModeUI("dark");
     }
 
     calculateStreak();
@@ -363,13 +375,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Light/Dark Mode Toggle Event Bindings
+  const modeToggleBtn = document.getElementById("mode-toggle-btn");
+  if (modeToggleBtn) {
+    modeToggleBtn.addEventListener("click", () => {
+      const isLight = document.body.classList.contains("mode-light");
+      if (isLight) {
+        document.body.classList.remove("mode-light");
+        localStorage.setItem("vocab_mode", "dark");
+        updateModeUI("dark");
+      } else {
+        document.body.classList.add("mode-light");
+        localStorage.setItem("vocab_mode", "light");
+        updateModeUI("light");
+      }
+    });
+  }
+
+  function updateModeUI(mode) {
+    const sunIcon = document.querySelector(".mode-sun-icon");
+    const moonIcon = document.querySelector(".mode-moon-icon");
+    if (sunIcon && moonIcon) {
+      if (mode === "light") {
+        sunIcon.style.display = "none";
+        moonIcon.style.display = "block";
+      } else {
+        sunIcon.style.display = "block";
+        moonIcon.style.display = "none";
+      }
+    }
+  }
+
 
   // ==========================================
   // 3. Welcome Banner & Stats Calculation
   // ==========================================
 
   function getVocabularyLevel(lookups, quizzes, accuracy) {
+    const isRutgers = document.body.classList.contains("theme-rutgers-scarlet");
     const totalPoints = lookups * 2 + quizzes * 10 + (accuracy >= 80 ? 25 : 0);
+    
+    if (isRutgers) {
+      if (totalPoints > 200) return "Knight Commander";
+      if (totalPoints > 100) return "Scarlet Knight";
+      if (totalPoints > 40) return "Squire";
+      if (totalPoints > 10) return "Page";
+      return "Novice Recruit";
+    }
+    
     if (totalPoints > 200) return "Lexicographer";
     if (totalPoints > 100) return "Word Master";
     if (totalPoints > 40) return "Scholar";
@@ -403,9 +456,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     els.statsAccuracy.innerText = accuracy + "%";
 
-    // Vocabulary Level
+    // Vocabulary Level / Knight's Rank
     const levelStr = getVocabularyLevel(state.stats.lookups, state.stats.quizzesPlayed, accuracy);
     els.statsLevel.innerText = levelStr;
+
+    // Dynamically rename the stat card label for Rutgers Theme
+    const levelLabel = document.querySelector(".icon-gold + .stat-data .stat-label");
+    if (levelLabel) {
+      if (document.body.classList.contains("theme-rutgers-scarlet")) {
+        levelLabel.textContent = "Knight's Rank";
+      } else {
+        levelLabel.textContent = "Vocabulary Level";
+      }
+    }
 
     // Render Favorite Words scrollable list
     renderFavorites();
@@ -1439,7 +1502,20 @@ document.addEventListener("DOMContentLoaded", () => {
       canvas.height = window.innerHeight;
     });
 
-    const colors = ["#8b5cf6", "#a78bfa", "#3b82f6", "#60a5fa", "#10b981", "#34d399", "#f59e0b"];
+    let colors = ["#8b5cf6", "#a78bfa", "#3b82f6", "#60a5fa", "#10b981", "#34d399", "#f59e0b"];
+    if (document.body.classList.contains("theme-rutgers-scarlet")) {
+      colors = ["#cc0033", "#ff4d6a", "#111111", "#ffffff", "#868f98"];
+    } else if (document.body.classList.contains("theme-cosmic-dark")) {
+      colors = ["#ef4444", "#f97316", "#dc2626", "#fda4af", "#ff7300"];
+    } else if (document.body.classList.contains("theme-sunset-glow")) {
+      colors = ["#f43f5e", "#fb923c", "#e11d48", "#fda4af", "#ff9966"];
+    } else if (document.body.classList.contains("theme-aurora-wave")) {
+      colors = ["#0d9488", "#10b981", "#2dd4bf", "#99f6e4", "#059669"];
+    } else if (document.body.classList.contains("theme-cyberpunk-neon")) {
+      colors = ["#ff007f", "#00f0ff", "#ff00ff", "#00ffff", "#ff66b2"];
+    } else if (document.body.classList.contains("theme-solar-light")) {
+      colors = ["#ff5e62", "#ff9966", "#f43f5e", "#ffeedd", "#ff3b40"];
+    }
     const particles = [];
     
     // Create 120 confetti pieces
