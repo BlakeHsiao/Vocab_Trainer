@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VocabVibe | Premium Vocabulary Learning Hub</title>
+  <!-- Google Fonts: Outfit (Headers) & Plus Jakarta Sans (Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+  <!-- App Background Gradients -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Header Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-area" id="logo-btn">
+        <div class="logo-icon-wrapper">
+          <i data-lucide="sparkles" class="logo-icon"></i>
+        </div>
+        <span class="logo-text">Vocab<span class="gradient-text">Vibe</span></span>
+      </div>
+      
+      <nav class="main-nav">
+        <button class="nav-link active" data-target="dashboard-tab" id="nav-dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-link" data-target="dictionary-tab" id="nav-dictionary">
+          <i data-lucide="book-open"></i>
+          <span>Dictionary</span>
+        </button>
+        <button class="nav-link" data-target="practice-tab" id="nav-practice">
+          <i data-lucide="graduation-cap"></i>
+          <span>Practice Arena</span>
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="sun-icon"></i>
+          <i data-lucide="moon" class="moon-icon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="app-main">
+    
+    <!-- DASHBOARD VIEW -->
+    <section id="dashboard-tab" class="tab-content active">
+      <div class="welcome-banner">
+        <div class="banner-info">
+          <h1 class="banner-title">Welcome Back, <span class="gradient-text" id="username-display">Scholar</span>!</h1>
+          <p class="banner-subtitle">Ready to expand your lexicon today? Your daily streak is active.</p>
+        </div>
+        <div class="streak-badge">
+          <div class="streak-icon-box">
+            <i data-lucide="flame" class="streak-fire-icon animate-pulse"></i>
+          </div>
+          <div class="streak-details">
+            <span class="streak-count" id="streak-count-val">1</span>
+            <span class="streak-label">Day Streak</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Statistics -->
+      <div class="stats-grid">
+        <div class="stat-card glass-panel">
+          <div class="stat-icon-wrapper icon-purple">
+            <i data-lucide="search"></i>
+          </div>
+          <div class="stat-data">
+            <h3 class="stat-value" id="stats-lookups">0</h3>
+            <span class="stat-label">Words Looked Up</span>
+          </div>
+        </div>
+        <div class="stat-card glass-panel">
+          <div class="stat-icon-wrapper icon-blue">
+            <i data-lucide="award"></i>
+          </div>
+          <div class="stat-data">
+            <h3 class="stat-value" id="stats-questions">0</h3>
+            <span class="stat-label">Quizzes Played</span>
+          </div>
+        </div>
+        <div class="stat-card glass-panel">
+          <div class="stat-icon-wrapper icon-green">
+            <i data-lucide="percent"></i>
+          </div>
+          <div class="stat-data">
+            <h3 class="stat-value" id="stats-accuracy">0%</h3>
+            <span class="stat-label">Quiz Accuracy</span>
+          </div>
+        </div>
+        <div class="stat-card glass-panel">
+          <div class="stat-icon-wrapper icon-gold">
+            <i data-lucide="crown"></i>
+          </div>
+          <div class="stat-data">
+            <h3 class="stat-value" id="stats-level">Novice</h3>
+            <span class="stat-label">Vocabulary Level</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Grid -->
+      <div class="dashboard-grid">
+        <!-- Word of the Day -->
+        <div class="dashboard-col glass-panel word-of-the-day-card">
+          <div class="card-header">
+            <div class="badge-tag">Word of the Day</div>
+            <button class="favorite-action-btn" id="wotd-fav-btn" title="Add to Favorites">
+              <i data-lucide="heart" class="wotd-heart-icon"></i>
+            </button>
+          </div>
+          <div class="wotd-body">
+            <div class="wotd-word-group">
+              <h2 class="wotd-word" id="wotd-word-text">serendipity</h2>
+              <span class="wotd-pos" id="wotd-word-pos">noun</span>
+            </div>
+            <p class="wotd-definition" id="wotd-word-def">The occurrence of valuable or agreeable events by chance in a happy or beneficial way.</p>
+            <div class="sentence-box">
+              <i data-lucide="quote" class="quote-icon"></i>
+              <p class="wotd-example" id="wotd-word-example">"It was pure serendipity that we ran into each other in a city of millions."</p>
+            </div>
+          </div>
+          <button class="btn btn-primary w-full" id="wotd-search-btn">
+            <i data-lucide="book-open"></i> Explore Full Definition
+          </button>
+        </div>
+
+        <!-- Favorites & Recent Split -->
+        <div class="dashboard-col split-column">
+          <!-- Favorites -->
+          <div class="glass-panel side-panel" id="favorites-panel">
+            <div class="side-panel-header">
+              <div class="header-title">
+                <i data-lucide="heart" class="icon-heart-filled"></i>
+                <h3>My Favorites</h3>
+              </div>
+              <span class="counter-badge" id="favorites-count">0</span>
+            </div>
+            <div class="scroll-list" id="favorites-list">
+              <!-- Dynamically populated favorites -->
+              <div class="empty-state">
+                <i data-lucide="heart" class="empty-icon"></i>
+                <p>No favorite words yet. Click the heart icon on any word to save it!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recents -->
+          <div class="glass-panel side-panel" id="recents-panel">
+            <div class="side-panel-header">
+              <div class="header-title">
+                <i data-lucide="history"></i>
+                <h3>Recent Lookups</h3>
+              </div>
+              <button class="clear-btn" id="clear-recents-btn">Clear</button>
+            </div>
+            <div class="scroll-list" id="recents-list">
+              <!-- Dynamically populated recents -->
+              <div class="empty-state">
+                <i data-lucide="clock" class="empty-icon"></i>
+                <p>No recent lookups. Search for a word in the Dictionary to get started!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DICTIONARY VIEW -->
+    <section id="dictionary-tab" class="tab-content">
+      <div class="dictionary-container glass-panel">
+        <div class="search-section">
+          <h2 class="section-title text-center">Interactive <span class="gradient-text">Dictionary</span></h2>
+          <p class="section-subtitle text-center">Search over millions of words. Connects to real-time translation and lexical databases.</p>
+          
+          <form class="search-form" id="dictionary-search-form">
+            <div class="search-input-wrapper">
+              <i data-lucide="search" class="search-bar-icon"></i>
+              <input type="text" id="dictionary-search-input" placeholder="Enter a word (e.g., ephemeral, meticulous)..." autocomplete="off" required>
+              <button type="button" class="search-clear-btn" id="search-clear-btn" style="display:none;" title="Clear search">
+                <i data-lucide="x"></i>
+              </button>
+            </div>
+            <button type="submit" class="btn btn-primary search-submit-btn">
+              <span>Lookup</span>
+              <i data-lucide="arrow-right"></i>
+            </button>
+          </form>
+          
+          <!-- Quick Suggestions -->
+          <div class="quick-suggestions-row">
+            <span class="suggestion-label">Try searching:</span>
+            <div class="suggestions-chips" id="suggestions-chips-container">
+              <!-- Populated dynamically with beautiful, animated word chips -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Dictionary Loading State -->
+        <div class="dictionary-loading-spinner" id="dict-loading" style="display: none;">
+          <div class="spinner"></div>
+          <p>Analyzing syllable structure and loading lexical data...</p>
+        </div>
+
+        <!-- Dictionary Error State -->
+        <div class="dictionary-error-state" id="dict-error" style="display: none;">
+          <div class="error-illustration">
+            <i data-lucide="search-code" class="error-icon animate-bounce"></i>
+          </div>
+          <h3 class="error-heading">Word Not Found</h3>
+          <p class="error-message" id="dict-error-msg">We couldn't retrieve definitions for that word. Please double-check the spelling or try another word.</p>
+          <div class="error-suggestions">
+            <span class="error-suggest-title">Perhaps you meant one of these?</span>
+            <div class="suggestions-chips justify-center" id="error-suggest-chips">
+              <!-- Dynamically populated backup recommendations -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Dictionary Result Container -->
+        <div class="dictionary-results" id="dict-results" style="display: none;">
+          <!-- Top Row: Word & Phonetics -->
+          <div class="results-header-row">
+            <div class="results-title-group">
+              <div class="word-flex-row">
+                <h1 class="results-word" id="results-word-text">ephemeral</h1>
+                <button class="favorite-action-btn-large" id="results-fav-btn" title="Save word to favorites">
+                  <i data-lucide="heart" class="results-heart-icon"></i>
+                </button>
+              </div>
+              <div class="phonetics-row">
+                <span class="phonetic-text" id="results-phonetic">/ɪˈfemərəl/</span>
+                <button class="pronounce-btn" id="results-pronounce-btn" title="Listen Pronunciation" style="display: none;">
+                  <i data-lucide="volume-2"></i>
+                  <span>Listen</span>
+                  <audio id="phonetic-audio"></audio>
+                </button>
+              </div>
+            </div>
+            <div class="action-buttons-group">
+              <button class="btn btn-outline btn-sm" id="results-copy-btn">
+                <i data-lucide="copy"></i> Copy Definition
+              </button>
+            </div>
+          </div>
+
+          <!-- Meanings List (Dynamically Generated in app.js) -->
+          <div id="results-meanings-container" class="meanings-container">
+            <!-- Dynamic parts of speech cards and definitions -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRACTICE ARENA VIEW -->
+    <section id="practice-tab" class="tab-content">
+      <div class="practice-layout">
+        <!-- Sidebar Selection -->
+        <aside class="practice-sidebar glass-panel">
+          <div class="sidebar-header">
+            <i data-lucide="graduation-cap" class="sidebar-icon"></i>
+            <div>
+              <h3 class="sidebar-title">Practice Deck</h3>
+              <p class="sidebar-subtitle">Strengthen your memory</p>
+            </div>
+          </div>
+          
+          <div class="practice-modes">
+            <button class="mode-selector-btn active" id="mode-quiz-btn">
+              <div class="mode-icon-wrapper icon-purple">
+                <i data-lucide="circle-dot"></i>
+              </div>
+              <div class="mode-text">
+                <span class="mode-title">Multiple Choice Quiz</span>
+                <span class="mode-desc">Dynamic 5-word definitions challenge</span>
+              </div>
+            </button>
+            <button class="mode-selector-btn" id="mode-flashcards-btn">
+              <div class="mode-icon-wrapper icon-blue">
+                <i data-lucide="panels-top-left"></i>
+              </div>
+              <div class="mode-text">
+                <span class="mode-title">3D Flip Flashcards</span>
+                <span class="mode-desc">Interactive recall cards</span>
+              </div>
+            </button>
+          </div>
+
+          <div class="practice-tip-box">
+            <div class="tip-header">
+              <i data-lucide="lightbulb" class="tip-icon"></i>
+              <span>Study Tip</span>
+            </div>
+            <p class="tip-content">Spacing out your practice sessions over a few days helps seal words into your long-term memory!</p>
+          </div>
+        </aside>
+
+        <!-- Main Practice Content Area -->
+        <div class="practice-main-content">
+          
+          <!-- MULTIPLE CHOICE QUIZ MODE -->
+          <div class="practice-panel active" id="quiz-panel">
+            <!-- Quiz Start State -->
+            <div class="quiz-substate glass-panel text-center" id="quiz-state-start">
+              <div class="quiz-hero-icon bg-purple-glow">
+                <i data-lucide="brain-circuit"></i>
+              </div>
+              <h2 class="panel-heading">Interactive <span class="gradient-text">Vocabulary Quiz</span></h2>
+              <p class="panel-subheading">Challenge yourself! We will dynamically generate a 5-question multiple choice quiz using high-tier words. Each question tests definition matching or contextual usage.</p>
+              
+              <div class="quiz-perks-row">
+                <div class="perk-item">
+                  <i data-lucide="check-circle-2" class="perk-icon"></i>
+                  <span>Dynamic Questions</span>
+                </div>
+                <div class="perk-item">
+                  <i data-lucide="zap" class="perk-icon"></i>
+                  <span>Instant Explanation</span>
+                </div>
+                <div class="perk-item">
+                  <i data-lucide="star" class="perk-icon"></i>
+                  <span>Earn Streak Points</span>
+                </div>
+              </div>
+
+              <button class="btn btn-primary btn-large w-auto mx-auto" id="quiz-start-action-btn">
+                <i data-lucide="play"></i> Start 5-Word Challenge
+              </button>
+            </div>
+
+            <!-- Quiz In-Progress State -->
+            <div class="quiz-substate glass-panel" id="quiz-state-play" style="display: none;">
+              <!-- Header Progress Bar -->
+              <div class="quiz-progress-wrapper">
+                <div class="quiz-progress-meta">
+                  <span class="question-tracker">Question <strong id="quiz-q-current">1</strong> of <strong id="quiz-q-total">5</strong></span>
+                  <span class="score-tracker">Score: <strong id="quiz-score-val">0</strong></span>
+                </div>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill" id="quiz-progress-fill" style="width: 20%;"></div>
+                </div>
+              </div>
+
+              <!-- Question Statement Card -->
+              <div class="quiz-question-container">
+                <span class="question-badge" id="quiz-question-type">Definition Match</span>
+                <h3 class="quiz-question-text" id="quiz-question-text-val">What is the correct definition of the word: <strong>ephemeral</strong>?</h3>
+              </div>
+
+              <!-- Options Grid -->
+              <div class="quiz-options-grid" id="quiz-options-container">
+                <!-- Option buttons dynamically generated in app.js -->
+              </div>
+
+              <!-- Immediate Explanation Area -->
+              <div class="quiz-explanation-box" id="quiz-explanation" style="display: none;">
+                <div class="explanation-header" id="quiz-explanation-header">
+                  <i data-lucide="check-circle" class="expl-icon-correct" style="display: none;"></i>
+                  <i data-lucide="alert-circle" class="expl-icon-incorrect" style="display: none;"></i>
+                  <span id="quiz-explanation-title">Correct!</span>
+                </div>
+                <div class="explanation-body">
+                  <p class="word-reveal-title"><strong id="expl-word-text" class="gradient-text">Ephemeral</strong> (<span id="expl-word-pos">adjective</span>):</p>
+                  <p class="word-reveal-def" id="expl-word-def">Lasting for a very short time; transient or fleeting.</p>
+                  <div class="sentence-box thin">
+                    <p class="word-reveal-example" id="expl-word-example">"The beauty of cherry blossoms is ephemeral."</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Footer -->
+              <div class="quiz-footer">
+                <button class="btn btn-outline" id="quiz-quit-btn">Quit Quiz</button>
+                <button class="btn btn-primary" id="quiz-next-btn" disabled>
+                  <span>Next Question</span>
+                  <i data-lucide="arrow-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Quiz End State -->
+            <div class="quiz-substate glass-panel text-center" id="quiz-state-end" style="display: none;">
+              <!-- Score Circular Ring -->
+              <div class="circular-score-wrapper">
+                <svg class="score-svg" viewBox="0 0 120 120">
+                  <circle class="score-circle-bg" cx="60" cy="60" r="54"></circle>
+                  <circle class="score-circle-fill" id="quiz-score-circle" cx="60" cy="60" r="54" style="stroke-dasharray: 339.292; stroke-dashoffset: 339.292;"></circle>
+                </svg>
+                <div class="score-number-box">
+                  <span class="score-percentage" id="quiz-final-percent">80%</span>
+                  <span class="score-fraction" id="quiz-final-fraction">4 / 5 Correct</span>
+                </div>
+              </div>
+
+              <h2 class="panel-heading mt-6" id="quiz-end-title">Excellent Job, Wordsmith!</h2>
+              <p class="panel-subheading" id="quiz-end-subtitle">You have demonstrated high competence. Review your results below to consolidate your learning.</p>
+
+              <!-- Detailed Quiz Question Review -->
+              <div class="quiz-review-container">
+                <h3 class="review-title">Detailed Question Review</h3>
+                <div class="review-list" id="quiz-review-list">
+                  <!-- Question cards showing correct/incorrect detailed states -->
+                </div>
+              </div>
+
+              <div class="quiz-end-actions flex-row justify-center mt-8">
+                <button class="btn btn-outline" id="quiz-end-dashboard-btn">
+                  <i data-lucide="layout-dashboard"></i> Back to Dashboard
+                </button>
+                <button class="btn btn-primary" id="quiz-retry-btn">
+                  <i data-lucide="refresh-cw"></i> Challenge Again
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3D FLIP FLASHCARDS MODE -->
+          <div class="practice-panel" id="flashcards-panel">
+            <div class="flashcards-container">
+              
+              <!-- Setup Deck Header -->
+              <div class="flashcards-meta-row">
+                <div class="deck-title-group">
+                  <h3>Vocabulary Flashcards</h3>
+                  <span class="card-count-indicator" id="flashcard-deck-indicator">Card 1 of 10</span>
+                </div>
+                <button class="btn btn-outline btn-xs" id="flashcard-reset-deck">
+                  <i data-lucide="refresh-cw"></i> Re-shuffle Deck
+                </button>
+              </div>
+
+              <!-- Progress bar -->
+              <div class="progress-bar-bg mb-6">
+                <div class="progress-bar-fill bg-blue-grad" id="flashcard-progress-fill" style="width: 10%;"></div>
+              </div>
+
+              <!-- Interactive 3D Card Scene -->
+              <div class="flashcard-scene" id="flashcard-trigger-area">
+                <div class="flashcard-card" id="flashcard-element">
+                  
+                  <!-- CARD FRONT -->
+                  <div class="flashcard-face flashcard-front">
+                    <div class="card-glow-effect"></div>
+                    <div class="face-header">
+                      <div class="pos-badge" id="fc-front-pos">adjective</div>
+                      <i data-lucide="help-circle" class="info-tag-icon"></i>
+                    </div>
+                    <div class="face-body">
+                      <h2 class="fc-word" id="fc-front-word">meticulous</h2>
+                      <p class="fc-phonetics" id="fc-front-phonetic">/məˈtɪkjələs/</p>
+                    </div>
+                    <div class="face-footer">
+                      <div class="flip-instruction">
+                        <i data-lucide="repeat" class="flip-icon-animation"></i>
+                        <span>Click card to reveal definition</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- CARD BACK -->
+                  <div class="flashcard-face flashcard-back">
+                    <div class="face-header">
+                      <div class="pos-badge" id="fc-back-pos">adjective</div>
+                      <span class="fc-back-word-heading" id="fc-back-word">meticulous</span>
+                    </div>
+                    <div class="face-body scroll-y">
+                      <div class="info-group">
+                        <span class="info-label">Definition</span>
+                        <p class="info-text-def" id="fc-back-definition">Showing great attention to detail; very careful and precise.</p>
+                      </div>
+                      <div class="info-group mt-4">
+                        <span class="info-label">Example Sentence</span>
+                        <div class="sentence-box thin border-blue">
+                          <p class="info-text-example" id="fc-back-example">"The researcher kept meticulous records of every variable during the experiment."</p>
+                        </div>
+                      </div>
+                      <div class="synonym-antonym-grid mt-4">
+                        <div>
+                          <span class="info-label">Synonyms</span>
+                          <p class="info-text-chips" id="fc-back-syns">painstaking, precise, fastidious</p>
+                        </div>
+                        <div>
+                          <span class="info-label">Antonyms</span>
+                          <p class="info-text-chips" id="fc-back-ants">careless, sloppy</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="face-footer">
+                      <div class="flip-instruction text-muted">
+                        <i data-lucide="repeat"></i>
+                        <span>Click card to show term</span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Action Cards Feedback buttons -->
+              <div class="flashcard-actions-row">
+                <button class="btn btn-action-need-work" id="fc-action-fail" title="Put back in list to practice again">
+                  <div class="action-btn-circle icon-red">
+                    <i data-lucide="x"></i>
+                  </div>
+                  <span>Need Practice</span>
+                </button>
+                
+                <div class="deck-score-badge">
+                  <span class="mastered-count" id="fc-mastered-count">0</span>
+                  <span class="mastered-label">Mastered</span>
+                </div>
+
+                <button class="btn btn-action-mastered" id="fc-action-success" title="Mark as learned and remove from deck">
+                  <div class="action-btn-circle icon-green">
+                    <i data-lucide="check"></i>
+                  </div>
+                  <span>Mastered!</span>
+                </button>
+              </div>
+
+              <!-- Deck Completed State -->
+              <div class="flashcard-deck-complete glass-panel text-center" id="flashcard-complete-state" style="display: none;">
+                <div class="complete-icon-wrapper">
+                  <i data-lucide="party-popper" class="party-icon-animation"></i>
+                </div>
+                <h2>Deck Completed!</h2>
+                <p>You have gone through all the flashcards in this round. Way to go!</p>
+                <div class="complete-stats-row">
+                  <div class="complete-stat">
+                    <span class="complete-val" id="fc-final-mastered">10</span>
+                    <span class="complete-lbl">Words Mastered</span>
+                  </div>
+                  <div class="complete-stat">
+                    <span class="complete-val" id="fc-final-total">10</span>
+                    <span class="complete-lbl">Total in Round</span>
+                  </div>
+                </div>
+                <button class="btn btn-primary mx-auto w-auto mt-6" id="fc-restart-deck-btn">
+                  <i data-lucide="refresh-cw"></i> Start Another Deck
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Confetti Canvas Overlay -->
+  <canvas class="confetti-canvas" id="confetti-canvas"></canvas>
+
+  <!-- Loading Words Fallback notification (only triggers once on startup) -->
+  <div class="toast-notification" id="toast-message">
+    <i data-lucide="check-circle" class="toast-icon"></i>
+    <span class="toast-text">Offline Vocabulary Database Activated!</span>
+  </div>
+
+  <!-- Main scripts -->
+  <script src="words.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
