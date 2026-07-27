@@ -12,37 +12,45 @@
   --font-header: 'Outfit', sans-serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
 
-  /* HSL Colors - Default Dark Theme */
-  --bg-app: #090c15;
-  --panel-bg: rgba(17, 22, 39, 0.65);
+  /* HSL Colors - Crimson Dark Theme (Default) */
+  --bg-app: #0d0608;
+  --panel-bg: rgba(26, 13, 16, 0.65);
   --panel-border: rgba(255, 255, 255, 0.06);
-  --panel-shadow: rgba(0, 0, 0, 0.4);
+  --panel-shadow: rgba(0, 0, 0, 0.45);
   
-  --text-primary: #f3f4f6;
-  --text-secondary: #9ca3af;
-  --text-muted: #6b7280;
+  --text-primary: #fff1f2;
+  --text-secondary: #fda4af;
+  --text-muted: #f43f5e;
 
-  --primary: #8b5cf6;
-  --primary-hover: #7c3aed;
-  --primary-light: #a78bfa;
-  --primary-rgb: 139, 92, 246;
+  --primary: #ef4444;
+  --primary-hover: #dc2626;
+  --primary-light: #f87171;
+  --primary-rgb: 239, 68, 68;
 
-  --secondary: #3b82f6;
-  --secondary-hover: #2563eb;
+  --secondary: #f97316;
+  --secondary-hover: #ea580c;
   
   --success: #10b981;
   --success-bg: rgba(16, 185, 129, 0.1);
   --success-border: rgba(16, 185, 129, 0.25);
   
-  --danger: #ef4444;
-  --danger-bg: rgba(239, 68, 68, 0.1);
-  --danger-border: rgba(239, 68, 68, 0.25);
+  --danger: #ff0055;
+  --danger-bg: rgba(255, 0, 85, 0.1);
+  --danger-border: rgba(255, 0, 85, 0.25);
 
   --warning: #f59e0b;
   --warning-bg: rgba(245, 158, 11, 0.1);
   
-  --glow-1: rgba(139, 92, 246, 0.15);
-  --glow-2: rgba(59, 130, 246, 0.15);
+  --glow-1: rgba(239, 68, 68, 0.15);
+  --glow-2: rgba(249, 115, 22, 0.15);
+
+  /* Dynamic Gradients & Themed Cards */
+  --gradient-primary: linear-gradient(135deg, #f87171 0%, #ef4444 50%, #f97316 100%);
+  --welcome-bg: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(249, 115, 22, 0.15) 100%);
+  --welcome-border: rgba(239, 68, 68, 0.2);
+  --card-front-bg: linear-gradient(135deg, rgba(26, 13, 16, 0.9) 0%, rgba(18, 8, 10, 0.9) 100%);
+  --card-back-bg: linear-gradient(135deg, rgba(22, 10, 12, 0.95) 0%, rgba(14, 5, 7, 0.95) 100%);
+  --header-bg: rgba(9, 12, 21, 0.75);
 
   /* Shared Properties */
   --radius-sm: 8px;
@@ -56,33 +64,153 @@
   --transition-elastic: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Light Theme Variables */
+/* 1. Crimson Dark Theme */
+body.theme-cosmic-dark {
+  --bg-app: #0d0608;
+  --panel-bg: rgba(26, 13, 16, 0.65);
+  --panel-border: rgba(255, 255, 255, 0.06);
+  --panel-shadow: rgba(0, 0, 0, 0.45);
+  --text-primary: #fff1f2;
+  --text-secondary: #fda4af;
+  --text-muted: #f43f5e;
+  --primary: #ef4444;
+  --primary-hover: #dc2626;
+  --primary-light: #f87171;
+  --primary-rgb: 239, 68, 68;
+  --secondary: #f97316;
+  --secondary-hover: #ea580c;
+  --glow-1: rgba(239, 68, 68, 0.15);
+  --glow-2: rgba(249, 115, 22, 0.15);
+  --gradient-primary: linear-gradient(135deg, #f87171 0%, #ef4444 50%, #f97316 100%);
+  --welcome-bg: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(249, 115, 22, 0.15) 100%);
+  --welcome-border: rgba(239, 68, 68, 0.2);
+  --card-front-bg: linear-gradient(135deg, rgba(26, 13, 16, 0.9) 0%, rgba(18, 8, 10, 0.9) 100%);
+  --card-back-bg: linear-gradient(135deg, rgba(22, 10, 12, 0.95) 0%, rgba(14, 5, 7, 0.95) 100%);
+  --header-bg: rgba(13, 6, 8, 0.75);
+}
+
+/* 2. Sunset Glow Theme */
+body.theme-sunset-glow {
+  --bg-app: #180a13;
+  --panel-bg: rgba(29, 14, 25, 0.7);
+  --panel-border: rgba(244, 63, 94, 0.15);
+  --panel-shadow: rgba(0, 0, 0, 0.45);
+  --text-primary: #fff1f2;
+  --text-secondary: #fca5a5;
+  --text-muted: #fb7185;
+  --primary: #f43f5e;
+  --primary-hover: #e11d48;
+  --primary-light: #fda4af;
+  --primary-rgb: 244, 63, 94;
+  --secondary: #fb923c;
+  --secondary-hover: #ea580c;
+  --glow-1: rgba(244, 63, 94, 0.25);
+  --glow-2: rgba(251, 146, 60, 0.2);
+  --gradient-primary: linear-gradient(135deg, #fda4af 0%, #f43f5e 50%, #fb923c 100%);
+  --welcome-bg: linear-gradient(135deg, rgba(244, 63, 94, 0.15) 0%, rgba(251, 146, 60, 0.15) 100%);
+  --welcome-border: rgba(244, 63, 94, 0.25);
+  --card-front-bg: linear-gradient(135deg, rgba(29, 14, 25, 0.9) 0%, rgba(20, 8, 17, 0.9) 100%);
+  --card-back-bg: linear-gradient(135deg, rgba(24, 10, 20, 0.95) 0%, rgba(16, 5, 12, 0.95) 100%);
+  --header-bg: rgba(24, 10, 19, 0.75);
+}
+
+/* 3. Aurora Wave Theme */
+body.theme-aurora-wave {
+  --bg-app: #031518;
+  --panel-bg: rgba(5, 32, 36, 0.72);
+  --panel-border: rgba(20, 184, 166, 0.15);
+  --panel-shadow: rgba(0, 0, 0, 0.5);
+  --text-primary: #e0f2fe;
+  --text-secondary: #99f6e4;
+  --text-muted: #14b8a6;
+  --primary: #0d9488;
+  --primary-hover: #0f766e;
+  --primary-light: #2dd4bf;
+  --primary-rgb: 13, 148, 136;
+  --secondary: #10b981;
+  --secondary-hover: #059669;
+  --glow-1: rgba(20, 184, 166, 0.25);
+  --glow-2: rgba(16, 185, 129, 0.2);
+  --gradient-primary: linear-gradient(135deg, #2dd4bf 0%, #0d9488 50%, #10b981 100%);
+  --welcome-bg: linear-gradient(135deg, rgba(13, 148, 136, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%);
+  --welcome-border: rgba(13, 148, 136, 0.25);
+  --card-front-bg: linear-gradient(135deg, rgba(5, 32, 36, 0.9) 0%, rgba(2, 18, 20, 0.9) 100%);
+  --card-back-bg: linear-gradient(135deg, rgba(4, 26, 29, 0.95) 0%, rgba(1, 12, 14, 0.95) 100%);
+  --header-bg: rgba(3, 21, 24, 0.75);
+}
+
+/* 4. Cyberpunk Neon Theme */
+body.theme-cyberpunk-neon {
+  --bg-app: #0b0114;
+  --panel-bg: rgba(24, 0, 36, 0.65);
+  --panel-border: rgba(255, 0, 127, 0.2);
+  --panel-shadow: rgba(255, 0, 127, 0.15);
+  --text-primary: #ffffff;
+  --text-secondary: #ff00ff;
+  --text-muted: #00ffff;
+  --primary: #ff007f;
+  --primary-hover: #d90066;
+  --primary-light: #ff66b2;
+  --primary-rgb: 255, 0, 127;
+  --secondary: #00f0ff;
+  --secondary-hover: #00c8d7;
+  --glow-1: rgba(255, 0, 127, 0.3);
+  --glow-2: rgba(0, 240, 255, 0.3);
+  --gradient-primary: linear-gradient(135deg, #ff00ff 0%, #ff007f 50%, #00f0ff 100%);
+  --welcome-bg: linear-gradient(135deg, rgba(255, 0, 127, 0.2) 0%, rgba(0, 240, 255, 0.2) 100%);
+  --welcome-border: rgba(255, 0, 127, 0.35);
+  --card-front-bg: linear-gradient(135deg, rgba(24, 0, 36, 0.9) 0%, rgba(12, 0, 20, 0.9) 100%);
+  --card-back-bg: linear-gradient(135deg, rgba(18, 0, 28, 0.95) 0%, rgba(8, 0, 12, 0.95) 100%);
+  --header-bg: rgba(11, 1, 20, 0.75);
+}
+
+/* 5. Solar Light Theme (and system light-theme fallback) */
 body.light-theme {
   --bg-app: #f5f7fb;
   --panel-bg: rgba(255, 255, 255, 0.75);
   --panel-border: rgba(0, 0, 0, 0.05);
   --panel-shadow: rgba(31, 41, 55, 0.08);
-
   --text-primary: #111827;
   --text-secondary: #4b5563;
   --text-muted: #9ca3af;
-
   --primary: #7c3aed;
   --primary-hover: #6d28d9;
   --primary-light: #8b5cf6;
   --primary-rgb: 124, 58, 237;
-
   --secondary: #2563eb;
   --secondary-hover: #1d4ed8;
-
   --glow-1: rgba(124, 58, 237, 0.08);
   --glow-2: rgba(37, 99, 235, 0.08);
+  --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+  --welcome-bg: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(37, 99, 235, 0.08) 100%);
+  --welcome-border: rgba(124, 58, 237, 0.15);
+  --card-front-bg: linear-gradient(135deg, #ffffff 0%, #edf1f7 100%);
+  --card-back-bg: linear-gradient(135deg, #f8fafc 0%, #edf1f7 100%);
+  --header-bg: rgba(245, 247, 251, 0.75);
+}
 
-  --success-bg: rgba(16, 185, 129, 0.08);
-  --success-border: rgba(16, 185, 129, 0.15);
-
-  --danger-bg: rgba(239, 68, 68, 0.08);
-  --danger-border: rgba(239, 68, 68, 0.15);
+body.theme-solar-light {
+  --bg-app: #fffbf7;
+  --panel-bg: rgba(255, 255, 255, 0.82);
+  --panel-border: rgba(255, 94, 98, 0.12);
+  --panel-shadow: rgba(255, 94, 98, 0.08);
+  --text-primary: #3c2a21;
+  --text-secondary: #d97706;
+  --text-muted: #ff5e62;
+  --primary: #ff5e62;
+  --primary-hover: #ff3b40;
+  --primary-light: #ffa4a6;
+  --primary-rgb: 255, 94, 98;
+  --secondary: #ff9966;
+  --secondary-hover: #f97316;
+  --glow-1: rgba(255, 94, 98, 0.12);
+  --glow-2: rgba(255, 153, 102, 0.12);
+  --gradient-primary: linear-gradient(135deg, #ff9966 0%, #ff5e62 50%, #f43f5e 100%);
+  --welcome-bg: linear-gradient(135deg, rgba(255, 94, 98, 0.1) 0%, rgba(255, 153, 102, 0.1) 100%);
+  --welcome-border: rgba(255, 94, 98, 0.2);
+  --card-front-bg: linear-gradient(135deg, #ffffff 0%, #fff5f0 100%);
+  --card-back-bg: linear-gradient(135deg, #fffcf9 0%, #ffeedd 100%);
+  --header-bg: rgba(255, 251, 247, 0.75);
 }
 
 /* ==========================================
@@ -189,14 +317,7 @@ body {
 
 /* Typography Gradient */
 .gradient-text {
-  background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #3b82f6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-body.light-theme .gradient-text {
-  background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -281,7 +402,7 @@ body.light-theme .gradient-text {
   top: 0;
   z-index: 100;
   width: 100%;
-  background: rgba(var(--bg-app) == #090c15 ? 9 : 245, var(--bg-app) == #090c15 ? 12 : 247, var(--bg-app) == #090c15 ? 21 : 251, 0.75);
+  background: var(--header-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--panel-border);
@@ -393,33 +514,158 @@ body.light-theme .nav-link.active {
   background: #ffffff;
 }
 
-/* Theme Toggle Button */
-.theme-toggle-btn {
+/* Theme Selector Dropdown */
+.theme-selector-container {
+  position: relative;
+  display: inline-block;
+}
+
+.theme-select-trigger {
   background: var(--panel-bg);
   border: 1px solid var(--panel-border);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  border-radius: 50px;
+  padding: 0.55rem 1.25rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.75rem;
   color: var(--text-secondary);
+  font-family: var(--font-header);
+  font-weight: 700;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all var(--transition-normal);
   outline: none;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  user-select: none;
 }
 
-.theme-toggle-btn:hover {
+.theme-select-trigger:hover {
   border-color: var(--primary);
-  color: var(--primary-light);
-  transform: scale(1.05);
+  color: var(--text-primary);
+  box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.15);
+  transform: translateY(-1px);
 }
 
-.sun-icon { display: none; }
-.moon-icon { display: block; }
+.theme-select-trigger:active {
+  transform: translateY(0);
+}
 
-body.light-theme .sun-icon { display: block; }
-body.light-theme .moon-icon { display: none; }
+.theme-select-trigger i {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-select-trigger .chevron-icon {
+  width: 14px;
+  height: 14px;
+  transition: transform var(--transition-elastic);
+  opacity: 0.7;
+}
+
+.theme-selector-container.open .chevron-icon {
+  transform: rotate(180deg);
+}
+
+.theme-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 230px;
+  padding: 0.75rem;
+  z-index: 200;
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-12px) scale(0.95);
+  transform-origin: top right;
+  transition: opacity var(--transition-normal), transform var(--transition-elastic), visibility var(--transition-normal);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 15px 35px -5px var(--panel-shadow);
+}
+
+.theme-selector-container.open .theme-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.theme-dropdown-header {
+  font-family: var(--font-header);
+  font-weight: 800;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.75px;
+  color: var(--text-secondary);
+  padding: 0.25rem 0.5rem 0.65rem 0.5rem;
+  border-bottom: 1px solid var(--panel-border);
+  margin-bottom: 0.65rem;
+  opacity: 0.8;
+}
+
+.theme-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all var(--transition-fast);
+  outline: none;
+}
+
+.theme-option:hover {
+  background: rgba(var(--primary-rgb), 0.1);
+  color: var(--text-primary);
+  transform: translateX(2px);
+}
+
+.theme-option.active {
+  background: rgba(var(--primary-rgb), 0.15);
+  color: var(--text-primary);
+}
+
+.theme-color-preview {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.theme-option .check-icon {
+  margin-left: auto;
+  width: 15px;
+  height: 15px;
+  color: var(--primary-light);
+}
+
+body.light-theme .theme-option .check-icon {
+  color: var(--primary);
+}
 
 /* ==========================================
    Main Application Wrapper & Views
@@ -451,8 +697,8 @@ body.light-theme .moon-icon { display: none; }
 
 /* Welcome Banner */
 .welcome-banner {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%);
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  background: var(--welcome-bg);
+  border: 1px solid var(--welcome-border);
   border-radius: var(--radius-lg);
   padding: 2.25rem;
   display: flex;
@@ -461,10 +707,6 @@ body.light-theme .moon-icon { display: none; }
   margin-bottom: 2rem;
   position: relative;
   overflow: hidden;
-}
-
-body.light-theme .welcome-banner {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%);
 }
 
 .welcome-banner::before {
@@ -2116,13 +2358,9 @@ body.light-theme .review-card {
 
 /* Front Card Design */
 .flashcard-front {
-  background: linear-gradient(135deg, rgba(17, 22, 39, 0.9) 0%, rgba(11, 15, 25, 0.9) 100%);
+  background: var(--card-front-bg);
   position: relative;
   overflow: hidden;
-}
-
-body.light-theme .flashcard-front {
-  background: linear-gradient(135deg, #ffffff 0%, #edf1f7 100%);
 }
 
 .card-glow-effect {
@@ -2218,13 +2456,9 @@ body.light-theme .pos-badge { color: var(--primary); }
 
 /* Back Card Design */
 .flashcard-back {
-  background: linear-gradient(135deg, rgba(11, 15, 25, 0.95) 0%, rgba(8, 10, 18, 0.95) 100%);
+  background: var(--card-back-bg);
   transform: rotateY(180deg);
   border-color: rgba(var(--primary-rgb), 0.25);
-}
-
-body.light-theme .flashcard-back {
-  background: linear-gradient(135deg, #f8fafc 0%, #edf1f7 100%);
 }
 
 .fc-back-word-heading {

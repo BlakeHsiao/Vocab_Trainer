@@ -43,6 +43,59 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // Theme management functions
+  function setTheme(themeName) {
+    const themes = [
+      "theme-cosmic-dark",
+      "theme-sunset-glow",
+      "theme-aurora-wave",
+      "theme-cyberpunk-neon",
+      "theme-solar-light",
+      "light-theme",
+      "dark-theme"
+    ];
+    themes.forEach(t => document.body.classList.remove(t));
+
+    document.body.classList.add(themeName);
+
+    if (themeName === "theme-solar-light" || themeName === "light-theme") {
+      document.body.classList.add("light-theme");
+    } else {
+      document.body.classList.add("dark-theme");
+    }
+
+    localStorage.setItem("vocab_theme", themeName);
+    updateThemeUI(themeName);
+  }
+
+  function updateThemeUI(themeName) {
+    const triggerText = document.querySelector(".active-theme-name");
+    if (triggerText) {
+      const themeLabels = {
+        "theme-cosmic-dark": "Crimson Dark",
+        "theme-sunset-glow": "Sunset Glow",
+        "theme-aurora-wave": "Aurora Mint",
+        "theme-cyberpunk-neon": "Cyberpunk",
+        "theme-solar-light": "Solar Light"
+      };
+      triggerText.textContent = themeLabels[themeName] || "Crimson Dark";
+    }
+
+    const options = document.querySelectorAll(".theme-option");
+    options.forEach(opt => {
+      const optTheme = opt.getAttribute("data-theme");
+      if (optTheme === themeName) {
+        opt.classList.add("active");
+        const check = opt.querySelector(".check-icon");
+        if (check) check.style.display = "block";
+      } else {
+        opt.classList.remove("active");
+        const check = opt.querySelector(".check-icon");
+        if (check) check.style.display = "none";
+      }
+    });
+  }
+
   // Load state from Local Storage
   function loadStateFromLocalStorage() {
     const savedUsername = localStorage.getItem("vocab_username");
@@ -64,13 +117,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (savedRecentLookups) state.recentLookups = JSON.parse(savedRecentLookups);
 
     // Maintain Theme preference
-    const savedTheme = localStorage.getItem("vocab_theme");
-    if (savedTheme === "light") {
-      document.body.classList.remove("dark-theme");
-      document.body.classList.add("light-theme");
+    const savedTheme = localStorage.getItem("vocab_theme") || "theme-cosmic-dark";
+    if (savedTheme === "light" || savedTheme === "light-theme") {
+      setTheme("theme-solar-light");
+    } else if (savedTheme === "dark" || savedTheme === "dark-theme") {
+      setTheme("theme-cosmic-dark");
     } else {
-      document.body.classList.remove("light-theme");
-      document.body.classList.add("dark-theme");
+      setTheme(savedTheme);
     }
 
     calculateStreak();
@@ -285,18 +338,30 @@ document.addEventListener("DOMContentLoaded", () => {
     switchTab("dashboard-tab");
   });
 
-  // Theme Toggle Button Logic
-  els.themeToggle.addEventListener("click", () => {
-    if (document.body.classList.contains("dark-theme")) {
-      document.body.classList.remove("dark-theme");
-      document.body.classList.add("light-theme");
-      localStorage.setItem("vocab_theme", "light");
-    } else {
-      document.body.classList.remove("light-theme");
-      document.body.classList.add("dark-theme");
-      localStorage.setItem("vocab_theme", "dark");
-    }
-  });
+  // Theme Selector Dropdown Logic
+  const themeSelectorContainer = document.querySelector(".theme-selector-container");
+  if (els.themeToggle && themeSelectorContainer) {
+    els.themeToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      themeSelectorContainer.classList.toggle("open");
+    });
+
+    // Close dropdown on click outside
+    document.addEventListener("click", () => {
+      themeSelectorContainer.classList.remove("open");
+    });
+
+    // Theme option clicks
+    const options = document.querySelectorAll(".theme-option");
+    options.forEach(opt => {
+      opt.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const selectedTheme = opt.getAttribute("data-theme");
+        setTheme(selectedTheme);
+        themeSelectorContainer.classList.remove("open");
+      });
+    });
+  }
 
 
   // ==========================================

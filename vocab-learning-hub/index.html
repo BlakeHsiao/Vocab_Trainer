@@ -11,7 +11,7 @@
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2.2">
 </head>
 <body class="dark-theme">
   <!-- App Background Gradients -->
@@ -44,10 +44,44 @@
       </nav>
 
       <div class="header-actions">
-        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Theme">
-          <i data-lucide="sun" class="sun-icon"></i>
-          <i data-lucide="moon" class="moon-icon"></i>
-        </button>
+        <div class="theme-selector-container">
+          <button class="theme-select-trigger" id="theme-toggle" aria-label="Select Theme" title="Choose color theme">
+            <i data-lucide="palette"></i>
+            <span class="active-theme-name">Crimson Dark</span>
+            <i data-lucide="chevron-down" class="chevron-icon"></i>
+          </button>
+          
+          <div class="theme-dropdown glass-panel" id="theme-dropdown">
+            <div class="theme-dropdown-header">Choose Theme</div>
+            <div class="theme-options-list">
+              <button class="theme-option active" data-theme="theme-cosmic-dark">
+                <span class="theme-color-preview" style="background: linear-gradient(135deg, #ef4444, #f97316);"></span>
+                <span class="theme-option-name">Crimson Dark</span>
+                <i data-lucide="check" class="check-icon"></i>
+              </button>
+              <button class="theme-option" data-theme="theme-sunset-glow">
+                <span class="theme-color-preview" style="background: linear-gradient(135deg, #f43f5e, #fb923c);"></span>
+                <span class="theme-option-name">Sunset Glow</span>
+                <i data-lucide="check" class="check-icon"></i>
+              </button>
+              <button class="theme-option" data-theme="theme-aurora-wave">
+                <span class="theme-color-preview" style="background: linear-gradient(135deg, #0d9488, #10b981);"></span>
+                <span class="theme-option-name">Aurora Mint</span>
+                <i data-lucide="check" class="check-icon"></i>
+              </button>
+              <button class="theme-option" data-theme="theme-cyberpunk-neon">
+                <span class="theme-color-preview" style="background: linear-gradient(135deg, #ff007f, #00f0ff);"></span>
+                <span class="theme-option-name">Cyberpunk</span>
+                <i data-lucide="check" class="check-icon"></i>
+              </button>
+              <button class="theme-option" data-theme="theme-solar-light">
+                <span class="theme-color-preview" style="background: linear-gradient(135deg, #ff9966, #ff5e62);"></span>
+                <span class="theme-option-name">Solar Light</span>
+                <i data-lucide="check" class="check-icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -574,6 +608,6 @@
 
   <!-- Main scripts -->
   <script src="words.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=2.2"></script>
 </body>
 </html>
