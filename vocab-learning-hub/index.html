@@ -107,12 +107,12 @@
     <section id="dashboard-tab" class="tab-content active">
       <div class="welcome-banner">
         <div class="banner-main-content">
-          <div class="banner-mascot-wrapper">
+          <div class="banner-mascot-wrapper" id="banner-mascot-container">
             <img src="rutgers_mascot.png" class="banner-mascot" alt="Rutgers Scarlet Knight Mascot">
           </div>
           <div class="banner-info">
-            <h1 class="banner-title">RU READY, <span class="gradient-text" id="username-display">Scholar</span>!?</h1>
-            <p class="banner-subtitle">To conquer new words is the charge of the Scarlet Knight. Charge on, scholar!</p>
+            <h1 class="banner-title" id="banner-title">RU READY, <span class="gradient-text" id="username-display">Scholar</span>!?</h1>
+            <p class="banner-subtitle" id="banner-subtitle">To conquer new words is the charge of the Scarlet Knight. Charge on, scholar!</p>
           </div>
         </div>
         <div class="streak-badge">
@@ -408,6 +408,16 @@
                 </div>
               </div>
 
+              <!-- Dynamic Scarlet Knight Companion (Duolingo style) -->
+              <div class="quiz-mascot-companion" id="quiz-mascot-companion">
+                <div class="mascot-avatar-wrapper animate-float">
+                  <img src="rutgers_mascot.png" class="mascot-avatar-img" id="quiz-mascot-img" alt="Scarlet Knight Companion">
+                </div>
+                <div class="mascot-bubble glass-panel">
+                  <p class="mascot-text" id="quiz-mascot-speech">Welcome to the arena, scholar! Let us test your vocabulary mettle. Select the correct option!</p>
+                </div>
+              </div>
+
               <!-- Question Statement Card -->
               <div class="quiz-question-container">
                 <span class="question-badge" id="quiz-question-type">Definition Match</span>
@@ -499,6 +509,16 @@
               <!-- Progress bar -->
               <div class="progress-bar-bg mb-6">
                 <div class="progress-bar-fill bg-blue-grad" id="flashcard-progress-fill" style="width: 10%;"></div>
+              </div>
+
+              <!-- Dynamic Scarlet Knight Companion for Flashcards -->
+              <div class="quiz-mascot-companion" id="fc-mascot-companion">
+                <div class="mascot-avatar-wrapper animate-float">
+                  <img src="rutgers_mascot.png" class="mascot-avatar-img" id="fc-mascot-img" alt="Scarlet Knight Companion">
+                </div>
+                <div class="mascot-bubble glass-panel">
+                  <p class="mascot-text" id="fc-mascot-speech">Greetings! Flashcards are the shield of memory. Try to recall the meaning of each word!</p>
+                </div>
               </div>
 
               <!-- Interactive 3D Card Scene -->

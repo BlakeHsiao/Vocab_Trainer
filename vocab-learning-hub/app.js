@@ -43,6 +43,122 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // ==========================================
+  // Dynamic Welcome Banner Mapping Configurations
+  // ==========================================
+  const THEME_BANNER_CONFIGS = {
+    "theme-rutgers-scarlet": {
+      titleHtml: 'RU READY, ${username}!?',
+      subtitle: "To conquer new words is the charge of the Scarlet Knight. Charge on, scholar!",
+      mascotHtml: '<img src="rutgers_mascot.png" class="banner-mascot" alt="Rutgers Scarlet Knight Mascot">'
+    },
+    "theme-cosmic-dark": {
+      titleHtml: 'WELCOME BACK, ${username}!',
+      subtitle: "Fuel your mind with cosmic terms and conquer the cosmos of vocabulary.",
+      mascotHtml: '<div class="theme-banner-icon-wrapper cosmic-glow animate-float"><i data-lucide="orbit" class="theme-banner-icon"></i></div>'
+    },
+    "theme-sunset-glow": {
+      titleHtml: 'GLOW BRIGHTER, ${username}!',
+      subtitle: "Let your lexical knowledge shine radiant like the setting sun.",
+      mascotHtml: '<div class="theme-banner-icon-wrapper sunset-glow animate-float"><i data-lucide="flame" class="theme-banner-icon"></i></div>'
+    },
+    "theme-aurora-wave": {
+      titleHtml: 'REFRESH YOUR MIND, ${username}!',
+      subtitle: "Ride the glowing wave of clean, pristine, and masterful vocabulary.",
+      mascotHtml: '<div class="theme-banner-icon-wrapper aurora-glow animate-float"><i data-lucide="sparkles" class="theme-banner-icon"></i></div>'
+    },
+    "theme-cyberpunk-neon": {
+      titleHtml: 'SYSTEMS ONLINE, ${username}!',
+      subtitle: "Overclock your mental processors and inject advanced neural lexical databases.",
+      mascotHtml: '<div class="theme-banner-icon-wrapper cyberpunk-glow animate-float"><i data-lucide="cpu" class="theme-banner-icon"></i></div>'
+    },
+    "theme-solar-light": {
+      titleHtml: 'RISE AND SHINE, ${username}!',
+      subtitle: "Bask in the warm light of wisdom and watch your vocabulary flourish.",
+      mascotHtml: '<div class="theme-banner-icon-wrapper solar-glow animate-float"><i data-lucide="sun" class="theme-banner-icon"></i></div>'
+    }
+  };
+
+  // ==========================================
+  // Practice Arena Scarlet Knight Companion Dialogues
+  // ==========================================
+  const MASCOT_DIALOGUES = {
+    quiz: {
+      idle: [
+        "Focus on the context, scholar! You can solve this!",
+        "Read the options carefully. The correct choice is waiting!",
+        "A brave scholar never rushes. Check the options!",
+        "By my shield, this is a fine question. Show your mettle!",
+        "Trust your instincts, scholar. Victory is near!"
+      ],
+      correct: [
+        "Magnificent! A true master of vocabulary!",
+        "By my sword, a flawless strike! Onward!",
+        "Incredible! Your mind is as sharp as my blade!",
+        "Glorious! Rutgers is proud of your scholarship!",
+        "Indeed! You conquered that word with absolute ease!"
+      ],
+      incorrect: [
+        "Do not falter! A minor scrape, we will learn and conquer.",
+        "Mistakes are but steps on the path to victory! Keep charging!",
+        "A noble effort, but the enemy was subtle. We'll get them next time!",
+        "Even the bravest knights miss their mark. Keep your shield up!",
+        "Let this definition fortify your mind for the next battle!"
+      ]
+    },
+    flashcards: {
+      idle: [
+        "Greetings! Flashcards are the shield of memory. Try to recall each meaning!",
+        "Repetition is the mother of skill! Let's drill these words.",
+        "To memorize is to conquer the unknown. Charge ahead!"
+      ],
+      success: [
+        "Brilliant! Marked for glory!",
+        "One more word conquered and added to your armory!",
+        "Your vocabulary grows stronger by the second!",
+        "Superb recall, scholar! No word can hide from you!"
+      ],
+      fail: [
+        "No worries! We will drill this word again until it is yours.",
+        "A tactical regroup! We'll commit this word to memory next.",
+        "Practice makes permanent. Keep your shield high!",
+        "We will face this word again and defeat it!"
+      ]
+    }
+  };
+
+  function updateBannerForTheme(themeName) {
+    const config = THEME_BANNER_CONFIGS[themeName] || THEME_BANNER_CONFIGS["theme-rutgers-scarlet"];
+    
+    if (els.bannerTitle) {
+      els.bannerTitle.innerHTML = config.titleHtml.replace("${username}", `<span class="gradient-text" id="username-display">${state.username || "Scholar"}</span>`);
+      
+      // Re-query the usernameDisplay since we just re-created it in innerHTML!
+      const activeUsernameDisplay = document.getElementById("username-display");
+      if (activeUsernameDisplay) {
+        activeUsernameDisplay.onclick = () => {
+          const inputName = prompt("Enter your custom Scholar name:", state.username);
+          if (inputName && inputName.trim().length > 0) {
+            state.username = inputName.trim();
+            activeUsernameDisplay.innerText = state.username;
+            saveStateToLocalStorage();
+            showToast(`Welcome, ${state.username}! Name updated successfully.`);
+          }
+        };
+      }
+    }
+    
+    if (els.bannerSubtitle) {
+      els.bannerSubtitle.innerText = config.subtitle;
+    }
+    
+    if (els.bannerMascotContainer) {
+      els.bannerMascotContainer.innerHTML = config.mascotHtml;
+    }
+    
+    lucide.createIcons();
+  }
+
   // Theme management functions
   function setTheme(themeName) {
     const themes = [
@@ -67,6 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     localStorage.setItem("vocab_theme", themeName);
     updateThemeUI(themeName);
+    updateBannerForTheme(themeName);
   }
 
   function updateThemeUI(themeName) {
@@ -186,8 +303,16 @@ document.addEventListener("DOMContentLoaded", () => {
     tabs: document.querySelectorAll(".tab-content"),
     navLinks: document.querySelectorAll(".nav-link"),
     
-    // Dashboard Panel
     usernameDisplay: document.getElementById("username-display"),
+    bannerMascotContainer: document.getElementById("banner-mascot-container"),
+    bannerTitle: document.getElementById("banner-title"),
+    bannerSubtitle: document.getElementById("banner-subtitle"),
+    quizMascotCompanion: document.getElementById("quiz-mascot-companion"),
+    quizMascotSpeech: document.getElementById("quiz-mascot-speech"),
+    quizMascotImg: document.getElementById("quiz-mascot-img"),
+    fcMascotCompanion: document.getElementById("fc-mascot-companion"),
+    fcMascotSpeech: document.getElementById("fc-mascot-speech"),
+    fcMascotImg: document.getElementById("fc-mascot-img"),
     streakCountVal: document.getElementById("streak-count-val"),
     statsLookups: document.getElementById("stats-lookups"),
     statsQuestions: document.getElementById("stats-questions"),
@@ -431,19 +556,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateDashboardUI() {
-    // Username Display with direct change capability
-    els.usernameDisplay.innerText = state.username;
-    
-    // Bind click to change username directly
-    els.usernameDisplay.onclick = () => {
-      const inputName = prompt("Enter your custom Scholar name:", state.username);
-      if (inputName && inputName.trim().length > 0) {
-        state.username = inputName.trim();
-        els.usernameDisplay.innerText = state.username;
-        saveStateToLocalStorage();
-        showToast(`Welcome, ${state.username}! Name updated successfully.`);
-      }
-    };
+    // Username and welcome banner dynamic styling based on active theme
+    const activeTheme = localStorage.getItem("vocab_theme") || "theme-rutgers-scarlet";
+    updateBannerForTheme(activeTheme);
 
     els.streakCountVal.innerText = state.stats.streak;
     els.statsLookups.innerText = state.stats.lookups;
@@ -1173,6 +1288,17 @@ document.addEventListener("DOMContentLoaded", () => {
     els.quizNextBtn.disabled = true;
     els.quizExplanation.style.display = "none";
 
+    // Update Mascot to Idle
+    if (els.quizMascotSpeech && els.quizMascotImg) {
+      const idles = MASCOT_DIALOGUES.quiz.idle;
+      els.quizMascotSpeech.innerText = idles[Math.floor(Math.random() * idles.length)];
+      
+      // Reset animations
+      els.quizMascotImg.classList.remove("animate-bounce-knight", "animate-shake-knight");
+      // Force reflow
+      void els.quizMascotImg.offsetWidth;
+    }
+
     // Progress
     els.quizQCurrent.innerText = qIndex + 1;
     els.quizQTotal.innerText = qTotal;
@@ -1218,6 +1344,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (isCorrect) {
       state.quiz.score += 1;
+    }
+
+    // Mascot Interactivity (celebrate or console)
+    if (els.quizMascotSpeech && els.quizMascotImg) {
+      els.quizMascotImg.classList.remove("animate-bounce-knight", "animate-shake-knight");
+      void els.quizMascotImg.offsetWidth; // force reflow
+
+      if (isCorrect) {
+        const congrats = MASCOT_DIALOGUES.quiz.correct;
+        els.quizMascotSpeech.innerText = congrats[Math.floor(Math.random() * congrats.length)];
+        els.quizMascotImg.classList.add("animate-bounce-knight");
+      } else {
+        const consolations = MASCOT_DIALOGUES.quiz.incorrect;
+        els.quizMascotSpeech.innerText = consolations[Math.floor(Math.random() * consolations.length)];
+        els.quizMascotImg.classList.add("animate-shake-knight");
+      }
     }
 
     // Add classes on buttons
@@ -1397,6 +1539,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const wordObj = fcState.deck[fcState.currentIndex];
 
+    // Dynamic Companion Dialogue for Flashcards
+    if (els.fcMascotSpeech && els.fcMascotImg) {
+      const isFirst = fcState.currentIndex === 0;
+      if (isFirst) {
+        els.fcMascotSpeech.innerHTML = `Let's drill <strong style="color: var(--primary-light);">${wordObj.word}</strong>. Do you know this word? Flip the card to check!`;
+      } else {
+        const lastWasMastered = els.fcMascotImg.classList.contains("animate-bounce-knight");
+        if (lastWasMastered) {
+          els.fcMascotSpeech.innerHTML = `By my sword, excellent! Next up is <strong style="color: var(--primary-light);">${wordObj.word}</strong>. Try to recall it!`;
+        } else {
+          els.fcMascotSpeech.innerHTML = `No retreats! Let's conquer <strong style="color: var(--primary-light);">${wordObj.word}</strong>! You can do this!`;
+        }
+      }
+      // Reset classes for the new card transition
+      els.fcMascotImg.classList.remove("animate-bounce-knight", "animate-shake-knight");
+    }
+
     // Reset card flip class state
     els.flashcardElement.classList.remove("flipped");
 
@@ -1430,6 +1589,13 @@ document.addEventListener("DOMContentLoaded", () => {
   els.fcActionSuccess.addEventListener("click", (e) => {
     e.stopPropagation(); // stop card from flipping on button click
 
+    // Mascot celebration trigger
+    if (els.fcMascotImg) {
+      els.fcMascotImg.classList.remove("animate-bounce-knight", "animate-shake-knight");
+      void els.fcMascotImg.offsetWidth;
+      els.fcMascotImg.classList.add("animate-bounce-knight");
+    }
+
     // Mastered removes word from current active deck
     state.flashcards.masteredCount += 1;
     els.fcMasteredCount.innerText = state.flashcards.masteredCount;
@@ -1446,6 +1612,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Action Fail (Need Practice) click
   els.fcActionFail.addEventListener("click", (e) => {
     e.stopPropagation(); // stop card from flipping on button click
+
+    // Mascot console/shake trigger
+    if (els.fcMascotImg) {
+      els.fcMascotImg.classList.remove("animate-bounce-knight", "animate-shake-knight");
+      void els.fcMascotImg.offsetWidth;
+      els.fcMascotImg.classList.add("animate-shake-knight");
+    }
 
     // Need Practice pushes word to end of current flashcards deck queue
     const currentWord = state.flashcards.deck[state.flashcards.currentIndex];

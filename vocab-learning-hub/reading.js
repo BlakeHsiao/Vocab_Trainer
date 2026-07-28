@@ -35,6 +35,11 @@ document.addEventListener("DOMContentLoaded", () => {
     rcRestartBtn: document.getElementById("rc-restart-btn"),
     rcNextPassageBtn: document.getElementById("rc-next-passage-btn"),
 
+    // Light/Dark Mode Elements
+    modeToggleBtn: document.getElementById("mode-toggle-btn"),
+    modeSunIcon: document.querySelector(".mode-sun-icon"),
+    modeMoonIcon: document.querySelector(".mode-moon-icon"),
+
     // Overlays & Utilities
     confettiCanvas: document.getElementById("confetti-canvas"),
     toastMessage: document.getElementById("toast-message")
@@ -117,9 +122,47 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function updateModeUI(mode) {
+    if (els.modeSunIcon && els.modeMoonIcon) {
+      if (mode === "light") {
+        els.modeSunIcon.style.display = "none";
+        els.modeMoonIcon.style.display = "block";
+      } else {
+        els.modeSunIcon.style.display = "block";
+        els.modeMoonIcon.style.display = "none";
+      }
+    }
+  }
+
   // Load and apply theme on startup
   const savedTheme = localStorage.getItem("vocab_theme") || "theme-rutgers-scarlet";
   setTheme(savedTheme);
+
+  // Load and apply Mode on startup
+  const savedMode = localStorage.getItem("vocab_mode") || "dark";
+  if (savedMode === "light") {
+    document.body.classList.add("mode-light");
+    updateModeUI("light");
+  } else {
+    document.body.classList.remove("mode-light");
+    updateModeUI("dark");
+  }
+
+  // Bind click event for mode toggling
+  if (els.modeToggleBtn) {
+    els.modeToggleBtn.addEventListener("click", () => {
+      const isLight = document.body.classList.contains("mode-light");
+      if (isLight) {
+        document.body.classList.remove("mode-light");
+        localStorage.setItem("vocab_mode", "dark");
+        updateModeUI("dark");
+      } else {
+        document.body.classList.add("mode-light");
+        localStorage.setItem("vocab_mode", "light");
+        updateModeUI("light");
+      }
+    });
+  }
 
   // Toggle theme selector panel
   if (els.themeToggle) {
