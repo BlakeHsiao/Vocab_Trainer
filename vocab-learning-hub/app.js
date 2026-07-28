@@ -1483,6 +1483,8 @@ document.addEventListener("DOMContentLoaded", () => {
   els.fcRestartDeckBtn.addEventListener("click", initFlashcardDeck);
 
 
+
+
   // ==========================================
   // 9. Custom Fluid Confetti Canvas Overlay
   // ==========================================
@@ -1577,6 +1579,19 @@ document.addEventListener("DOMContentLoaded", () => {
   
   loadStateFromLocalStorage();
   updateDashboardUI();
+
+  // Handle multi-page query parameter/hash routing
+  const urlParams = new URLSearchParams(window.location.search);
+  const tabParam = urlParams.get('tab') || window.location.hash.substring(1);
+  if (tabParam) {
+    if (tabParam === 'dictionary' || tabParam === 'dictionary-tab') {
+      switchTab('dictionary-tab');
+    } else if (tabParam === 'practice' || tabParam === 'practice-tab') {
+      switchTab('practice-tab');
+    } else if (tabParam === 'dashboard' || tabParam === 'dashboard-tab') {
+      switchTab('dashboard-tab');
+    }
+  }
   
   // Show active database notification briefly on startup
   setTimeout(() => {

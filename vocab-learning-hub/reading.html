@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VocabVibe | Reading Comprehension</title>
+  <!-- Google Fonts: Outfit (Headers) & Plus Jakarta Sans (Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css?v=2.2">
+</head>
+<body class="dark-theme">
+  <!-- App Background Gradients -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Header Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-area" id="logo-btn" onclick="window.location.href='index.html'">
+        <div class="logo-icon-wrapper">
+          <i data-lucide="sparkles" class="logo-icon"></i>
+        </div>
+        <span class="logo-text">Vocab<span class="gradient-text">Vibe</span></span>
+        <span class="rutgers-edition-badge">RU Edition</span>
+      </div>
+      
+      <nav class="main-nav">
+        <button class="nav-link" onclick="window.location.href='index.html?tab=dashboard'" id="nav-dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-link" onclick="window.location.href='index.html?tab=dictionary'" id="nav-dictionary">
+          <i data-lucide="book-open"></i>
+          <span>Dictionary</span>
+        </button>
+        <button class="nav-link" onclick="window.location.href='index.html?tab=practice'" id="nav-practice">
+          <i data-lucide="graduation-cap"></i>
+          <span>Practice Arena</span>
+        </button>
+        <button class="nav-link active" onclick="window.location.href='reading.html'" id="nav-reading">
+          <i data-lucide="book-open-check"></i>
+          <span>Comprehension</span>
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <div class="theme-selector-container">
+          <button class="theme-select-trigger" id="theme-toggle" aria-label="Select Theme" title="Choose color theme">
+            <i data-lucide="palette"></i>
+            <span class="active-theme-name">Rutgers Scarlet</span>
+            <i data-lucide="chevron-down" class="chevron-icon"></i>
+          </button>
+          
+          <div class="theme-dropdown glass-panel" id="theme-dropdown">
+            <div class="theme-dropdown-header">
+              <h4>Select Theme</h4>
+              <p>Personalize your environment</p>
+            </div>
+            <div class="theme-options-list">
+              <button class="theme-option" data-theme="theme-rutgers-scarlet">
+                <span class="color-preview" style="background: linear-gradient(135deg, #cc0033, #e6003d); box-shadow: 0 0 10px rgba(204,0,51,0.4);"></span>
+                <span>Rutgers Scarlet</span>
+                <i data-lucide="check" class="check-icon"></i>
+              </button>
+              <button class="theme-option" data-theme="theme-cosmic-dark">
+                <span class="color-preview" style="background: linear-gradient(135deg, #ef4444, #b91c1c); box-shadow: 0 0 10px rgba(239,68,68,0.4);"></span>
+                <span>Crimson Dark</span>
+                <i data-lucide="check" class="check-icon"></i>
+              </button>
+              <button class="theme-option" data-theme="theme-sunset-glow">
+                <span class="color-preview" style="background: linear-gradient(135deg, #f43f5e, #fb923c); box-shadow: 0 0 10px rgba(244,63,94,0.4);"></span>
+                <span>Sunset Glow</span>
+                <i data-lucide="check" class="check-icon"></i>
+              </button>
+              <button class="theme-option" data-theme="theme-aurora-wave">
+                <span class="color-preview" style="background: linear-gradient(135deg, #0d9488, #10b981); box-shadow: 0 0 10px rgba(13,148,136,0.4);"></span>
+                <span>Aurora Mint</span>
+                <i data-lucide="check" class="check-icon"></i>
+              </button>
+              <button class="theme-option" data-theme="theme-cyberpunk-neon">
+                <span class="color-preview" style="background: linear-gradient(135deg, #ff00ff, #00ffff); box-shadow: 0 0 10px rgba(255,0,255,0.4);"></span>
+                <span>Cyberpunk</span>
+                <i data-lucide="check" class="check-icon"></i>
+              </button>
+              <button class="theme-option" data-theme="theme-solar-light">
+                <span class="color-preview" style="background: linear-gradient(135deg, #ff5e62, #ff9966); box-shadow: 0 0 10px rgba(255,94,98,0.4);"></span>
+                <span>Solar Light</span>
+                <i data-lucide="check" class="check-icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main class="app-main">
+    
+    <section id="reading-tab" class="tab-content active" style="padding-top: 1.5rem;">
+      <div class="reading-header-row mb-6">
+        <div class="reading-title-group">
+          <h2 class="section-heading mt-0 mb-1">Reading Comprehension</h2>
+          <p class="section-subheading">Contextualize advanced vocabulary in academic passages</p>
+        </div>
+        <div class="passage-dropdown-container">
+          <select class="form-select glass-input" id="passage-select" title="Choose Reading Passage">
+            <!-- Dynamically populated from passages database -->
+          </select>
+        </div>
+      </div>
+
+      <div class="reading-content-grid" id="passage-quiz-container">
+        <!-- Left Column: The Passage -->
+        <div class="passage-card glass-panel">
+          <div class="passage-header">
+            <div class="badge-tag" id="passage-topic-badge">Academic Reading</div>
+            <span class="word-count" id="passage-word-count">~150 words</span>
+          </div>
+          <h3 class="passage-title" id="passage-display-title">The Ephemeral Dance of the Northern Lights</h3>
+          <hr class="passage-divider" />
+          <div class="passage-text-body" id="passage-display-text">
+            <!-- Dynamically populated passage markup with vocabulary words highlighted -->
+          </div>
+          <div class="vocab-info-tip mt-4">
+            <i data-lucide="info" class="info-icon"></i>
+            <span>Tip: Hover or tap on highlighted words to reveal their definitions!</span>
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive Comprehension Quiz -->
+        <div class="question-card glass-panel" id="rc-quiz-card">
+          <div class="question-header">
+            <span class="question-progress" id="rc-question-progress">Question 1 of 3</span>
+            <div class="mini-progress-bar">
+              <div class="mini-progress-fill" id="rc-progress-fill" style="width: 33%;"></div>
+            </div>
+          </div>
+
+          <div class="question-body">
+            <h4 class="question-text" id="rc-question-text">Loading question text...</h4>
+            <div class="options-group" id="rc-options-container">
+              <!-- Dynamically populated option buttons -->
+            </div>
+          </div>
+
+          <!-- Explanation Area (Revealed after choosing an option) -->
+          <div class="explanation-box glass-panel mt-4" id="rc-explanation-box" style="display: none;">
+            <div class="explanation-header mb-1">
+              <i data-lucide="info" class="explain-icon"></i>
+              <span class="explain-title" id="rc-explain-title">Correct!</span>
+            </div>
+            <p class="explanation-text" id="rc-explanation-text">Explanation content goes here.</p>
+          </div>
+
+          <div class="question-footer mt-4">
+            <button class="btn btn-primary w-auto ms-auto" id="rc-next-btn" style="display: none;">
+              Next Question <i data-lucide="arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reading Comprehension Completed State -->
+      <div class="reading-complete-card glass-panel text-center" id="rc-complete-state" style="display: none;">
+        <div class="complete-icon-wrapper bg-success-glow mb-4">
+          <i data-lucide="award" class="party-icon-animation"></i>
+        </div>
+        <h2>Comprehension Completed!</h2>
+        <p>Excellent effort! You have completed the comprehension questions for this passage.</p>
+        
+        <div class="complete-stats-row">
+          <div class="complete-stat">
+            <span class="complete-val" id="rc-final-score">3/3</span>
+            <span class="complete-lbl">Score</span>
+          </div>
+          <div class="complete-stat">
+            <span class="complete-val" id="rc-final-accuracy">100%</span>
+            <span class="complete-lbl">Accuracy</span>
+          </div>
+        </div>
+
+        <div class="complete-actions-group mt-6">
+          <button class="btn btn-primary" id="rc-restart-btn">
+            <i data-lucide="refresh-cw"></i> Retry Passage
+          </button>
+          <button class="btn btn-secondary" id="rc-next-passage-btn">
+            Next Passage <i data-lucide="arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- App Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <div class="footer-logo-row">
+          <i data-lucide="sparkles" class="footer-logo-icon"></i>
+          <span class="footer-logo-text">Vocab<span class="gradient-text">Vibe</span></span>
+        </div>
+        <p class="footer-tagline">Conquer advanced vocabulary with state-of-the-art interactive modules.</p>
+      </div>
+      <div class="footer-right">
+        <div class="footer-credits">
+          <span>Made with <i data-lucide="heart" class="footer-heart-icon"></i> by</span>
+          <span class="footer-names">Chloe Chen, Blake Hsiao, and Andy Zhao</span>
+        </div>
+        <span class="footer-copyright">© 2026 VocabVibe Learning. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Confetti Shower Canvas -->
+  <canvas class="confetti-canvas" id="confetti-canvas"></canvas>
+
+  <!-- Custom global notification toast -->
+  <div class="toast-message glass-panel" id="toast-message">
+    <div class="toast-content">
+      <i data-lucide="database" class="toast-icon"></i>
+      <span class="toast-text">Loaded offline vocabulary database. Ready to explore!</span>
+    </div>
+  </div>
+
+  <!-- Global scripts -->
+  <script src="words.js?v=2.2"></script>
+  <script src="reading.js?v=2.2"></script>
+</body>
+</html>
