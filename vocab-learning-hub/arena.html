@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sir Henry's Scarlet Arena - SAT Combat Training</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Icon Libraries -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Project Styles -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="arena.css">
+</head>
+<body class="theme-rutgers-scarlet">
+  <div class="glow-bg bg-primary-glow"></div>
+  <div class="glow-bg bg-secondary-glow"></div>
+
+  <!-- Main Website Header -->
+  <header class="app-header">
+    <div class="logo-area">
+      <div class="logo-icon-box animate-pulse-scarlet">
+        <i data-lucide="swords" style="color: white; width: 22px; height: 22px;"></i>
+      </div>
+      <h1 class="logo-title">Vocab<span class="logo-accent">Vibe</span></h1>
+      <span class="logo-beta">Scarlet Arena</span>
+    </div>
+    
+    <!-- Main Header Navigation -->
+    <nav class="main-nav">
+      <button class="nav-link" onclick="window.location.href='index.html?tab=dashboard'" id="nav-dashboard">
+        <i data-lucide="layout-dashboard"></i>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-link" onclick="window.location.href='index.html?tab=dictionary'" id="nav-dictionary">
+        <i data-lucide="book-open"></i>
+        <span>Dictionary</span>
+      </button>
+      <button class="nav-link" onclick="window.location.href='index.html?tab=practice'" id="nav-practice">
+        <i data-lucide="graduation-cap"></i>
+        <span>Practice Arena</span>
+      </button>
+      <button class="nav-link" onclick="window.location.href='reading.html'" id="nav-reading">
+        <i data-lucide="book-open-check"></i>
+        <span>Comprehension</span>
+      </button>
+      <button class="nav-link active" onclick="window.location.href='arena.html'" id="nav-arena">
+        <i data-lucide="swords"></i>
+        <span>Scarlet Arena</span>
+      </button>
+    </nav>
+
+    <div class="header-actions">
+      <button class="mode-toggle-btn" id="api-key-btn" aria-label="Configure Gemini AI" title="Configure Gemini AI" style="position: relative; margin-right: 0.25rem;">
+        <i data-lucide="bot" id="bot-icon"></i>
+        <span class="ai-status-indicator red" id="ai-indicator" style="position: absolute; bottom: 3px; right: 3px; width: 8px; height: 8px; border-radius: 50%; background: #ef4444; border: 1.5px solid var(--panel-bg);"></span>
+      </button>
+      <button class="mode-toggle-btn" id="mode-toggle-btn" aria-label="Toggle Light/Dark Mode" title="Toggle Light/Dark Mode">
+        <i data-lucide="sun" class="mode-sun-icon" id="mode-sun-icon"></i>
+        <i data-lucide="moon" class="mode-moon-icon" id="mode-moon-icon" style="display: none;"></i>
+      </button>
+      <div class="user-account-container">
+        <button class="profile-pill-trigger" id="user-profile-btn" style="pointer-events: none;">
+          <div class="user-avatar-circle">
+            <span style="font-weight: 800;">S</span>
+          </div>
+          <span class="user-profile-name">Scholar</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Game Arena Main Container -->
+  <main class="arena-container">
+    
+    <!-- SECTION 1: Combat Visual Battlefield -->
+    <section class="combat-theatre" id="combat-theatre-box">
+      
+      <!-- Canvas Particle Layer -->
+      <canvas class="combat-particles-canvas" id="canvas-particles"></canvas>
+      
+      <!-- Screen-Wide Flash Overlay for Slashes/Blocks -->
+      <div class="screen-fx-overlay" id="fx-overlay"></div>
+
+      <!-- HUD Top Panel: Name plates and Health bars -->
+      <div class="arena-hud-header">
+        
+        <!-- Player Panel -->
+        <div class="status-panel-card">
+          <div class="hud-name-row">
+            <span class="hud-title"><i data-lucide="shield" style="width: 14px; height: 14px; vertical-align: middle; color: var(--arena-shield);"></i> Student Scholar</span>
+            <span class="hud-hp-count" id="player-hp-text">100 / 100 HP</span>
+          </div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="player-hp-fill" style="width: 100%;"></div>
+          </div>
+        </div>
+
+        <!-- Versus center (aesthetic decoration) -->
+        <div class="versus-sign">
+          <div class="vs-badge">VS</div>
+        </div>
+
+        <!-- Sir Henry Mascot Panel -->
+        <div class="status-panel-card">
+          <div class="hud-name-row">
+            <span class="hud-title"><i data-lucide="crown" style="width: 14px; height: 14px; vertical-align: middle; color: var(--arena-primary);"></i> Sir Henry</span>
+            <span class="hud-hp-count" id="knight-hp-text">100 / 100 HP</span>
+          </div>
+          <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="knight-hp-fill" style="width: 100%;"></div>
+          </div>
+        </div>
+        
+      </div>
+
+      <!-- Combat Sprites Row -->
+      <div class="fighters-grid">
+        
+        <!-- Left Side: Student Scholar Sprite -->
+        <div class="fighter-wrapper player-side" id="player-fighter-card">
+          <!-- Dialogue Bubble (Optional player taunts or remarks) -->
+          <div class="dialogue-bubble" id="player-dialogue-bubble">
+            <span>Prepare thy steel!</span>
+          </div>
+          <div class="fighter-sprite-frame">🎓</div>
+          <div class="fighter-glow-aura"></div>
+        </div>
+
+        <!-- Right Side: Sir Henry (Rutgers Scarlet Knight Mascot) Sprite -->
+        <div class="fighter-wrapper knight-side" id="knight-fighter-card">
+          <!-- Dialogue Bubble: High-energy Rutgers dialogues -->
+          <div class="dialogue-bubble visible" id="knight-dialogue-bubble">
+            <span id="knight-dialogue-text">By the banks of the Old Raritan, let our SAT joust begin!</span>
+          </div>
+          <div class="fighter-sprite-frame"></div>
+          <div class="fighter-glow-aura"></div>
+        </div>
+        
+      </div>
+      
+      <!-- END GAME OVERLAY CARDS (Victory/Defeat) -->
+      <div class="end-screen-overlay" id="end-game-overlay">
+        <div class="end-illustration" id="end-emoji">👑</div>
+        <h2 class="end-title-text" id="end-title">VICTORY OVER RARITAN!</h2>
+        <p class="end-desc-text" id="end-desc">Chivalry! Sir Henry bows to thy intellectual prowess. Thou hast parried every grammar trap and conquered the SAT Reading field!</p>
+        
+        <div class="stats-summary-card">
+          <div class="stat-item-box">
+            <span class="stat-item-label">Accuracy</span>
+            <span class="stat-item-val" id="stat-accuracy">100%</span>
+          </div>
+          <div class="stat-item-box" style="border-left: 1px solid rgba(255,255,255,0.15); padding-left: 30px;">
+            <span class="stat-item-label">Correct Hits</span>
+            <span class="stat-item-val" id="stat-score">12 pts</span>
+          </div>
+        </div>
+        
+        <button class="arena-restart-btn" id="restart-game-btn">
+          <i data-lucide="rotate-ccw"></i>
+          <span>Battle Again</span>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- SECTION 2: SAT Interactive Question Board -->
+    <section class="question-board" id="sat-board-panel">
+      
+      <!-- Question Category Details Header -->
+      <div class="question-meta-row">
+        <span class="question-category-badge" id="quest-category-label">
+          <i data-lucide="sword" style="width: 14px; height: 14px;"></i>
+          <span>Vocabulary in Context</span>
+        </span>
+        <span class="question-progress-txt" id="quest-progress-label">Question 1 of 12</span>
+      </div>
+
+      <!-- SAT Reading context passage block -->
+      <div class="sat-passage-card" id="sat-passage-box">
+        The literary style of the author is notoriously ______; her labyrinthine sentence structures and frequent use of obscure medieval references often leave even the most fastidious scholars feeling disoriented.
+      </div>
+
+      <!-- SAT prompt query -->
+      <div class="sat-prompt-text" id="sat-prompt-box">
+        Which choice completes the text with the most logical and precise word?
+      </div>
+
+      <!-- Choices Option Grid (A, B, C, D) -->
+      <div class="choices-layout-grid" id="choices-buttons-box">
+        <!-- Buttons appended dynamically via JS -->
+      </div>
+
+      <!-- Explanation Reveal Box (Shown after selection) -->
+      <div class="explanation-slide-card" id="explanation-card">
+        <div class="explan-title-row" id="explanation-title-txt">
+          <i data-lucide="check-circle" style="color: var(--success); width: 18px; height: 18px;"></i>
+          <span>Glory! Striking blow for 25 DMG!</span>
+        </div>
+        <p class="explan-desc-text" id="explanation-desc-txt">
+          <strong>convoluted</strong> is correct. The clues 'labyrinthine sentence structures' support a word meaning complicated and intricate.
+        </p>
+        <div style="display: flex; justify-content: flex-end; margin-top: 15px;">
+          <button class="next-action-button" id="next-question-btn">
+            <span>Next Question</span>
+            <i data-lucide="arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Website Footer Credits -->
+  <footer class="app-footer" style="text-align: center; margin-top: 40px; padding: 20px 0; color: var(--text-muted); font-size: 13px;">
+    <p>Created by <strong>Chloe Chen, Blake Hsiao, Andy Zhao</strong>, &amp; <strong>Antigravity AI</strong>.</p>
+    <p style="margin-top: 5px; opacity: 0.6;">On the Banks of the Old Raritan. Let Chivalry Guard Thy SAT Scores!</p>
+  </footer>
+
+  <!-- Gemini Configuration Modal -->
+  <div class="gemini-modal-overlay" id="gemini-config-modal">
+    <div class="gemini-modal-card glass-panel animate-scale">
+      <div class="gemini-modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <i data-lucide="bot" style="color: var(--arena-secondary); width: 24px; height: 24px;"></i>
+          <h3 style="font-family: var(--font-header); font-weight: 800; font-size: 18px; margin: 0; color: var(--text-primary);">Gemini AI Settings</h3>
+        </div>
+        <button class="close-modal-btn" id="close-api-btn">&times;</button>
+      </div>
+      <div class="gemini-modal-body" style="text-align: left;">
+        <p style="font-family: var(--font-body); font-size: 13.5px; line-height: 1.5; margin-bottom: 15px; color: var(--text-secondary);">
+          Power the Scarlet Arena with real-time, infinite SAT questions and dynamic knightly dialogue generated by Google's <strong>Gemini 1.5 Flash</strong> model!
+        </p>
+        
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label style="display: block; font-family: var(--arena-font-hud); font-size: 11px; text-transform: uppercase; margin-bottom: 6px; color: var(--text-muted);">Gemini API Key</label>
+          <div style="position: relative;">
+            <input type="password" id="gemini-key-input" placeholder="AIzaSy..." class="glass-input" style="width: 100%; box-sizing: border-box; padding: 12px 16px; border-radius: var(--radius-md); background: rgba(0,0,0,0.3); border: 1px solid var(--arena-border-glass); color: white; font-family: monospace;">
+          </div>
+          <small style="display: block; margin-top: 5px; font-size: 11px; color: var(--text-muted);">
+            Don't have a key? Get a free key in seconds from <a href="https://aistudio.google.com/" target="_blank" style="color: var(--arena-secondary); text-decoration: underline;">Google AI Studio</a>.
+          </small>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-family: var(--font-body); font-size: 13px; color: var(--text-primary);">
+            <input type="checkbox" id="gemini-enable-toggle" style="width: 16px; height: 16px; cursor: pointer;">
+            <span>Enable Real-Time AI Joust Generation</span>
+          </label>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button class="next-action-button" id="test-gemini-btn" style="padding: 10px 18px; font-size: 13px; background: rgba(255,255,255,0.08); border: 1px solid var(--arena-border-glass); color: var(--text-primary); box-shadow: none;">Test Connection</button>
+          <button class="next-action-button" id="save-gemini-btn" style="padding: 10px 18px; font-size: 13px; background: var(--gradient-primary); border: none; color: white;">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Light Mode Controller Sync with local storage -->
+  <script>
+    const modeBtn = document.getElementById("mode-toggle-btn");
+    const sunIcon = document.getElementById("mode-sun-icon");
+    const moonIcon = document.getElementById("mode-moon-icon");
+
+    function syncModeUI() {
+      // Load and apply color themes (Sunset Glow, Cyberpunk, etc.)
+      const savedTheme = localStorage.getItem("vocab_theme") || "theme-rutgers-scarlet";
+      document.body.className = savedTheme;
+
+      const mode = localStorage.getItem("vocab_mode") || "dark";
+      if (mode === "light") {
+        document.body.classList.add("mode-light");
+        sunIcon.style.display = "none";
+        moonIcon.style.display = "block";
+      } else {
+        document.body.classList.remove("mode-light");
+        sunIcon.style.display = "block";
+        moonIcon.style.display = "none";
+      }
+    }
+
+    if (modeBtn) {
+      modeBtn.addEventListener("click", () => {
+        const isLight = document.body.classList.contains("mode-light");
+        if (isLight) {
+          document.body.classList.remove("mode-light");
+          localStorage.setItem("vocab_mode", "dark");
+        } else {
+          document.body.classList.add("mode-light");
+          localStorage.setItem("vocab_mode", "light");
+        }
+        syncModeUI();
+      });
+    }
+
+    // Gemini Modal UI Hooks
+    const apiBtn = document.getElementById("api-key-btn");
+    const modal = document.getElementById("gemini-config-modal");
+    const closeBtn = document.getElementById("close-api-btn");
+    const saveBtn = document.getElementById("save-gemini-btn");
+    const testBtn = document.getElementById("test-gemini-btn");
+    
+    const keyInput = document.getElementById("gemini-key-input");
+    const enableToggle = document.getElementById("gemini-enable-toggle");
+    const aiIndicator = document.getElementById("ai-indicator");
+
+    function updateAIStatusIndicator() {
+      const key = localStorage.getItem("gemini_api_key");
+      const enabled = localStorage.getItem("gemini_enabled") === "true";
+      if (key && enabled) {
+        aiIndicator.className = "ai-status-indicator green";
+        aiIndicator.title = "Gemini AI: ONLINE";
+      } else {
+        aiIndicator.className = "ai-status-indicator red";
+        aiIndicator.title = "Gemini AI: OFFLINE";
+      }
+    }
+
+    if (apiBtn && modal) {
+      apiBtn.addEventListener("click", () => {
+        keyInput.value = localStorage.getItem("gemini_api_key") || "";
+        enableToggle.checked = localStorage.getItem("gemini_enabled") === "true";
+        modal.classList.add("active");
+      });
+    }
+
+    if (closeBtn && modal) {
+      closeBtn.addEventListener("click", () => {
+        modal.classList.remove("active");
+      });
+    }
+
+    if (modal) {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          modal.classList.remove("active");
+        }
+      });
+    }
+
+    if (saveBtn) {
+      saveBtn.addEventListener("click", () => {
+        const key = keyInput.value.trim();
+        localStorage.setItem("gemini_api_key", key);
+        localStorage.setItem("gemini_enabled", enableToggle.checked ? "true" : "false");
+        modal.classList.remove("active");
+        updateAIStatusIndicator();
+        
+        // Force re-initialization of the game to sync with the new state immediately
+        if (typeof initializeGame === "function") {
+          initializeGame();
+        }
+      });
+    }
+
+    if (testBtn) {
+      testBtn.addEventListener("click", async () => {
+        const key = keyInput.value.trim();
+        if (!key) {
+          alert("❌ Please enter a Gemini API Key first!");
+          return;
+        }
+        testBtn.innerText = "Testing...";
+        testBtn.disabled = true;
+        try {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${key}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: "Respond only with OK" }] }]
+            })
+          });
+          if (res.ok) {
+            alert("✅ Connection Successful! Gemini AI is fully authenticated and ready to generate questions.");
+          } else {
+            const err = await res.json();
+            alert(`❌ Connection Failed: ${err.error?.message || "Verify your API Key is correct"}`);
+          }
+        } catch (e) {
+          alert(`❌ Connection Failed: ${e.message}`);
+        } finally {
+          testBtn.innerText = "Test Connection";
+          testBtn.disabled = false;
+        }
+      });
+    }
+
+    // Initial load
+    syncModeUI();
+    updateAIStatusIndicator();
+  </script>
+
+  <!-- Load Game Engine -->
+  <script src="arena.js"></script>
+</body>
+</html>
