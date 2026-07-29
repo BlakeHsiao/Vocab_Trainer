@@ -769,6 +769,27 @@
       </div>
     </div>
 
+    <!-- Interactive Battle Combat Arena Overlay -->
+    <div class="knight-battle-arena" id="knight-battle-arena">
+      <div class="arena-background"></div>
+      <div class="arena-fighter player-side">
+        <div class="fighter-sprite knight-sprite" id="player-sprite">🛡️</div>
+        <div class="fighter-name">You (Scholar)</div>
+        <div class="health-bar-wrapper">
+          <div class="health-bar" id="player-health-bar" style="width: 100%;"></div>
+        </div>
+      </div>
+      <div class="arena-versus">VS</div>
+      <div class="arena-fighter enemy-side">
+        <div class="fighter-sprite enemy-sprite" id="enemy-sprite">🐉</div>
+        <div class="fighter-name" id="enemy-name">SAT Beast</div>
+        <div class="health-bar-wrapper">
+          <div class="health-bar" id="enemy-health-bar" style="width: 100%;"></div>
+        </div>
+      </div>
+      <div class="arena-overlay-effect" id="arena-fx"></div>
+    </div>
+
     <!-- Chat Message List Container -->
     <div class="knight-chat-messages" id="knight-chat-messages">
       <!-- Welcome message initially loaded -->

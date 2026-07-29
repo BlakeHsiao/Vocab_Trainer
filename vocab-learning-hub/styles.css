@@ -5142,3 +5142,193 @@ body.light-theme .ai-category-tabs {
   line-height: 1.4;
 }
 
+/* ==========================================
+   Sir Vocab-a-Lot Visual Battle Arena
+   ========================================== */
+.knight-battle-arena {
+  height: 0;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(to bottom, #110507, #260a10);
+  border-bottom: 0 solid var(--panel-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 20px;
+  transition: all var(--transition-normal);
+  z-index: 10;
+}
+
+.knight-battle-arena.active {
+  height: 140px;
+  border-bottom-width: 1px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.arena-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.15) 0%, transparent 70%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.arena-fighter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 120px;
+  position: relative;
+  z-index: 2;
+}
+
+.fighter-sprite {
+  font-size: 38px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+.fighter-name {
+  font-family: var(--font-header);
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--text-primary);
+  margin-top: 4px;
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+
+.health-bar-wrapper {
+  width: 80px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  margin-top: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.health-bar {
+  height: 100%;
+  background: var(--success);
+  border-radius: 3px;
+  transition: width 0.4s ease-out;
+}
+
+.enemy-side .health-bar {
+  background: var(--primary);
+}
+
+.arena-versus {
+  font-family: var(--font-header);
+  font-weight: 900;
+  font-size: 16px;
+  color: var(--text-secondary);
+  font-style: italic;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(var(--primary-rgb), 0.4);
+  z-index: 2;
+}
+
+/* Battle Action Animations */
+@keyframes playerAttack {
+  0% { transform: translateX(0); }
+  30% { transform: translateX(45px) scale(1.1) rotate(15deg); }
+  50% { transform: translateX(50px) scale(1.1) rotate(15deg); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes enemyAttack {
+  0% { transform: translateX(0); }
+  30% { transform: translateX(-45px) scale(1.1) rotate(-15deg); }
+  50% { transform: translateX(-50px) scale(1.1) rotate(-15deg); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes hurtShake {
+  0%, 100% { transform: translateX(0); filter: drop-shadow(0 0 0 red); }
+  15%, 45%, 75% { transform: translateX(-6px) rotate(-5deg); filter: drop-shadow(0 0 8px red) brightness(1.5); }
+  30%, 60%, 90% { transform: translateX(6px) rotate(5deg); filter: drop-shadow(0 0 8px red) brightness(1.5); }
+}
+
+@keyframes blockShield {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 var(--success)); }
+  30% { transform: scale(1.2); filter: drop-shadow(0 0 12px var(--success)) brightness(1.2); }
+}
+
+.action-attack-player {
+  animation: playerAttack 0.4s ease-in-out;
+}
+
+.action-attack-enemy {
+  animation: enemyAttack 0.4s ease-in-out;
+}
+
+.action-hurt {
+  animation: hurtShake 0.45s ease-in-out;
+}
+
+.action-block {
+  animation: blockShield 0.4s ease-in-out;
+}
+
+/* Overlay Visual Effects wrapper */
+.arena-overlay-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 15;
+  transition: background 0.3s ease;
+}
+
+.fx-slash {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 30px rgba(var(--primary-rgb), 0.5);
+  animation: slashFlash 0.3s ease-out forwards;
+}
+
+.fx-shield {
+  background: rgba(16, 185, 129, 0.05);
+  box-shadow: inset 0 0 30px rgba(16, 185, 129, 0.4);
+  animation: shieldFlash 0.3s ease-out forwards;
+}
+
+@keyframes slashFlash {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes shieldFlash {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Light Theme overrides for Arena */
+body.mode-light .knight-battle-arena {
+  background: linear-gradient(to bottom, #ffffff, #f1f3f7);
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+body.mode-light .fighter-name {
+  color: #111111;
+  text-shadow: none;
+}
+
+body.mode-light .health-bar-wrapper {
+  background: rgba(0, 0, 0, 0.05);
+}
+

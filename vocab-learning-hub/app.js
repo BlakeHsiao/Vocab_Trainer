@@ -320,6 +320,18 @@ document.addEventListener("DOMContentLoaded", () => {
     updateBannerForTheme(themeName);
   }
 
+  function updateModeUI(mode) {
+    if (els.modeSunIcon && els.modeMoonIcon) {
+      if (mode === "light") {
+        els.modeSunIcon.style.display = "none";
+        els.modeMoonIcon.style.display = "block";
+      } else {
+        els.modeSunIcon.style.display = "block";
+        els.modeMoonIcon.style.display = "none";
+      }
+    }
+  }
+
   function updateThemeUI(themeName) {
     const triggerText = document.querySelector(".active-theme-name");
     if (triggerText) {
@@ -378,6 +390,16 @@ document.addEventListener("DOMContentLoaded", () => {
       setTheme("theme-cosmic-dark");
     } else {
       setTheme(savedTheme);
+    }
+
+    // Maintain Mode (Light/Dark) preference
+    const savedMode = localStorage.getItem("vocab_mode") || "dark";
+    if (savedMode === "light") {
+      document.body.classList.add("mode-light");
+      updateModeUI("light");
+    } else {
+      document.body.classList.remove("mode-light");
+      updateModeUI("dark");
     }
 
     calculateStreak();
@@ -442,6 +464,9 @@ document.addEventListener("DOMContentLoaded", () => {
     navPractice: document.getElementById("nav-practice"),
     logoBtn: document.getElementById("logo-btn"),
     themeToggle: document.getElementById("theme-toggle"),
+    modeToggleBtn: document.getElementById("mode-toggle-btn"),
+    modeSunIcon: document.querySelector(".mode-sun-icon"),
+    modeMoonIcon: document.querySelector(".mode-moon-icon"),
     
     // Tab Contents
     tabs: document.querySelectorAll(".tab-content"),
@@ -1164,6 +1189,23 @@ document.addEventListener("DOMContentLoaded", () => {
         setTheme(selectedTheme);
         themeSelectorContainer.classList.remove("open");
       });
+    });
+  }
+
+  // Mode (Light/Dark) Toggle Event Listener
+  if (els.modeToggleBtn) {
+    els.modeToggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isLight = document.body.classList.contains("mode-light");
+      if (isLight) {
+        document.body.classList.remove("mode-light");
+        localStorage.setItem("vocab_mode", "dark");
+        updateModeUI("dark");
+      } else {
+        document.body.classList.add("mode-light");
+        localStorage.setItem("vocab_mode", "light");
+        updateModeUI("light");
+      }
     });
   }
 
@@ -2764,6 +2806,106 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // --- Visual Combat Arena Controller ---
+  function initKnightCombatArena(drillType) {
+    const arena = document.getElementById("knight-battle-arena");
+    const playerSprite = document.getElementById("player-sprite");
+    const enemySprite = document.getElementById("enemy-sprite");
+    const enemyName = document.getElementById("enemy-name");
+    const playerHealth = document.getElementById("player-health-bar");
+    const enemyHealth = document.getElementById("enemy-health-bar");
+    
+    if (!arena) return;
+    
+    arena.classList.add("active");
+    
+    if (playerSprite) {
+      playerSprite.innerHTML = "🛡️";
+      playerSprite.style.transform = "none";
+      playerSprite.style.opacity = "1";
+    }
+    
+    if (playerHealth) playerHealth.style.width = "100%";
+    if (enemyHealth) enemyHealth.style.width = "100%";
+    
+    if (enemySprite) {
+      enemySprite.style.transform = "none";
+      enemySprite.style.opacity = "1";
+    }
+    
+    if (drillType === "multiple-choice") {
+      if (enemyName) enemyName.innerText = "Dragon of Definition";
+      if (enemySprite) enemySprite.innerHTML = "🐉";
+    } else {
+      if (enemyName) enemyName.innerText = "Skeleton of Spelling";
+      if (enemySprite) enemySprite.innerHTML = "💀";
+    }
+  }
+
+  function animatePlayerStrike(isSuccess) {
+    const playerSprite = document.getElementById("player-sprite");
+    const enemySprite = document.getElementById("enemy-sprite");
+    const fx = document.getElementById("arena-fx");
+    const playerHealth = document.getElementById("player-health-bar");
+    const enemyHealth = document.getElementById("enemy-health-bar");
+    const arena = document.getElementById("knight-battle-arena");
+    
+    if (isSuccess) {
+      // Success attack chain
+      if (playerSprite) {
+        playerSprite.classList.add("action-attack-player");
+        setTimeout(() => playerSprite.classList.remove("action-attack-player"), 400);
+      }
+      
+      if (fx) {
+        fx.classList.add("fx-slash");
+        setTimeout(() => fx.classList.remove("fx-slash"), 300);
+      }
+      
+      setTimeout(() => {
+        if (enemySprite) {
+          enemySprite.classList.add("action-hurt");
+          setTimeout(() => enemySprite.classList.remove("action-hurt"), 450);
+        }
+        if (enemyHealth) enemyHealth.style.width = "0%";
+        
+        setTimeout(() => {
+          if (enemySprite) {
+            enemySprite.style.transform = "rotate(90deg) translateY(20px)";
+            enemySprite.style.opacity = "0";
+          }
+          
+          setTimeout(() => {
+            if (arena) arena.classList.remove("active");
+          }, 1500);
+        }, 500);
+      }, 150);
+    } else {
+      // Fail/Block chain
+      if (enemySprite) {
+        enemySprite.classList.add("action-attack-enemy");
+        setTimeout(() => enemySprite.classList.remove("action-attack-enemy"), 400);
+      }
+      
+      if (fx) {
+        fx.classList.add("fx-shield");
+        setTimeout(() => fx.classList.remove("fx-shield"), 300);
+      }
+      
+      setTimeout(() => {
+        if (playerSprite) {
+          playerSprite.classList.add("action-block");
+          setTimeout(() => playerSprite.classList.remove("action-block"), 400);
+        }
+        if (playerHealth) playerHealth.style.width = "40%";
+        
+        setTimeout(() => {
+          if (arena) arena.classList.remove("active");
+        }, 1500);
+      }, 150);
+    }
+  }
+
   // --- Offline Interactive Drill Engine ---
   function triggerKnightLocalChallenge() {
     // Pick random word
@@ -2788,6 +2930,9 @@ document.addEventListener("DOMContentLoaded", () => {
       options: options,
       correctIndex: correctIdx
     };
+
+    // Open Battle Arena with visuals
+    initKnightCombatArena("multiple-choice");
 
     // Replace action chips with multiple-choice buttons dynamically!
     renderKnightChoiceChips(["A", "B", "C", "D"]);
@@ -2832,6 +2977,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         appendKnightBubble("knight", `🌟 **GLORIOUS STRIKE!**\n\nBy my shield, you are correct! **${word}** means exactly: *"${state.knightDrill.wordObj.definition}"*\n\nYour scholarship gains +10 XP! Keep charging onward, hero!`);
         triggerConfettiShower();
+        animatePlayerStrike(true);
       } else {
         state.stats.totalQuestionsPlayed++;
         saveStateToLocalStorage();
@@ -2839,6 +2985,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         const correctLetter = ["A", "B", "C", "D"][state.knightDrill.correctIndex];
         appendKnightBubble("knight", `🛡️ **SHIELD BLOCKED!**\n\nA valiant effort, but that hit was slightly off-target. The correct answer was **${correctLetter}**.\n\n**${word}** means: *"${state.knightDrill.wordObj.definition}"*\n\nLet us learn from this scrape and prepare for the next joust!`);
+        animatePlayerStrike(false);
       }
     }, 600);
   }
@@ -2878,6 +3025,9 @@ document.addEventListener("DOMContentLoaded", () => {
       options: [randWord],
       correctIndex: 0 // spelling/fill-in-the-blank intercept
     };
+
+    // Open Battle Arena with visuals
+    initKnightCombatArena("spelling");
 
     // Setup action chips for easy text response
     renderKnightChoiceChips([randWord.word, "I need a hint"]);
@@ -2956,8 +3106,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 updateDashboardUI();
                 appendKnightBubble("knight", `🌟 **FLAWLESS SPELLING STRIKE!**\n\nYour pen is as sharp as my sword! Magnificent scholarship! **${state.knightDrill.wordObj.word}** fits the sentence perfectly!\n\nYou earn +10 XP! Keep your shield high!`);
                 triggerConfettiShower();
+                animatePlayerStrike(true);
               } else {
                 appendKnightBubble("knight", `🛡️ **BLOCKED!**\n\nA noble attempt, but the correct spelling word was **"${state.knightDrill.wordObj.word}"**.\n\nLet us study this term and strike again!`);
+                animatePlayerStrike(false);
               }
             }, 600);
           }
