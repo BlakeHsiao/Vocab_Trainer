@@ -1,4 +1,4 @@
-ee/* -------------------------------------------------------------
+/* -------------------------------------------------------------
  * Application Logic: VocabVibe - Premium Vocabulary Learning Hub
  * Author: Antigravity AI
  * Features: State Management, Dictionary API, Dynamic Quiz,

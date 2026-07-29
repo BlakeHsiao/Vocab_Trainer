@@ -49,51 +49,6 @@
       </nav>
 
       <div class="header-actions">
-        <!-- User Account Profile Button -->
-        <div class="user-account-container">
-          <button class="user-profile-trigger" id="user-profile-btn" aria-label="User Profile" title="Local Account Options">
-            <div class="avatar-badge" id="header-avatar-badge">
-              <span id="header-avatar-emoji">🎓</span>
-            </div>
-            <div class="user-info-text">
-              <span class="user-account-name" id="header-user-name">Scholar</span>
-              <span class="user-account-type" id="header-user-badge">Local Account</span>
-            </div>
-            <i data-lucide="chevron-down" class="chevron-icon"></i>
-          </button>
-
-          <div class="account-dropdown glass-panel" id="account-dropdown">
-            <div class="account-dropdown-header">
-              <div class="dropdown-user-info">
-                <div class="dropdown-avatar-large" id="dropdown-avatar">🎓</div>
-                <div class="dropdown-user-details">
-                  <h4 id="dropdown-display-name">Scholar</h4>
-                  <span class="account-storage-badge"><i data-lucide="shield-check"></i> Local Cookie Storage</span>
-                </div>
-              </div>
-            </div>
-            <div class="account-dropdown-actions">
-              <button class="account-dropdown-item" id="btn-open-settings">
-                <i data-lucide="settings"></i>
-                <span>Account Settings & Security</span>
-              </button>
-              <button class="account-dropdown-item" id="btn-switch-account">
-                <i data-lucide="users"></i>
-                <span>Switch / Create Account</span>
-              </button>
-              <button class="account-dropdown-item" id="btn-export-backup">
-                <i data-lucide="download"></i>
-                <span>Export Local Data JSON</span>
-              </button>
-              <div class="dropdown-divider"></div>
-              <button class="account-dropdown-item danger" id="btn-logout-account">
-                <i data-lucide="log-out"></i>
-                <span>Lock / Sign Out</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
         <div class="theme-selector-container">
           <button class="theme-select-trigger" id="theme-toggle" aria-label="Select Theme" title="Choose color theme">
             <i data-lucide="palette"></i>
@@ -132,11 +87,6 @@
               <button class="theme-option" data-theme="theme-solar-light">
                 <span class="theme-color-preview" style="background: linear-gradient(135deg, #ff9966, #ff5e62);"></span>
                 <span class="theme-option-name">Solar Light</span>
-                <i data-lucide="check" class="check-icon"></i>
-              </button>
-              <button class="theme-option" data-theme="theme-rutgers-scarlet">
-                <span class="theme-color-preview" style="background: linear-gradient(135deg, #cc0033, #5f6368);"></span>
-                <span class="theme-option-name">Rutgers Scarlet</span>
                 <i data-lucide="check" class="check-icon"></i>
               </button>
             </div>
@@ -205,18 +155,12 @@
             <span class="stat-label">Quiz Accuracy</span>
           </div>
         </div>
-        <div class="stat-card glass-panel stat-card-interactive" id="card-level-stat">
+        <div class="stat-card glass-panel">
           <div class="stat-icon-wrapper icon-gold">
             <i data-lucide="crown"></i>
           </div>
           <div class="stat-data">
-            <div class="stat-header-row">
-              <h3 class="stat-value" id="stats-level">Novice</h3>
-              <button class="btn-ai-explain pill" data-ai-type="level" title="See why AI set this level rank">
-                <i data-lucide="sparkles"></i>
-                <span>Why AI?</span>
-              </button>
-            </div>
+            <h3 class="stat-value" id="stats-level">Novice</h3>
             <span class="stat-label">Vocabulary Level</span>
           </div>
         </div>
@@ -227,13 +171,7 @@
         <!-- Word of the Day -->
         <div class="dashboard-col glass-panel word-of-the-day-card">
           <div class="card-header">
-            <div class="card-header-left">
-              <div class="badge-tag">Word of the Day</div>
-              <button class="btn-ai-explain" data-ai-type="wotd" title="Click to see why AI selected this word in real time">
-                <i data-lucide="sparkles"></i>
-                <span>Why AI chose this?</span>
-              </button>
-            </div>
+            <div class="badge-tag">Word of the Day</div>
             <button class="favorite-action-btn" id="wotd-fav-btn" title="Add to Favorites">
               <i data-lucide="heart" class="wotd-heart-icon"></i>
             </button>
@@ -482,13 +420,7 @@
 
               <!-- Question Statement Card -->
               <div class="quiz-question-container">
-                <div class="question-header-row">
-                  <span class="question-badge" id="quiz-question-type">Definition Match</span>
-                  <button class="btn-ai-explain" data-ai-type="quiz" title="Click to see why AI selected this question and options in real time">
-                    <i data-lucide="sparkles"></i>
-                    <span>Why AI chose this question?</span>
-                  </button>
-                </div>
+                <span class="question-badge" id="quiz-question-type">Definition Match</span>
                 <h3 class="quiz-question-text" id="quiz-question-text-val">What is the correct definition of the word: <strong>ephemeral</strong>?</h3>
               </div>
 
@@ -717,126 +649,6 @@
     </div>
   </footer>
 
-  <!-- Sir Vocab-a-Lot AI Companion Widget -->
-  <!-- Floating Glowing Knight Trigger Button -->
-  <button class="knight-chat-trigger animate-float" id="knight-chat-btn" title="Summon Sir Vocab-a-Lot AI Coach">
-    <div class="knight-trigger-glow"></div>
-    <div class="knight-trigger-icon-wrapper">
-      <i data-lucide="shield-alert" class="knight-icon-pulsing"></i>
-    </div>
-    <span class="knight-trigger-badge">AI</span>
-  </button>
-
-  <!-- Sliding Chat Drawer Panel -->
-  <div class="knight-chat-drawer glass-panel" id="knight-chat-drawer">
-    <!-- Header -->
-    <div class="knight-drawer-header">
-      <div class="knight-header-profile">
-        <div class="knight-avatar-container">
-          <img src="rutgers_mascot.png" class="knight-header-avatar" alt="Sir Vocab-a-Lot">
-          <span class="knight-status-indicator active"></span>
-        </div>
-        <div class="knight-header-meta">
-          <h4 class="knight-header-name">Sir Vocab-a-Lot</h4>
-          <span class="knight-header-subtitle">Scarlet Knight AI Tutor</span>
-        </div>
-      </div>
-      <div class="knight-header-actions">
-        <button class="knight-action-btn" id="knight-api-config-btn" title="Gemini Live AI Connection">
-          <i data-lucide="key-round"></i>
-        </button>
-        <button class="knight-action-btn" id="knight-close-btn" title="Minimize Panel">
-          <i data-lucide="x"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Gemini Live Config Tray -->
-    <div class="knight-api-config-tray" id="knight-api-tray">
-      <div class="config-tray-inner glass-panel">
-        <div class="tray-header">
-          <i data-lucide="sparkles" class="tray-icon"></i>
-          <span>Live Gemini AI Connection</span>
-        </div>
-        <p class="tray-desc">Connect Gemini to unlock unlimited chat with Sir Vocab-a-Lot! Your key is stored securely in your browser's local storage.</p>
-        <div class="tray-input-row">
-          <input type="password" id="knight-api-key-input" class="tray-input" placeholder="Paste Gemini API Key (AI-...)">
-          <button class="btn btn-primary" id="knight-api-save-btn">Connect</button>
-        </div>
-        <div class="tray-status" id="knight-api-status">
-          <span class="status-badge offline">Offline Mode (Local Companion)</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Interactive Battle Combat Arena Overlay -->
-    <div class="knight-battle-arena" id="knight-battle-arena">
-      <div class="arena-background"></div>
-      <div class="arena-fighter player-side">
-        <div class="fighter-sprite knight-sprite" id="player-sprite">🛡️</div>
-        <div class="fighter-name">You (Scholar)</div>
-        <div class="health-bar-wrapper">
-          <div class="health-bar" id="player-health-bar" style="width: 100%;"></div>
-        </div>
-      </div>
-      <div class="arena-versus">VS</div>
-      <div class="arena-fighter enemy-side">
-        <div class="fighter-sprite enemy-sprite" id="enemy-sprite">🐉</div>
-        <div class="fighter-name" id="enemy-name">SAT Beast</div>
-        <div class="health-bar-wrapper">
-          <div class="health-bar" id="enemy-health-bar" style="width: 100%;"></div>
-        </div>
-      </div>
-      <div class="arena-overlay-effect" id="arena-fx"></div>
-    </div>
-
-    <!-- Chat Message List Container -->
-    <div class="knight-chat-messages" id="knight-chat-messages">
-      <!-- Welcome message initially loaded -->
-      <div class="knight-message-group system-msg">
-        <div class="knight-avatar-bubble">
-          <img src="rutgers_mascot.png" alt="Sir Vocab-a-Lot">
-        </div>
-        <div class="knight-msg-bubble">
-          <p>Greetings, noble scholar! 🛡️ I am <strong>Sir Vocab-a-Lot</strong>, the champion of the Rutgers Scarlet Arena! I am here to help you conquer the SAT Reading & Writing sections.</p>
-          <p>Choose an action below to begin our training, or ask me anything about grammar, words, or SAT test-taking strategies!</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Interactive Dialogue Quick Action Chips -->
-    <div class="knight-chat-chips-container">
-      <div class="knight-chips-scroller" id="knight-chips-wrapper">
-        <button class="knight-chip" data-action="challenge">
-          <i data-lucide="sword"></i>
-          <span>Challenge Me!</span>
-        </button>
-        <button class="knight-chip" data-action="mnemonic">
-          <i data-lucide="lightbulb"></i>
-          <span>RU Mnemonic</span>
-        </button>
-        <button class="knight-chip" data-action="joust">
-          <i data-lucide="shield"></i>
-          <span>Joust Drill</span>
-        </button>
-        <button class="knight-chip" data-action="trap">
-          <i data-lucide="alert-triangle"></i>
-          <span>SAT Traps</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Input Footer Bar -->
-    <div class="knight-chat-footer">
-      <div class="knight-input-wrapper">
-        <input type="text" id="knight-chat-input" placeholder="Ask Sir Vocab-a-Lot..." aria-label="Message Sir Vocab-a-Lot">
-        <button class="knight-send-btn" id="knight-send-btn" disabled aria-label="Send message">
-          <i data-lucide="send-horizontal"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-
   <!-- Confetti Canvas Overlay -->
   <canvas class="confetti-canvas" id="confetti-canvas"></canvas>
 
@@ -844,295 +656,6 @@
   <div class="toast-notification" id="toast-message">
     <i data-lucide="check-circle" class="toast-icon"></i>
     <span class="toast-text">Offline Vocabulary Database Activated!</span>
-  </div>
-
-  <!-- LOCAL AUTHENTICATION MODAL -->
-  <div class="modal-overlay" id="auth-modal-overlay" style="display: none;">
-    <div class="auth-modal glass-panel">
-      <div class="auth-modal-header">
-        <div class="auth-brand">
-          <div class="logo-icon-wrapper">
-            <i data-lucide="shield-check" class="logo-icon"></i>
-          </div>
-          <div class="auth-brand-text">
-            <h2>Vocab<span class="gradient-text">Vibe</span> Account</h2>
-            <p>100% Local Device & Cookie Storage</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="auth-tabs">
-        <button class="auth-tab-btn active" id="tab-login-btn" data-auth-tab="login-tab">
-          <i data-lucide="log-in"></i> Sign In
-        </button>
-        <button class="auth-tab-btn" id="tab-signup-btn" data-auth-tab="signup-tab">
-          <i data-lucide="user-plus"></i> Create Account
-        </button>
-      </div>
-
-      <div class="auth-modal-body">
-        <!-- Privacy Notice Banner -->
-        <div class="privacy-notice-box">
-          <i data-lucide="lock" class="notice-icon"></i>
-          <div>
-            <strong>No Central Database Required</strong>
-            <p>Your account is created and stored directly on your browser device via Cookies & Local Storage. It will persist until you clear your browser cookies/site data.</p>
-          </div>
-        </div>
-
-        <!-- TAB 1: LOGIN TO EXISTING LOCAL ACCOUNT -->
-        <div class="auth-tab-content active" id="login-tab">
-          <div id="no-accounts-notice" style="display: none;" class="empty-accounts-notice">
-            <i data-lucide="user-x"></i>
-            <p>No local accounts found on this device yet. Switch to <strong>Create Account</strong> to set up your profile!</p>
-          </div>
-
-          <form id="login-form">
-            <div class="form-group">
-              <label for="login-account-select">Select Local Account</label>
-              <select id="login-account-select" class="form-select" required>
-                <!-- Populated dynamically -->
-              </select>
-            </div>
-
-            <div class="form-group" id="login-pin-group" style="display: none;">
-              <label for="login-pin-input">Security PIN / Password</label>
-              <div class="password-input-wrapper">
-                <input type="password" id="login-pin-input" placeholder="Enter PIN or password" maxlength="20" class="form-input">
-                <button type="button" class="toggle-password-btn" id="toggle-login-pin" title="Toggle visibility">
-                  <i data-lucide="eye"></i>
-                </button>
-              </div>
-            </div>
-
-            <div class="auth-error-msg" id="login-error-msg" style="display: none;">
-              <i data-lucide="alert-circle"></i> <span id="login-error-text">Incorrect PIN</span>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-full mt-4" id="login-submit-btn">
-              <i data-lucide="arrow-right-circle"></i> Sign In to Local Account
-            </button>
-          </form>
-        </div>
-
-        <!-- TAB 2: CREATE NEW LOCAL ACCOUNT -->
-        <div class="auth-tab-content" id="signup-tab" style="display: none;">
-          <form id="signup-form">
-            <div class="form-group">
-              <label for="signup-username-input">Account Handle / Username</label>
-              <div class="input-with-icon">
-                <i data-lucide="at-sign"></i>
-                <input type="text" id="signup-username-input" placeholder="e.g. alex_lexicon" maxlength="25" class="form-input" required>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="signup-displayname-input">Display Name</label>
-              <div class="input-with-icon">
-                <i data-lucide="user"></i>
-                <input type="text" id="signup-displayname-input" placeholder="e.g. Alex" maxlength="30" class="form-input" required>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Choose Profile Avatar</label>
-              <div class="avatar-picker-row" id="avatar-picker-container">
-                <button type="button" class="avatar-chip active" data-avatar="🎓">🎓</button>
-                <button type="button" class="avatar-chip" data-avatar="⚡">⚡</button>
-                <button type="button" class="avatar-chip" data-avatar="🚀">🚀</button>
-                <button type="button" class="avatar-chip" data-avatar="👑">👑</button>
-                <button type="button" class="avatar-chip" data-avatar="🔥">🔥</button>
-                <button type="button" class="avatar-chip" data-avatar="🧠">🧠</button>
-                <button type="button" class="avatar-chip" data-avatar="🌟">🌟</button>
-                <button type="button" class="avatar-chip" data-avatar="🦉">🦉</button>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="signup-pin-input">Optional Security PIN (Hashed locally)</label>
-              <div class="password-input-wrapper">
-                <input type="password" id="signup-pin-input" placeholder="Leave empty for instant access" maxlength="20" class="form-input">
-              </div>
-              <span class="field-hint">Protect your account progress on shared family computers.</span>
-            </div>
-
-            <div class="auth-error-msg" id="signup-error-msg" style="display: none;">
-              <i data-lucide="alert-circle"></i> <span id="signup-error-text">Account handle already exists</span>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-full mt-4">
-              <i data-lucide="user-check"></i> Create Local Account
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <div class="auth-modal-footer">
-        <button type="button" class="btn-guest-mode" id="btn-guest-access">
-          <span>Continue as Temporary Guest</span>
-          <i data-lucide="chevron-right"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ACCOUNT SETTINGS & SECURITY MODAL -->
-  <div class="modal-overlay" id="settings-modal-overlay" style="display: none;">
-    <div class="settings-modal glass-panel">
-      <div class="modal-header">
-        <div class="modal-title-group">
-          <i data-lucide="settings" class="modal-title-icon"></i>
-          <h3>Account Settings & Security</h3>
-        </div>
-        <button class="modal-close-btn" id="close-settings-modal" aria-label="Close">
-          <i data-lucide="x"></i>
-        </button>
-      </div>
-
-      <div class="settings-modal-body">
-        <!-- Section 1: Account Profile -->
-        <div class="settings-section">
-          <h4 class="settings-section-title"><i data-lucide="user-check"></i> Profile Customization</h4>
-          <form id="edit-profile-form">
-            <div class="form-group">
-              <label for="edit-display-name">Display Name</label>
-              <input type="text" id="edit-display-name" class="form-input" required>
-            </div>
-            <div class="form-group">
-              <label>Update Avatar</label>
-              <div class="avatar-picker-row" id="edit-avatar-picker-container">
-                <button type="button" class="avatar-chip" data-avatar="🎓">🎓</button>
-                <button type="button" class="avatar-chip" data-avatar="⚡">⚡</button>
-                <button type="button" class="avatar-chip" data-avatar="🚀">🚀</button>
-                <button type="button" class="avatar-chip" data-avatar="👑">👑</button>
-                <button type="button" class="avatar-chip" data-avatar="🔥">🔥</button>
-                <button type="button" class="avatar-chip" data-avatar="🧠">🧠</button>
-                <button type="button" class="avatar-chip" data-avatar="🌟">🌟</button>
-                <button type="button" class="avatar-chip" data-avatar="🦉">🦉</button>
-              </div>
-            </div>
-            <button type="submit" class="btn btn-secondary btn-sm">Save Profile Changes</button>
-          </form>
-        </div>
-
-        <!-- Section 2: Account Security PIN -->
-        <div class="settings-section">
-          <h4 class="settings-section-title"><i data-lucide="key-round"></i> Security PIN / Password</h4>
-          <form id="update-pin-form">
-            <div class="form-group">
-              <label for="new-pin-input">Set / Update PIN</label>
-              <input type="password" id="new-pin-input" placeholder="New PIN or password (or leave blank to remove PIN)" class="form-input">
-            </div>
-            <button type="submit" class="btn btn-secondary btn-sm">Update Security PIN</button>
-          </form>
-        </div>
-
-        <!-- Section 3: Cookie & Storage Info -->
-        <div class="settings-section">
-          <h4 class="settings-section-title"><i data-lucide="database"></i> Local Storage & Cookies</h4>
-          <div class="storage-info-card">
-            <div class="info-row">
-              <span>Storage Location:</span>
-              <strong>Browser Cookies + LocalStorage</strong>
-            </div>
-            <div class="info-row">
-              <span>Account Status:</span>
-              <strong class="text-success"><i data-lucide="check-circle"></i> Active & Synced</strong>
-            </div>
-            <div class="info-row">
-              <span>Persistence Policy:</span>
-              <span>Account persists until you clear cookies & site data</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Section 4: Data Import & Export -->
-        <div class="settings-section">
-          <h4 class="settings-section-title"><i data-lucide="folder-sync"></i> Backup & Transfer</h4>
-          <div class="backup-buttons-row">
-            <button type="button" class="btn btn-secondary flex-1" id="btn-settings-export">
-              <i data-lucide="download"></i> Export Account JSON
-            </button>
-            <label class="btn btn-outline flex-1 cursor-pointer" id="lbl-settings-import">
-              <i data-lucide="upload"></i> Import Account JSON
-              <input type="file" id="import-json-file" accept=".json" style="display: none;">
-            </label>
-          </div>
-        </div>
-
-        <!-- Section 5: Danger Zone -->
-        <div class="settings-section danger-zone">
-          <h4 class="settings-section-title danger-text"><i data-lucide="trash-2"></i> Delete Local Account</h4>
-          <p class="danger-desc">This will permanently remove this account and its vocabulary history from this device.</p>
-          <button type="button" class="btn btn-danger" id="btn-delete-account">
-            <i data-lucide="trash-2"></i> Delete This Account
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Real-Time AI Decision Explanation Modal -->
-  <div class="modal-overlay" id="ai-reasoning-modal-overlay" style="display: none;">
-    <div class="ai-reasoning-modal glass-panel">
-      <div class="modal-header">
-        <div class="modal-title-group">
-          <i data-lucide="brain-circuit" class="modal-title-icon ai-sparkle-icon"></i>
-          <h3>Real-Time AI Decision Engine</h3>
-        </div>
-        <button class="modal-close-btn" id="close-ai-modal-btn" aria-label="Close Modal">
-          <i data-lucide="x"></i>
-        </button>
-      </div>
-
-      <div class="ai-modal-body">
-        <div class="ai-decision-hero">
-          <div class="ai-confidence-badge" id="ai-modal-confidence">
-            <i data-lucide="zap"></i>
-            <span>Real-time Confidence: 98% Match</span>
-          </div>
-          <h4 class="ai-decision-title" id="ai-modal-title">Why AI Selected Today's Word</h4>
-          <p class="ai-decision-summary" id="ai-modal-summary">
-            Analyzing your current vocabulary streak, lookup patterns, and quiz accuracy in real time to optimize retention.
-          </p>
-        </div>
-
-        <div class="ai-category-tabs">
-          <button class="ai-tab-btn active" data-ai-category="wotd">
-            <i data-lucide="sparkles"></i> Word of Day
-          </button>
-          <button class="ai-tab-btn" data-ai-category="quiz">
-            <i data-lucide="target"></i> Quiz Logic
-          </button>
-          <button class="ai-tab-btn" data-ai-category="level">
-            <i data-lucide="award"></i> Level Rank
-          </button>
-        </div>
-
-        <div class="ai-logic-factors-card">
-          <h5 class="factors-header"><i data-lucide="cpu"></i> Real-Time Signals Evaluated</h5>
-          <div class="signals-grid" id="ai-modal-signals">
-            <!-- Dynamically populated signals -->
-          </div>
-        </div>
-
-        <div class="ai-explanation-box">
-          <h5 class="explanation-header"><i data-lucide="message-square-code"></i> Plain English AI Explanation</h5>
-          <div class="explanation-content" id="ai-modal-explanation">
-            <!-- Dynamically populated real-time explanation steps -->
-          </div>
-        </div>
-
-        <div class="ai-ask-section">
-          <h5 class="ask-header"><i data-lucide="help-circle"></i> Ask AI Why</h5>
-          <form class="ai-ask-form" id="ai-ask-form">
-            <input type="text" class="form-input" id="ai-ask-input" placeholder="e.g. Why is this word better for me than basic words?" required>
-            <button type="submit" class="btn btn-primary"><i data-lucide="send"></i> Ask AI</button>
-          </form>
-          <div class="ai-ask-response" id="ai-ask-response" style="display: none;"></div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- Main scripts -->
