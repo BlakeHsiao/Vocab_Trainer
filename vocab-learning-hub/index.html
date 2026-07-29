@@ -649,6 +649,105 @@
     </div>
   </footer>
 
+  <!-- Sir Vocab-a-Lot AI Companion Widget -->
+  <!-- Floating Glowing Knight Trigger Button -->
+  <button class="knight-chat-trigger animate-float" id="knight-chat-btn" title="Summon Sir Vocab-a-Lot AI Coach">
+    <div class="knight-trigger-glow"></div>
+    <div class="knight-trigger-icon-wrapper">
+      <i data-lucide="shield-alert" class="knight-icon-pulsing"></i>
+    </div>
+    <span class="knight-trigger-badge">AI</span>
+  </button>
+
+  <!-- Sliding Chat Drawer Panel -->
+  <div class="knight-chat-drawer glass-panel" id="knight-chat-drawer">
+    <!-- Header -->
+    <div class="knight-drawer-header">
+      <div class="knight-header-profile">
+        <div class="knight-avatar-container">
+          <img src="rutgers_mascot.png" class="knight-header-avatar" alt="Sir Vocab-a-Lot">
+          <span class="knight-status-indicator active"></span>
+        </div>
+        <div class="knight-header-meta">
+          <h4 class="knight-header-name">Sir Vocab-a-Lot</h4>
+          <span class="knight-header-subtitle">Scarlet Knight AI Tutor</span>
+        </div>
+      </div>
+      <div class="knight-header-actions">
+        <button class="knight-action-btn" id="knight-api-config-btn" title="Gemini Live AI Connection">
+          <i data-lucide="key-round"></i>
+        </button>
+        <button class="knight-action-btn" id="knight-close-btn" title="Minimize Panel">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Gemini Live Config Tray -->
+    <div class="knight-api-config-tray" id="knight-api-tray">
+      <div class="config-tray-inner glass-panel">
+        <div class="tray-header">
+          <i data-lucide="sparkles" class="tray-icon"></i>
+          <span>Live Gemini AI Connection</span>
+        </div>
+        <p class="tray-desc">Connect Gemini to unlock unlimited chat with Sir Vocab-a-Lot! Your key is stored securely in your browser's local storage.</p>
+        <div class="tray-input-row">
+          <input type="password" id="knight-api-key-input" class="tray-input" placeholder="Paste Gemini API Key (AI-...)">
+          <button class="btn btn-primary" id="knight-api-save-btn">Connect</button>
+        </div>
+        <div class="tray-status" id="knight-api-status">
+          <span class="status-badge offline">Offline Mode (Local Companion)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Message List Container -->
+    <div class="knight-chat-messages" id="knight-chat-messages">
+      <!-- Welcome message initially loaded -->
+      <div class="knight-message-group system-msg">
+        <div class="knight-avatar-bubble">
+          <img src="rutgers_mascot.png" alt="Sir Vocab-a-Lot">
+        </div>
+        <div class="knight-msg-bubble">
+          <p>Greetings, noble scholar! 🛡️ I am <strong>Sir Vocab-a-Lot</strong>, the champion of the Rutgers Scarlet Arena! I am here to help you conquer the SAT Reading & Writing sections.</p>
+          <p>Choose an action below to begin our training, or ask me anything about grammar, words, or SAT test-taking strategies!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Dialogue Quick Action Chips -->
+    <div class="knight-chat-chips-container">
+      <div class="knight-chips-scroller" id="knight-chips-wrapper">
+        <button class="knight-chip" data-action="challenge">
+          <i data-lucide="sword"></i>
+          <span>Challenge Me!</span>
+        </button>
+        <button class="knight-chip" data-action="mnemonic">
+          <i data-lucide="lightbulb"></i>
+          <span>RU Mnemonic</span>
+        </button>
+        <button class="knight-chip" data-action="joust">
+          <i data-lucide="shield"></i>
+          <span>Joust Drill</span>
+        </button>
+        <button class="knight-chip" data-action="trap">
+          <i data-lucide="alert-triangle"></i>
+          <span>SAT Traps</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Input Footer Bar -->
+    <div class="knight-chat-footer">
+      <div class="knight-input-wrapper">
+        <input type="text" id="knight-chat-input" placeholder="Ask Sir Vocab-a-Lot..." aria-label="Message Sir Vocab-a-Lot">
+        <button class="knight-send-btn" id="knight-send-btn" disabled aria-label="Send message">
+          <i data-lucide="send-horizontal"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Confetti Canvas Overlay -->
   <canvas class="confetti-canvas" id="confetti-canvas"></canvas>
 

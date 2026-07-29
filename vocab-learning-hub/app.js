@@ -1774,4 +1774,596 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 3500);
   }, 800);
 
+  // ==========================================
+  // 11. Sir Vocab-a-Lot AI Companion Controller
+  // ==========================================
+
+  // Selectors for Chat elements
+  const knightEls = {
+    triggerBtn: document.getElementById("knight-chat-btn"),
+    drawer: document.getElementById("knight-chat-drawer"),
+    closeBtn: document.getElementById("knight-close-btn"),
+    apiConfigBtn: document.getElementById("knight-api-config-btn"),
+    apiTray: document.getElementById("knight-api-tray"),
+    apiKeyInput: document.getElementById("knight-api-key-input"),
+    apiSaveBtn: document.getElementById("knight-api-save-btn"),
+    apiStatus: document.getElementById("knight-api-status"),
+    messagesContainer: document.getElementById("knight-chat-messages"),
+    chatInput: document.getElementById("knight-chat-input"),
+    sendBtn: document.getElementById("knight-send-btn"),
+    chips: document.querySelectorAll(".knight-chip")
+  };
+
+  // State initialization
+  state.knightChatHistory = [];
+  state.knightApiKey = localStorage.getItem("vocab_gemini_key") || "";
+  state.knightDrill = {
+    active: false,
+    wordObj: null,
+    options: [],
+    correctIndex: -1
+  };
+
+  // Initialize Lucide Icons for dynamic elements
+  if (typeof lucide !== "undefined") {
+    lucide.createIcons();
+  }
+
+  // Set initial API connection indicator states
+  initKnightApiUI();
+
+  // Bind Events
+  if (knightEls.triggerBtn) {
+    knightEls.triggerBtn.addEventListener("click", () => {
+      knightEls.drawer.classList.toggle("active");
+      scrollToBottom();
+      
+      // Update badge or alert status
+      const badge = knightEls.triggerBtn.querySelector(".knight-trigger-badge");
+      if (badge) badge.style.display = "none";
+    });
+  }
+
+  if (knightEls.closeBtn) {
+    knightEls.closeBtn.addEventListener("click", () => {
+      knightEls.drawer.classList.remove("active");
+    });
+  }
+
+  if (knightEls.apiConfigBtn) {
+    knightEls.apiConfigBtn.addEventListener("click", () => {
+      knightEls.apiTray.classList.toggle("active");
+    });
+  }
+
+  if (knightEls.apiSaveBtn) {
+    knightEls.apiSaveBtn.addEventListener("click", saveKnightApiKey);
+  }
+
+  if (knightEls.chatInput) {
+    knightEls.chatInput.addEventListener("input", () => {
+      const text = knightEls.chatInput.value.trim();
+      knightEls.sendBtn.disabled = text.length === 0;
+    });
+
+    knightEls.chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && knightEls.chatInput.value.trim().length > 0) {
+        sendKnightMessage();
+      }
+    });
+  }
+
+  if (knightEls.sendBtn) {
+    knightEls.sendBtn.addEventListener("click", sendKnightMessage);
+  }
+
+  // Dynamic Chip action handlers
+  knightEls.chips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      const action = chip.getAttribute("data-action");
+      triggerKnightChipAction(action);
+    });
+  });
+
+  // Functions
+  function initKnightApiUI() {
+    const key = state.knightApiKey;
+    const statusDot = document.querySelector(".knight-status-indicator");
+    
+    if (key) {
+      if (knightEls.apiKeyInput) knightEls.apiKeyInput.value = key;
+      if (knightEls.apiConfigBtn) knightEls.apiConfigBtn.classList.add("connected");
+      if (statusDot) {
+        statusDot.className = "knight-status-indicator live-ai";
+      }
+      if (knightEls.apiStatus) {
+        knightEls.apiStatus.innerHTML = `<span class="status-badge online">Live Gemini AI Activated</span>`;
+      }
+    } else {
+      if (knightEls.apiConfigBtn) knightEls.apiConfigBtn.classList.remove("connected");
+      if (statusDot) {
+        statusDot.className = "knight-status-indicator active";
+      }
+      if (knightEls.apiStatus) {
+        knightEls.apiStatus.innerHTML = `<span class="status-badge offline">Offline Mode (Local Companion)</span>`;
+      }
+    }
+  }
+
+  function saveKnightApiKey() {
+    const rawVal = knightEls.apiKeyInput.value.trim();
+    if (rawVal.length > 0) {
+      localStorage.setItem("vocab_gemini_key", rawVal);
+      state.knightApiKey = rawVal;
+      showToast("Live Gemini AI Key connected successfully!");
+    } else {
+      localStorage.removeItem("vocab_gemini_key");
+      state.knightApiKey = "";
+      showToast("Gemini key cleared. Running in Offline Mode.");
+    }
+    initKnightApiUI();
+    knightEls.apiTray.classList.remove("active");
+  }
+
+  function appendKnightBubble(sender, text) {
+    const msgGroup = document.createElement("div");
+    msgGroup.className = `knight-message-group ${sender === "user" ? "user-msg" : "knight-msg"}`;
+    
+    // Avatar
+    const avatar = document.createElement("div");
+    avatar.className = "knight-avatar-bubble";
+    avatar.innerHTML = sender === "user" 
+      ? `<div style="background: var(--primary); font-family: var(--font-header); font-weight: 800; color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; width: 32px; height: 32px; border-radius: var(--radius-sm); border: 1.5px solid var(--panel-border);">S</div>`
+      : `<img src="rutgers_mascot.png" alt="Sir Vocab-a-Lot">`;
+      
+    // Bubble
+    const bubble = document.createElement("div");
+    bubble.className = "knight-msg-bubble";
+    
+    // Convert basic markdown format (bullets, bold) to html for beautiful presentation
+    let formattedText = text
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/`(.*?)`/g, '<code>$1</code>')
+      .replace(/\n-\s(.*)/g, '<br>• $1')
+      .replace(/\n\n/g, '<br><br>');
+      
+    bubble.innerHTML = formattedText;
+    
+    msgGroup.appendChild(avatar);
+    msgGroup.appendChild(bubble);
+    
+    knightEls.messagesContainer.appendChild(msgGroup);
+    scrollToBottom();
+  }
+
+  function appendTypingBubble() {
+    const msgGroup = document.createElement("div");
+    msgGroup.className = "knight-message-group knight-msg typing-msg";
+    msgGroup.id = "knight-typing-bubble";
+    
+    const avatar = document.createElement("div");
+    avatar.className = "knight-avatar-bubble";
+    avatar.innerHTML = `<img src="rutgers_mascot.png" alt="Sir Vocab-a-Lot">`;
+    
+    const bubble = document.createElement("div");
+    bubble.className = "knight-msg-bubble";
+    bubble.innerHTML = `
+      <div class="knight-typing-indicator">
+        <span class="knight-typing-dot"></span>
+        <span class="knight-typing-dot"></span>
+        <span class="knight-typing-dot"></span>
+      </div>
+    `;
+    
+    msgGroup.appendChild(avatar);
+    msgGroup.appendChild(bubble);
+    knightEls.messagesContainer.appendChild(msgGroup);
+    scrollToBottom();
+  }
+
+  function removeTypingBubble() {
+    const bubble = document.getElementById("knight-typing-bubble");
+    if (bubble) bubble.remove();
+  }
+
+  function scrollToBottom() {
+    knightEls.messagesContainer.scrollTop = knightEls.messagesContainer.scrollHeight;
+  }
+
+  async function sendKnightMessage() {
+    const userText = knightEls.chatInput.value.trim();
+    if (userText.length === 0) return;
+
+    // Reset input
+    knightEls.chatInput.value = "";
+    knightEls.sendBtn.disabled = true;
+
+    // Append User bubble
+    appendKnightBubble("user", userText);
+
+    // If active drill is running, intercept and check answer
+    if (state.knightDrill.active) {
+      checkKnightDrillAnswer(userText);
+      return;
+    }
+
+    // Process reply
+    appendTypingBubble();
+
+    // Store in history
+    state.knightChatHistory.push({ role: "user", text: userText });
+    if (state.knightChatHistory.length > 20) state.knightChatHistory.shift(); // keep sliding log
+
+    let reply = "";
+    if (state.knightApiKey) {
+      // Call Live Gemini API
+      reply = await callKnightGemini(userText);
+    } else {
+      // Fallback local scripted controller
+      reply = await processLocalKnightReply(userText);
+    }
+
+    removeTypingBubble();
+    appendKnightBubble("knight", reply);
+    
+    // Store response in history
+    state.knightChatHistory.push({ role: "model", text: reply });
+  }
+
+  async function callKnightGemini(prompt) {
+    const apiKey = state.knightApiKey;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    
+    const systemPrompt = `You are Sir Vocab-a-Lot, a medieval Rutgers Scarlet Knight AI tutor. Your mission is to prepare high school students for the SAT Reading and Writing sections. Be highly motivating, chivalrous, academic, and weave in humorous Rutgers university analogies (such as the campus bus loop, grease trucks, Brower Commons, college football, or waiting for the LX bus) when explaining complex academic words. Keep answers concise, highly structured, and use bullet points and bold markdown for readability. Respond to greeting or normal inquiries in character.`;
+
+    const contents = state.knightChatHistory.map(msg => ({
+      role: msg.role === "user" ? "user" : "model",
+      parts: [{ text: msg.text }]
+    }));
+
+    contents.push({ role: "user", parts: [{ text: prompt }] });
+
+    const body = {
+      contents,
+      systemInstruction: { parts: [{ text: systemPrompt }] }
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || "Alas, my communications failed! Pray try again.";
+    } catch (err) {
+      console.error("Failed to connect with Gemini API:", err);
+      return `Alas, scholar! My magical communication sphere has encountered an error: ${err.message}. Make sure your key is valid and your connection to the grand networks is stable. We will run offline!`;
+    }
+  }
+
+  // Predefined Offline Rutgers Mnemonics
+  const RU_MNEMONICS = {
+    ephemeral: "Think of your wait time for the Rutgers LX bus at College Ave during rush hour—it feels eternal, but the actual bus ride is **ephemeral** (lasting only a fleeting moment before it's over!).",
+    ubiquitous: "Like Rutgers red buses, scarlet hoodies, or empty energy drink cans in the library—they are completely **ubiquitous** (found absolutely everywhere on campus!).",
+    serendipity: "Finding an open, working laundry machine in your Rutgers residence hall on a Sunday afternoon—that is pure **serendipity** (a happy, lucky accident!).",
+    loquacious: "Think of that one student sitting behind you on the bus talking loudly on their phone the entire ride from Busch to Cook/Douglass—they are incredibly **loquacious** (extremely talkative!).",
+    pragmatic: "Making the **pragmatic** decision to ride the bus instead of walking 3 miles in the snow from Livingston to College Ave—realistic and sensible!",
+    capricious: "The New Jersey weather during final exams week—changing from sunny 75°F to freezing rain in 10 minutes is completely **capricious** (highly unpredictable and moody!).",
+    fastidious: "Like a dining hall inspector at Neilson Dining Commons checking every fork with a magnifying glass—absolutely **fastidious** (extremely attentive to details and accuracy!).",
+    alacrity: "The speed at which Rutgers students charge toward the grease trucks when they are hungry—done with absolute **alacrity** (brisk, cheerful readiness!).",
+    magnanimous: "When your roommate shares their fat sandwich with you because you forgot your meal card—that is a truly **magnanimous** (generous and forgiving) deed!",
+    zenith: "Screaming 'Touchdown Rutgers!' at the stadium under a warm sun represents the absolute **zenith** (highest peak of glory and success) of a scholar's Saturday!",
+    nadir: "Running out of meal swipes with 3 weeks left in the semester—this is truly the tragic **nadir** (the lowest point of fortunes) for any student!"
+  };
+
+  async function processLocalKnightReply(text) {
+    const cleanText = text.toLowerCase();
+    
+    // Simulate delay for realism
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    if (cleanText.includes("hello") || cleanText.includes("hi") || cleanText.includes("greetings")) {
+      return `Greetings, brave scholar! 🛡️ I am standing guard ready to train your vocabulary muscles. Try clicking one of the training action chips below to launch our combat drills!`;
+    }
+    
+    if (cleanText.includes("mnemonic")) {
+      return triggerKnightLocalMnemonic();
+    }
+    
+    if (cleanText.includes("challenge") || cleanText.includes("quiz")) {
+      return triggerKnightLocalChallenge();
+    }
+
+    if (cleanText.includes("trap") || cleanText.includes("sat trap")) {
+      return triggerKnightLocalTrap();
+    }
+
+    // Default conversational fallback
+    return `By my oath, you speak of intriguing matters! However, we are currently in **Offline Mode**. To unlock deep interactive conversations, connect your Gemini API key using the key icon (🔑) at the top! \n\nOtherwise, we can continue our battlefield practice. Type **challenge** to face a word joust, or **mnemonic** to forge a Rutgers memory anchor!`;
+  }
+
+  function triggerKnightChipAction(action) {
+    appendKnightBubble("user", getChipLabel(action));
+    appendTypingBubble();
+    
+    setTimeout(() => {
+      removeTypingBubble();
+      let replyText = "";
+      
+      switch (action) {
+        case "challenge":
+          replyText = triggerKnightLocalChallenge();
+          break;
+        case "mnemonic":
+          replyText = triggerKnightLocalMnemonic();
+          break;
+        case "joust":
+          replyText = triggerKnightLocalJoust();
+          break;
+        case "trap":
+          replyText = triggerKnightLocalTrap();
+          break;
+        default:
+          replyText = "Chivalry demands a valid training action, scholar! Select a chip below.";
+      }
+      
+      appendKnightBubble("knight", replyText);
+    }, 600);
+  }
+
+  function getChipLabel(action) {
+    switch (action) {
+      case "challenge": return "Challenge Me!";
+      case "mnemonic": return "Create RU Mnemonic";
+      case "joust": return "Start Joust Drill";
+      case "trap": return "Analyze SAT Traps";
+      default: return action;
+    }
+  }
+
+  // --- Offline Interactive Drill Engine ---
+  function triggerKnightLocalChallenge() {
+    // Pick random word
+    const randWord = VOCAB_DATABASE[Math.floor(Math.random() * VOCAB_DATABASE.length)];
+    const eligibleDistractors = VOCAB_DATABASE.filter(v => v.word !== randWord.word);
+    eligibleDistractors.sort(() => 0.5 - Math.random());
+    
+    const options = [
+      { text: randWord.definition, isCorrect: true },
+      { text: eligibleDistractors[0].definition, isCorrect: false },
+      { text: eligibleDistractors[1].definition, isCorrect: false },
+      { text: eligibleDistractors[2].definition, isCorrect: false }
+    ];
+    
+    // Shuffle options
+    options.sort(() => 0.5 - Math.random());
+    const correctIdx = options.findIndex(o => o.isCorrect);
+    
+    state.knightDrill = {
+      active: true,
+      wordObj: randWord,
+      options: options,
+      correctIndex: correctIdx
+    };
+
+    // Replace action chips with multiple-choice buttons dynamically!
+    renderKnightChoiceChips(["A", "B", "C", "D"]);
+
+    return `🛡️ **CHALLENGE ACCEPTED!** Enter the Arena!\n\nWhat is the correct definition of the word: **${randWord.word.toUpperCase()}**?\n\n` +
+      `**A)** ${options[0].text}\n\n` +
+      `**B)** ${options[1].text}\n\n` +
+      `**C)** ${options[2].text}\n\n` +
+      `**D)** ${options[3].text}\n\n` +
+      `*Respond with A, B, C, or D to strike!*`;
+  }
+
+  function checkKnightDrillAnswer(input) {
+    const cleanInput = input.trim().toUpperCase();
+    const map = { "A": 0, "B": 1, "C": 2, "D": 3 };
+    const chosenIdx = map[cleanInput];
+
+    appendTypingBubble();
+    
+    setTimeout(() => {
+      removeTypingBubble();
+      
+      if (chosenIdx === undefined) {
+        appendKnightBubble("knight", `⚔️ Speak clearly, scholar! Your strike missed. Respond with **A**, **B**, **C**, or **D** to defeat this beast!`);
+        return;
+      }
+
+      const isCorrect = chosenIdx === state.knightDrill.correctIndex;
+      const word = state.knightDrill.wordObj.word;
+      
+      state.knightDrill.active = false;
+      
+      // Restore standard chips
+      resetKnightChips();
+
+      if (isCorrect) {
+        // Increment global lookup statistics for fun!
+        state.stats.correctAnswers++;
+        state.stats.totalQuestionsPlayed++;
+        saveStateToLocalStorage();
+        updateDashboardUI();
+        
+        appendKnightBubble("knight", `🌟 **GLORIOUS STRIKE!**\n\nBy my shield, you are correct! **${word}** means exactly: *"${state.knightDrill.wordObj.definition}"*\n\nYour scholarship gains +10 XP! Keep charging onward, hero!`);
+        triggerConfettiShower();
+      } else {
+        state.stats.totalQuestionsPlayed++;
+        saveStateToLocalStorage();
+        updateDashboardUI();
+        
+        const correctLetter = ["A", "B", "C", "D"][state.knightDrill.correctIndex];
+        appendKnightBubble("knight", `🛡️ **SHIELD BLOCKED!**\n\nA valiant effort, but that hit was slightly off-target. The correct answer was **${correctLetter}**.\n\n**${word}** means: *"${state.knightDrill.wordObj.definition}"*\n\nLet us learn from this scrape and prepare for the next joust!`);
+      }
+    }, 600);
+  }
+
+  function triggerKnightLocalMnemonic() {
+    const activeWordElement = document.getElementById("wotd-word-text");
+    let targetWord = activeWordElement ? activeWordElement.innerText : "ephemeral";
+    
+    let wordObj = VOCAB_DATABASE.find(v => v.word.toLowerCase() === targetWord.toLowerCase());
+    if (!wordObj) {
+      wordObj = VOCAB_DATABASE[Math.floor(Math.random() * VOCAB_DATABASE.length)];
+    }
+
+    const word = wordObj.word;
+    const def = wordObj.definition;
+    
+    let mnemonic = RU_MNEMONICS[word.toLowerCase()];
+    if (!mnemonic) {
+      const templates = [
+        `Think of **${word}** (${def}) as trying to find an open parking spot behind the Rutgers Student Center—hard to do but absolutely crucial! Shield up!`,
+        `Recall **${word}** (${def}) like a Rutgers student rushing Brower Commons before closing—full of passion and focus! Lock this memory in your saddlebags!`,
+        `Remember **${word}** (${def}) by connecting it to the legendary Scarlet Knight armor—it stands strong against all errors, protecting your SAT score!`
+      ];
+      mnemonic = templates[Math.floor(Math.random() * templates.length)];
+    }
+
+    return `💡 **SCARLET MNEMONIC FOR: ${word.toUpperCase()}**\n\n**Meaning**: *${def}*\n\n**Analogy**: ${mnemonic}\n\nUse this imagery on test day to defeat the College Board!`;
+  }
+
+  function triggerKnightLocalJoust() {
+    const randWord = VOCAB_DATABASE[Math.floor(Math.random() * VOCAB_DATABASE.length)];
+    const blankedSentence = randWord.example.replace(new RegExp(randWord.word, "gi"), "_______");
+    
+    state.knightDrill = {
+      active: true,
+      wordObj: randWord,
+      options: [randWord],
+      correctIndex: 0 // spelling/fill-in-the-blank intercept
+    };
+
+    // Setup action chips for easy text response
+    renderKnightChoiceChips([randWord.word, "I need a hint"]);
+
+    return `⚔️ **JOUST DRILL ACCEPED!**\n\nFill in the blank with the correct word:\n\n*"${blankedSentence}"*\n\n*Type the matching vocabulary word below to strike!*`;
+  }
+
+  function triggerKnightLocalTrap() {
+    const trapTypes = [
+      {
+        name: "The 'Half-Right, Half-Wrong' Trap",
+        desc: "The College Board crafts an answer option that starts beautifully with perfect context, but throws in a single incorrect or extreme word at the very end. Scholars read the first half, get excited, and fall into the trap!",
+        counter: "Read every single word of your chosen option before clicking. If even one word is inaccurate, the entire answer is wrong!"
+      },
+      {
+        name: "The 'Too Broad' Trap",
+        desc: "Option looks completely logical, but it goes way beyond the scope of the paragraph provided. It makes general assertions that might be true in real life, but are NOT supported by the text.",
+        counter: "Be fastidious! If the text doesn't explicitly state or support it, discard it—even if it sounds highly academic!"
+      },
+      {
+        name: "The 'Slightly Off-Tone' Trap",
+        desc: "The word has the correct definition, but represents a much stronger or weaker attitude than the author actually maintains (e.g. using 'hateful' instead of 'indifferent').",
+        counter: "Check the emotional temperature of the passage. Does the author show mild concern or furious anger? Match the tones perfectly!"
+      }
+    ];
+
+    const trap = trapTypes[Math.floor(Math.random() * trapTypes.length)];
+    return `⚠️ **SAT TRAP ANALYSIS: ${trap.name.toUpperCase()}**\n\n**The Trick**: ${trap.desc}\n\n🛡️ **The Scarlet Knight Defense**: *${trap.counter}*`;
+  }
+
+  function renderKnightChoiceChips(labels) {
+    const wrapper = document.getElementById("knight-chips-wrapper");
+    if (!wrapper) return;
+
+    wrapper.innerHTML = labels.map(lbl => `
+      <button class="knight-chip dynamic-drill-chip" data-label="${lbl}">
+        <i data-lucide="shield"></i>
+        <span>${lbl}</span>
+      </button>
+    `).join("");
+
+    if (typeof lucide !== "undefined") {
+      lucide.createIcons();
+    }
+
+    // Bind custom drill inputs
+    wrapper.querySelectorAll(".dynamic-drill-chip").forEach(btn => {
+      btn.onclick = () => {
+        const textVal = btn.getAttribute("data-label");
+        if (textVal === "I need a hint") {
+          const hintText = `The word starts with **"${state.knightDrill.wordObj.word[0].toUpperCase()}"** and ends with **"${state.knightDrill.wordObj.word[state.knightDrill.wordObj.word.length - 1]}"**!`;
+          appendKnightBubble("user", "Give me a hint");
+          appendKnightBubble("knight", `💡 **Knight Hint**: ${hintText}`);
+          return;
+        }
+        
+        if (state.knightDrill.active) {
+          // If option-based drill
+          if (["A", "B", "C", "D"].includes(textVal)) {
+            appendKnightBubble("user", textVal);
+            checkKnightDrillAnswer(textVal);
+          } else {
+            // Fill-in-the-blank drill
+            appendKnightBubble("user", textVal);
+            appendTypingBubble();
+            setTimeout(() => {
+              removeTypingBubble();
+              state.knightDrill.active = false;
+              resetKnightChips();
+              
+              const isMatch = textVal.toLowerCase() === state.knightDrill.wordObj.word.toLowerCase();
+              if (isMatch) {
+                state.stats.correctAnswers++;
+                state.stats.totalQuestionsPlayed++;
+                saveStateToLocalStorage();
+                updateDashboardUI();
+                appendKnightBubble("knight", `🌟 **FLAWLESS SPELLING STRIKE!**\n\nYour pen is as sharp as my sword! Magnificent scholarship! **${state.knightDrill.wordObj.word}** fits the sentence perfectly!\n\nYou earn +10 XP! Keep your shield high!`);
+                triggerConfettiShower();
+              } else {
+                appendKnightBubble("knight", `🛡️ **BLOCKED!**\n\nA noble attempt, but the correct spelling word was **"${state.knightDrill.wordObj.word}"**.\n\nLet us study this term and strike again!`);
+              }
+            }, 600);
+          }
+        }
+      };
+    });
+  }
+
+  function resetKnightChips() {
+    const wrapper = document.getElementById("knight-chips-wrapper");
+    if (!wrapper) return;
+
+    wrapper.innerHTML = `
+      <button class="knight-chip" data-action="challenge">
+        <i data-lucide="sword"></i>
+        <span>Challenge Me!</span>
+      </button>
+      <button class="knight-chip" data-action="mnemonic">
+        <i data-lucide="lightbulb"></i>
+        <span>RU Mnemonic</span>
+      </button>
+      <button class="knight-chip" data-action="joust">
+        <i data-lucide="shield"></i>
+        <span>Joust Drill</span>
+      </button>
+      <button class="knight-chip" data-action="trap">
+        <i data-lucide="alert-triangle"></i>
+        <span>SAT Traps</span>
+      </button>
+    `;
+
+    if (typeof lucide !== "undefined") {
+      lucide.createIcons();
+    }
+
+    // Rebind static actions
+    wrapper.querySelectorAll(".knight-chip").forEach(chip => {
+      chip.onclick = () => {
+        const action = chip.getAttribute("data-action");
+        triggerKnightChipAction(action);
+      };
+    });
+  }
+
 });
