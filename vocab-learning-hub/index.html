@@ -26,6 +26,7 @@
           <i data-lucide="sparkles" class="logo-icon"></i>
         </div>
         <span class="logo-text">Vocab<span class="gradient-text">Vibe</span></span>
+        <span class="rutgers-edition-badge">RU Edition</span>
       </div>
       
       <nav class="main-nav">
@@ -40,6 +41,10 @@
         <button class="nav-link" data-target="practice-tab" id="nav-practice">
           <i data-lucide="graduation-cap"></i>
           <span>Practice Arena</span>
+        </button>
+        <button class="nav-link" onclick="window.location.href='reading.html'" id="nav-reading">
+          <i data-lucide="book-open-check"></i>
+          <span>Comprehension</span>
         </button>
       </nav>
 
@@ -92,14 +97,19 @@
         <div class="theme-selector-container">
           <button class="theme-select-trigger" id="theme-toggle" aria-label="Select Theme" title="Choose color theme">
             <i data-lucide="palette"></i>
-            <span class="active-theme-name">Crimson Dark</span>
+            <span class="active-theme-name">Rutgers Scarlet</span>
             <i data-lucide="chevron-down" class="chevron-icon"></i>
           </button>
           
           <div class="theme-dropdown glass-panel" id="theme-dropdown">
             <div class="theme-dropdown-header">Choose Theme</div>
             <div class="theme-options-list">
-              <button class="theme-option active" data-theme="theme-cosmic-dark">
+              <button class="theme-option active" data-theme="theme-rutgers-scarlet">
+                <span class="theme-color-preview" style="background: linear-gradient(135deg, #cc0033, #111111);"></span>
+                <span class="theme-option-name">Rutgers Scarlet</span>
+                <i data-lucide="check" class="check-icon"></i>
+              </button>
+              <button class="theme-option" data-theme="theme-cosmic-dark">
                 <span class="theme-color-preview" style="background: linear-gradient(135deg, #ef4444, #f97316);"></span>
                 <span class="theme-option-name">Crimson Dark</span>
                 <i data-lucide="check" class="check-icon"></i>
@@ -132,6 +142,10 @@
             </div>
           </div>
         </div>
+        <button class="mode-toggle-btn" id="mode-toggle-btn" aria-label="Toggle Light/Dark Mode" title="Toggle Light/Dark Mode">
+          <i data-lucide="sun" class="mode-sun-icon"></i>
+          <i data-lucide="moon" class="mode-moon-icon" style="display: none;"></i>
+        </button>
       </div>
     </div>
   </header>
@@ -142,15 +156,14 @@
     <!-- DASHBOARD VIEW -->
     <section id="dashboard-tab" class="tab-content active">
       <div class="welcome-banner">
-        <div class="banner-info">
-          <h1 class="banner-title">
-            Welcome Back, <span class="gradient-text" id="username-display">Scholar</span>!
-            <span class="rutgers-exclusive-badge">
-              <span class="rutgers-block-r">R</span>
-              <span>Rutgers Scarlet Knights</span>
-            </span>
-          </h1>
-          <p class="banner-subtitle">Ready to expand your lexicon today? Your daily streak is active.</p>
+        <div class="banner-main-content">
+          <div class="banner-mascot-wrapper" id="banner-mascot-container">
+            <img src="rutgers_mascot.png" class="banner-mascot" alt="Rutgers Scarlet Knight Mascot">
+          </div>
+          <div class="banner-info">
+            <h1 class="banner-title" id="banner-title">RU READY, <span class="gradient-text" id="username-display">Scholar</span>!?</h1>
+            <p class="banner-subtitle" id="banner-subtitle">To conquer new words is the charge of the Scarlet Knight. Charge on, scholar!</p>
+          </div>
         </div>
         <div class="streak-badge">
           <div class="streak-icon-box">
@@ -402,12 +415,12 @@
             </button>
           </div>
 
-          <div class="practice-tip-box">
+          <div class="practice-tip-box rutgers-tip-box">
             <div class="tip-header">
-              <i data-lucide="lightbulb" class="tip-icon"></i>
-              <span>Study Tip</span>
+              <img src="rutgers_mascot.png" class="tip-mascot-img" alt="Knight Mascot">
+              <span style="font-weight: 700; color: var(--text-primary);">Scarlet Knight's Wisdom</span>
             </div>
-            <p class="tip-content">Spacing out your practice sessions over a few days helps seal words into your long-term memory!</p>
+            <p class="tip-content">"To conquer new vocabulary is to conquer the arena of knowledge. Charge ahead, scholar!"</p>
           </div>
         </aside>
 
@@ -454,6 +467,16 @@
                 </div>
                 <div class="progress-bar-bg">
                   <div class="progress-bar-fill" id="quiz-progress-fill" style="width: 20%;"></div>
+                </div>
+              </div>
+
+              <!-- Dynamic Scarlet Knight Companion (Duolingo style) -->
+              <div class="quiz-mascot-companion" id="quiz-mascot-companion">
+                <div class="mascot-avatar-wrapper animate-float">
+                  <img src="rutgers_mascot.png" class="mascot-avatar-img" id="quiz-mascot-img" alt="Scarlet Knight Companion">
+                </div>
+                <div class="mascot-bubble glass-panel">
+                  <p class="mascot-text" id="quiz-mascot-speech">Welcome to the arena, scholar! Let us test your vocabulary mettle. Select the correct option!</p>
                 </div>
               </div>
 
@@ -554,6 +577,16 @@
               <!-- Progress bar -->
               <div class="progress-bar-bg mb-6">
                 <div class="progress-bar-fill bg-blue-grad" id="flashcard-progress-fill" style="width: 10%;"></div>
+              </div>
+
+              <!-- Dynamic Scarlet Knight Companion for Flashcards -->
+              <div class="quiz-mascot-companion" id="fc-mascot-companion">
+                <div class="mascot-avatar-wrapper animate-float">
+                  <img src="rutgers_mascot.png" class="mascot-avatar-img" id="fc-mascot-img" alt="Scarlet Knight Companion">
+                </div>
+                <div class="mascot-bubble glass-panel">
+                  <p class="mascot-text" id="fc-mascot-speech">Greetings! Flashcards are the shield of memory. Try to recall the meaning of each word!</p>
+                </div>
               </div>
 
               <!-- Interactive 3D Card Scene -->
@@ -670,6 +703,19 @@
     </section>
 
   </main>
+
+  <!-- App Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-creator-credits">
+        <i data-lucide="heart" class="footer-icon"></i>
+        <span>Created by <strong class="footer-names">Chloe Chen, Blake Hsiao, and Andy Zhao</strong></span>
+      </div>
+      <div class="footer-copyright">
+        <span>&copy; 2026 VocabVibe. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
 
   <!-- Confetti Canvas Overlay -->
   <canvas class="confetti-canvas" id="confetti-canvas"></canvas>

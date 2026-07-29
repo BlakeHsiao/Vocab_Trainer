@@ -64,7 +64,32 @@
   --transition-elastic: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* 1. Crimson Dark Theme */
+/* 1. Rutgers Scarlet Theme */
+body.theme-rutgers-scarlet {
+  --bg-app: #080304;
+  --panel-bg: rgba(18, 10, 11, 0.72);
+  --panel-border: rgba(204, 0, 51, 0.18);
+  --panel-shadow: rgba(0, 0, 0, 0.55);
+  --text-primary: #ffffff;
+  --text-secondary: #fcd5d9;
+  --text-muted: #cc0033;
+  --primary: #cc0033;
+  --primary-hover: #a30026;
+  --primary-light: #ff4d6a;
+  --primary-rgb: 204, 0, 51;
+  --secondary: #868f98;
+  --secondary-hover: #5f6a72;
+  --glow-1: rgba(204, 0, 51, 0.28);
+  --glow-2: rgba(134, 143, 152, 0.18);
+  --gradient-primary: linear-gradient(135deg, #ff4d6a 0%, #cc0033 50%, #111111 100%);
+  --welcome-bg: linear-gradient(135deg, rgba(204, 0, 51, 0.22) 0%, rgba(17, 17, 17, 0.45) 100%);
+  --welcome-border: rgba(204, 0, 51, 0.35);
+  --card-front-bg: linear-gradient(135deg, rgba(22, 10, 11, 0.95) 0%, rgba(10, 5, 5, 0.95) 100%);
+  --card-back-bg: linear-gradient(135deg, rgba(14, 6, 7, 0.98) 0%, rgba(0, 0, 0, 0.98) 100%);
+  --header-bg: rgba(8, 3, 4, 0.82);
+}
+
+/* 2. Crimson Dark Theme */
 body.theme-cosmic-dark {
   --bg-app: #0d0608;
   --panel-bg: rgba(26, 13, 16, 0.65);
@@ -2918,6 +2943,801 @@ body.light-theme .toast-notification {
     padding: 1rem 0.5rem;
   }
 }
+
+/* =============================================================
+   Rutgers Mascot & Branding Enhancements
+   ============================================================= */
+.banner-main-content {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.banner-mascot-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary) 0%, #000000 100%);
+  padding: 3px;
+  box-shadow: 0 8px 25px rgba(var(--primary-rgb), 0.45);
+  flex-shrink: 0;
+  transition: transform var(--transition-elastic), box-shadow var(--transition-elastic);
+}
+
+.banner-mascot-wrapper:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 12px 30px rgba(var(--primary-rgb), 0.6);
+}
+
+.banner-mascot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+.rutgers-edition-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: #cc0033;
+  color: #ffffff;
+  padding: 0.2rem 0.65rem;
+  border-radius: 50px;
+  letter-spacing: 0.75px;
+  box-shadow: 0 3px 12px rgba(204, 0, 51, 0.4);
+  font-family: var(--font-header);
+  border: 1.5px solid #ff4d6a;
+  transform: translateY(-2px);
+  margin-left: 0.75rem;
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 3px 12px rgba(204, 0, 51, 0.4);
+  }
+  50% {
+    box-shadow: 0 3px 18px rgba(204, 0, 51, 0.7);
+  }
+  100% {
+    box-shadow: 0 3px 12px rgba(204, 0, 51, 0.4);
+  }
+}
+
+.rutgers-tip-box {
+  background: linear-gradient(135deg, rgba(204, 0, 51, 0.1) 0%, rgba(0, 0, 0, 0.2) 100%) !important;
+  border: 1px solid var(--panel-border) !important;
+}
+
+.tip-mascot-img {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid var(--primary);
+  background: #111;
+  object-fit: cover;
+}
+
+/* Over-the-top rotating mascot aura */
+.banner-mascot-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #cc0033, #ffffff, #000000, #ff4d6a);
+  z-index: -1;
+  filter: blur(8px);
+  opacity: 0.75;
+  animation: rotate-glow 6s linear infinite;
+}
+
+@keyframes rotate-glow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Light / Dark Mode Toggle Button */
+.mode-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-elastic);
+  outline: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  margin-left: 0.5rem;
+}
+
+.mode-toggle-btn:hover {
+  background: rgba(var(--primary-rgb), 0.12);
+  color: var(--text-primary);
+  border-color: rgba(var(--primary-rgb), 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(var(--primary-rgb), 0.35);
+}
+
+.mode-toggle-btn i {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--transition-elastic);
+}
+
+.mode-toggle-btn:hover i {
+  transform: rotate(15deg) scale(1.1);
+}
+
+/* =============================================================
+   Dynamic Light Mode System Overrides
+   ============================================================= */
+body.mode-light {
+  --bg-app: #f4f6f9;
+  --panel-bg: rgba(255, 255, 255, 0.82);
+  --panel-border: rgba(var(--primary-rgb), 0.12);
+  --panel-shadow: rgba(0, 0, 0, 0.04);
+  
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --text-muted: var(--primary);
+  
+  --welcome-bg: linear-gradient(135deg, rgba(var(--primary-rgb), 0.08) 0%, rgba(var(--primary-rgb), 0.02) 100%);
+  --welcome-border: rgba(var(--primary-rgb), 0.15);
+  --card-front-bg: linear-gradient(135deg, #ffffff 0%, #f1f3f7 100%);
+  --card-back-bg: linear-gradient(135deg, #f9fafb 0%, #f1f3f7 100%);
+  --header-bg: rgba(244, 246, 249, 0.82);
+}
+
+/* Specific Component Refinements for Light Mode */
+body.mode-light .glass-panel {
+  backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+body.mode-light .theme-dropdown {
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+body.mode-light .theme-option {
+  color: #4b5563;
+}
+
+body.mode-light .theme-option:hover {
+  background: rgba(var(--primary-rgb), 0.08);
+  color: var(--text-primary);
+}
+
+body.mode-light .theme-option.active {
+  background: rgba(var(--primary-rgb), 0.12);
+  color: var(--text-primary);
+}
+
+body.mode-light .streak-badge {
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+body.mode-light .word-badge,
+body.mode-light .pos-badge {
+  background: rgba(var(--primary-rgb), 0.08);
+  color: var(--primary);
+}
+
+body.mode-light .sentence-box {
+  background: rgba(var(--primary-rgb), 0.04);
+  border-left-color: var(--primary);
+}
+
+body.mode-light .favorite-action-btn,
+body.mode-light .action-icon-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+body.mode-light .favorite-action-btn:hover,
+body.mode-light .action-icon-btn:hover {
+  background: rgba(var(--primary-rgb), 0.08);
+}
+
+body.mode-light .word-card {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+body.mode-light .theme-dropdown-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  color: #475569;
+}
+
+body.mode-light .main-nav button:not(.active) {
+  color: #64748b;
+}
+
+body.mode-light .main-nav button:not(.active):hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+body.mode-light .sidebar-title {
+  color: #1e293b;
+}
+
+body.mode-light .sidebar-subtitle {
+  color: #64748b;
+}
+
+@media (max-width: 768px) {
+  .banner-main-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  .welcome-banner {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .streak-badge {
+    align-self: center;
+  }
+}
+
+/* =============================================================
+   App Footer Styles
+   ============================================================= */
+.app-footer {
+  width: 100%;
+  padding: 2rem 1.5rem;
+  background: var(--header-bg);
+  border-top: 1px solid var(--panel-border);
+  margin-top: 3rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background var(--transition-normal), border var(--transition-normal);
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.footer-creator-credits {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.footer-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--primary);
+}
+
+.footer-names {
+  color: var(--text-primary);
+  font-weight: 700;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all var(--transition-normal);
+}
+
+.footer-names:hover {
+  filter: brightness(1.2);
+}
+
+.footer-copyright {
+  opacity: 0.8;
+}
+
+@media (max-width: 600px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+    padding-bottom: 5rem; /* space for mobile nav bar overlay */
+  }
+}
+
+/* =============================================================
+   Reading Comprehension Module Styles
+   ============================================================= */
+.reading-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.reading-content-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.passage-card {
+  padding: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.passage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.word-count {
+  opacity: 0.8;
+  font-weight: 600;
+}
+
+.passage-title {
+  font-size: 1.6rem;
+  font-family: var(--font-header);
+  font-weight: 800;
+  margin: 0;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.passage-divider {
+  border: 0;
+  height: 1px;
+  background: var(--panel-border);
+  margin: 0;
+}
+
+.passage-text-body {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+}
+
+/* Styled inline vocab highlights in reading passages */
+.passage-vocab-word {
+  position: relative;
+  font-weight: 700;
+  color: var(--primary);
+  background: rgba(var(--primary-rgb), 0.08);
+  border-bottom: 2px dashed var(--primary);
+  padding: 0.1rem 0.3rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.passage-vocab-word:hover {
+  background: rgba(var(--primary-rgb), 0.18);
+  color: var(--primary-light);
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
+}
+
+.vocab-info-tip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.vocab-info-tip i {
+  width: 14px;
+  height: 14px;
+}
+
+/* Question card on the right */
+.question-card {
+  padding: 2.25rem;
+}
+
+.question-header {
+  margin-bottom: 1.75rem;
+}
+
+.question-progress {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.mini-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.mini-progress-fill {
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 10px;
+  transition: width var(--transition-normal);
+}
+
+.question-text {
+  font-size: 1.2rem;
+  font-family: var(--font-header);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.options-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.option-btn {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--panel-border);
+  color: var(--text-secondary);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  outline: none;
+  line-height: 1.4;
+}
+
+.option-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(var(--primary-rgb), 0.3);
+  color: var(--text-primary);
+  transform: translateX(4px);
+}
+
+.option-btn.selected-correct {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border-color: var(--success) !important;
+  color: var(--success) !important;
+  font-weight: 700;
+}
+
+.option-btn.selected-incorrect {
+  background: rgba(239, 68, 68, 0.12) !important;
+  border-color: var(--danger) !important;
+  color: var(--danger) !important;
+  font-weight: 700;
+}
+
+.option-btn:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.explanation-box {
+  padding: 1.25rem;
+  border-left: 4px solid var(--primary);
+  background: rgba(var(--primary-rgb), 0.03);
+}
+
+.explanation-box.correct {
+  border-left-color: var(--success);
+  background: rgba(16, 185, 129, 0.03);
+}
+
+.explanation-box.incorrect {
+  border-left-color: var(--danger);
+  background: rgba(239, 68, 68, 0.03);
+}
+
+.explanation-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.explanation-box.correct .explanation-header {
+  color: var(--success);
+}
+
+.explanation-box.incorrect .explanation-header {
+  color: var(--danger);
+}
+
+.explain-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.explanation-text {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Completed Card Overlay */
+.reading-complete-card {
+  padding: 3.5rem 2.25rem;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.bg-success-glow {
+  background: rgba(16, 185, 129, 0.12);
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.25);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.complete-actions-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .reading-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =============================================================
+   Practice Arena Scarlet Knight Companion & Dynamic Banner Glows
+   ============================================================= */
+.quiz-mascot-companion {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.75rem;
+  padding: 0.75rem 0.5rem;
+  animation: fadeIn var(--transition-normal);
+}
+
+@media (max-width: 768px) {
+  .quiz-mascot-companion {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+.mascot-avatar-wrapper {
+  flex-shrink: 0;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform var(--transition-elastic);
+  cursor: pointer;
+}
+
+.mascot-avatar-wrapper:hover {
+  transform: scale(1.08) rotate(5deg);
+}
+
+.mascot-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.mascot-bubble {
+  position: relative;
+  flex-grow: 1;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 4px 15px var(--panel-shadow);
+  background: var(--panel-bg);
+  min-height: 55px;
+  display: flex;
+  align-items: center;
+}
+
+/* Speech bubble left tail (pointer) */
+.mascot-bubble::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: calc(50% - 8px);
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 8px solid var(--panel-border);
+  z-index: 1;
+}
+
+.mascot-bubble::after {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: calc(50% - 8px);
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 8px solid var(--panel-bg);
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .mascot-bubble::before, .mascot-bubble::after {
+    left: 28px;
+    top: -8px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid var(--panel-border);
+    border-top: none;
+  }
+  .mascot-bubble::after {
+    top: -7px;
+    border-bottom: 8px solid var(--panel-bg);
+  }
+}
+
+.mascot-text {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.45;
+}
+
+/* Animations for Mascot Duolingo bird behavior */
+.animate-float {
+  animation: knightFloat 4s ease-in-out infinite;
+}
+
+.animate-bounce-knight {
+  animation: knightBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 1;
+}
+
+.animate-shake-knight {
+  animation: knightShake 0.6s ease-in-out 1;
+}
+
+@keyframes knightFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes knightBounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1.1, 0.8) translateY(0);
+  }
+  40% {
+    transform: scale(0.9, 1.2) translateY(-14px);
+  }
+  60% {
+    transform: scale(1.05, 0.95) translateY(2px);
+  }
+  80% {
+    transform: scale(0.98, 1.02) translateY(-2px);
+  }
+}
+
+@keyframes knightShake {
+  0%, 100% { transform: translateX(0); }
+  15%, 50%, 85% { transform: translateX(-4px) rotate(-3deg); }
+  30%, 65% { transform: translateX(4px) rotate(3deg); }
+}
+
+/* Dynamic Themes Welcome Banner Mascot and Glows */
+.theme-banner-icon-wrapper {
+  width: 100px;
+  height: 100px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  transition: all var(--transition-elastic);
+  position: relative;
+}
+
+.theme-banner-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--primary);
+  filter: drop-shadow(0 2px 8px rgba(var(--primary-rgb), 0.4));
+}
+
+/* Custom glow effects for theme banners */
+.theme-banner-icon-wrapper.cosmic-glow {
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.35);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+.theme-banner-icon-wrapper.sunset-glow {
+  box-shadow: 0 0 30px rgba(244, 63, 94, 0.35);
+  border-color: rgba(244, 63, 94, 0.4);
+}
+.theme-banner-icon-wrapper.aurora-glow {
+  box-shadow: 0 0 30px rgba(13, 148, 136, 0.35);
+  border-color: rgba(13, 148, 136, 0.4);
+}
+.theme-banner-icon-wrapper.cyberpunk-glow {
+  box-shadow: 0 0 30px rgba(255, 0, 127, 0.35);
+  border-color: rgba(255, 0, 127, 0.4);
+}
+.theme-banner-icon-wrapper.solar-glow {
+  box-shadow: 0 0 30px rgba(255, 94, 98, 0.25);
+  border-color: rgba(255, 94, 98, 0.3);
+}
+
+body.mode-light .mascot-bubble {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(var(--primary-rgb), 0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+body.mode-light .mascot-bubble::after {
+  border-right-color: rgba(255, 255, 255, 0.92);
+}
+body.mode-light .theme-banner-icon-wrapper {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+
 
 /* ==========================================
    User Account Profile & Local Storage Modals

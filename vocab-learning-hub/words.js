@@ -515,3 +515,87 @@ const VOCAB_DATABASE = [
     antonyms: ["apathetic", "indifferent", "uninterested", "languid", "cool"]
   }
 ];
+
+// Curated academic reading comprehension passages with target vocabulary integrations.
+const PASSAGES_DATABASE = [
+  {
+    id: "passage-1",
+    title: "The Ephemeral Dance of the Northern Lights",
+    text: "For centuries, explorers and scientists alike have traveled to the freezing wilderness of the Arctic with eager <span class='passage-vocab-word' data-word='alacrity'>alacrity</span>, hoping to witness the northern lights. The display is notoriously <span class='passage-vocab-word' data-word='ephemeral'>ephemeral</span>, appearing without warning as a vibrant green curtain dancing across the velvet sky, only to vanish into the darkness moments later. Those who are fortunate enough to stand beneath a strong solar storm find themselves at the absolute <span class='passage-vocab-word' data-word='zenith'>zenith</span> of visual wonder, surrounded by a silent glowing spectacle that stands in stark contrast to the noisy, industrial <span class='passage-vocab-word' data-word='cacophony'>cacophony</span> of modern city life. Astrophotographers must be incredibly <span class='passage-vocab-word' data-word='fastidious'>fastidious</span>, calibrating their cameras with precise care to capture the faint colors of this fleeting atmospheric phenomenon.",
+    questions: [
+      {
+        q: "Why do travelers and scientists head to the Arctic with 'alacrity'?",
+        options: [
+          "With extreme reluctance and hesitation",
+          "With brisk, cheerful readiness and eager enthusiasm",
+          "With careful, slow, and calculated planning",
+          "With fear and deep anxiety about the sub-zero temperatures"
+        ],
+        correct: 1,
+        explanation: "Alacrity means brisk and cheerful readiness or eager enthusiasm."
+      },
+      {
+        q: "Based on the text, what does it mean that the aurora borealis is 'ephemeral'?",
+        options: [
+          "It lasts for an extremely long or permanent period of time",
+          "It is loud, bright, and harmful to look at",
+          "It lasts for a very short, fleeting moment",
+          "It is scientifically predictable and easily scheduled"
+        ],
+        correct: 2,
+        explanation: "Ephemeral means lasting for a very short, fleeting time."
+      },
+      {
+        q: "When astrophotographers are described as 'fastidious', what does this imply?",
+        options: [
+          "They are lazy and let the camera autofocus arbitrarily",
+          "They are extremely attentive to detail and take precise, scrupulous care",
+          "They move quickly and run between positions with great speed",
+          "They are highly unpredictable and change settings on a whim"
+        ],
+        correct: 1,
+        explanation: "Fastidious means very attentive to and concerned about accuracy and detail."
+      }
+    ]
+  },
+  {
+    id: "passage-2",
+    title: "The Capricious Path of Scientific Progress",
+    text: "Throughout history, scientific progress has rarely followed a straight line. Instead, it is often governed by a <span class='passage-vocab-word' data-word='capricious'>capricious</span> mix of unexpected breakthroughs and sudden failures. Indeed, many of the world's most revolutionary inventions—such as penicillin and microwave ovens—were born out of pure <span class='passage-vocab-word' data-word='serendipity'>serendipity</span>, where a happy accident turned a ruined experiment into a historic triumph. Yet, scientists cannot rely on luck alone; they must be highly <span class='passage-vocab-word' data-word='pragmatic'>pragmatic</span> in their daily work, making sensible decisions based on practical observations rather than rigid theories. While some ideas hit a tragic <span class='passage-vocab-word' data-word='nadir'>nadir</span> and are discarded as dead ends, the <span class='passage-vocab-word' data-word='ubiquitous'>ubiquitous</span> technologies we take for granted today are the ones that endured this volatile journey to become omnipresent parts of our lives.",
+    questions: [
+      {
+        q: "What does the text suggest about a 'capricious' scientific progress?",
+        options: [
+          "It is completely stable, predictable, and linear",
+          "It is tedious, boring, and lacks any excitement",
+          "It is governed by sudden, volatile, and unpredictable changes",
+          "It is incredibly expensive and funded entirely by governments"
+        ],
+        correct: 2,
+        explanation: "Capricious means given to sudden and unpredictable changes of mood or behavior."
+      },
+      {
+        q: "How does 'serendipity' play a role in revolutionary inventions according to the author?",
+        options: [
+          "Through a happy accident or valuable event occurring by beneficial chance",
+          "Through rigorous, multi-year theoretical math derivations",
+          "Through deliberate, heavily-funded corporate espionage",
+          "Through inevitable failures that discourage scientists from continuing"
+        ],
+        correct: 0,
+        explanation: "Serendipity is the occurrence of valuable or agreeable events by chance in a happy or beneficial way."
+      },
+      {
+        q: "What attitude is a 'pragmatic' scientist expected to maintain?",
+        options: [
+          "Highly emotional and intensely competitive",
+          "Sensible and realistic, focusing on practical considerations over rigid theory",
+          "Idealistic, dreamy, and entirely speculative",
+          "Completely unpredictable, unstable, and volatile"
+        ],
+        correct: 1,
+        explanation: "Pragmatic means dealing with things sensibly and realistically based on practical considerations rather than theories."
+      }
+    ]
+  }
+];

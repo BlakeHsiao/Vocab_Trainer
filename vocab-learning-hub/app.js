@@ -43,6 +43,122 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // ==========================================
+  // Dynamic Welcome Banner Mapping Configurations
+  // ==========================================
+  const THEME_BANNER_CONFIGS = {
+    "theme-rutgers-scarlet": {
+      titleHtml: 'RU READY, ${username}!?',
+      subtitle: "To conquer new words is the charge of the Scarlet Knight. Charge on, scholar!",
+      mascotHtml: '<img src="rutgers_mascot.png" class="banner-mascot" alt="Rutgers Scarlet Knight Mascot">'
+    },
+    "theme-cosmic-dark": {
+      titleHtml: 'WELCOME BACK, ${username}!',
+      subtitle: "Fuel your mind with cosmic terms and conquer the cosmos of vocabulary.",
+      mascotHtml: '<div class="theme-banner-icon-wrapper cosmic-glow animate-float"><i data-lucide="orbit" class="theme-banner-icon"></i></div>'
+    },
+    "theme-sunset-glow": {
+      titleHtml: 'GLOW BRIGHTER, ${username}!',
+      subtitle: "Let your lexical knowledge shine radiant like the setting sun.",
+      mascotHtml: '<div class="theme-banner-icon-wrapper sunset-glow animate-float"><i data-lucide="flame" class="theme-banner-icon"></i></div>'
+    },
+    "theme-aurora-wave": {
+      titleHtml: 'REFRESH YOUR MIND, ${username}!',
+      subtitle: "Ride the glowing wave of clean, pristine, and masterful vocabulary.",
+      mascotHtml: '<div class="theme-banner-icon-wrapper aurora-glow animate-float"><i data-lucide="sparkles" class="theme-banner-icon"></i></div>'
+    },
+    "theme-cyberpunk-neon": {
+      titleHtml: 'SYSTEMS ONLINE, ${username}!',
+      subtitle: "Overclock your mental processors and inject advanced neural lexical databases.",
+      mascotHtml: '<div class="theme-banner-icon-wrapper cyberpunk-glow animate-float"><i data-lucide="cpu" class="theme-banner-icon"></i></div>'
+    },
+    "theme-solar-light": {
+      titleHtml: 'RISE AND SHINE, ${username}!',
+      subtitle: "Bask in the warm light of wisdom and watch your vocabulary flourish.",
+      mascotHtml: '<div class="theme-banner-icon-wrapper solar-glow animate-float"><i data-lucide="sun" class="theme-banner-icon"></i></div>'
+    }
+  };
+
+  // ==========================================
+  // Practice Arena Scarlet Knight Companion Dialogues
+  // ==========================================
+  const MASCOT_DIALOGUES = {
+    quiz: {
+      idle: [
+        "Focus on the context, scholar! You can solve this!",
+        "Read the options carefully. The correct choice is waiting!",
+        "A brave scholar never rushes. Check the options!",
+        "By my shield, this is a fine question. Show your mettle!",
+        "Trust your instincts, scholar. Victory is near!"
+      ],
+      correct: [
+        "Magnificent! A true master of vocabulary!",
+        "By my sword, a flawless strike! Onward!",
+        "Incredible! Your mind is as sharp as my blade!",
+        "Glorious! Rutgers is proud of your scholarship!",
+        "Indeed! You conquered that word with absolute ease!"
+      ],
+      incorrect: [
+        "Do not falter! A minor scrape, we will learn and conquer.",
+        "Mistakes are but steps on the path to victory! Keep charging!",
+        "A noble effort, but the enemy was subtle. We'll get them next time!",
+        "Even the bravest knights miss their mark. Keep your shield up!",
+        "Let this definition fortify your mind for the next battle!"
+      ]
+    },
+    flashcards: {
+      idle: [
+        "Greetings! Flashcards are the shield of memory. Try to recall each meaning!",
+        "Repetition is the mother of skill! Let's drill these words.",
+        "To memorize is to conquer the unknown. Charge ahead!"
+      ],
+      success: [
+        "Brilliant! Marked for glory!",
+        "One more word conquered and added to your armory!",
+        "Your vocabulary grows stronger by the second!",
+        "Superb recall, scholar! No word can hide from you!"
+      ],
+      fail: [
+        "No worries! We will drill this word again until it is yours.",
+        "A tactical regroup! We'll commit this word to memory next.",
+        "Practice makes permanent. Keep your shield high!",
+        "We will face this word again and defeat it!"
+      ]
+    }
+  };
+
+  function updateBannerForTheme(themeName) {
+    const config = THEME_BANNER_CONFIGS[themeName] || THEME_BANNER_CONFIGS["theme-rutgers-scarlet"];
+    
+    if (els.bannerTitle) {
+      els.bannerTitle.innerHTML = config.titleHtml.replace("${username}", `<span class="gradient-text" id="username-display">${state.username || "Scholar"}</span>`);
+      
+      // Re-query the usernameDisplay since we just re-created it in innerHTML!
+      const activeUsernameDisplay = document.getElementById("username-display");
+      if (activeUsernameDisplay) {
+        activeUsernameDisplay.onclick = () => {
+          const inputName = prompt("Enter your custom Scholar name:", state.username);
+          if (inputName && inputName.trim().length > 0) {
+            state.username = inputName.trim();
+            activeUsernameDisplay.innerText = state.username;
+            saveStateToLocalStorage();
+            showToast(`Welcome, ${state.username}! Name updated successfully.`);
+          }
+        };
+      }
+    }
+    
+    if (els.bannerSubtitle) {
+      els.bannerSubtitle.innerText = config.subtitle;
+    }
+    
+    if (els.bannerMascotContainer) {
+      els.bannerMascotContainer.innerHTML = config.mascotHtml;
+    }
+    
+    lucide.createIcons();
+  }
+
   // Local Accounts Registry and Active Session
   let activeAccountId = null;
   let accountsRegistry = [];
@@ -179,6 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Theme management functions
   function setTheme(themeName) {
     const themes = [
+      "theme-rutgers-scarlet",
       "theme-cosmic-dark",
       "theme-sunset-glow",
       "theme-aurora-wave",
@@ -200,12 +317,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     localStorage.setItem("vocab_theme", themeName);
     updateThemeUI(themeName);
+    updateBannerForTheme(themeName);
   }
 
   function updateThemeUI(themeName) {
     const triggerText = document.querySelector(".active-theme-name");
     if (triggerText) {
       const themeLabels = {
+        "theme-rutgers-scarlet": "Rutgers Scarlet",
         "theme-cosmic-dark": "Crimson Dark",
         "theme-sunset-glow": "Sunset Glow",
         "theme-aurora-wave": "Aurora Mint",
@@ -213,7 +332,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "theme-solar-light": "Solar Light",
         "theme-rutgers-scarlet": "Rutgers Scarlet"
       };
-      triggerText.textContent = themeLabels[themeName] || "Crimson Dark";
+      triggerText.textContent = themeLabels[themeName] || "Rutgers Scarlet";
     }
 
     const options = document.querySelectorAll(".theme-option");
@@ -233,43 +352,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load state from active Local Account / Cookie
   function loadStateFromLocalStorage() {
-    loadAccountsRegistry();
+    const savedUsername = localStorage.getItem("vocab_username");
+    if (savedUsername) state.username = savedUsername;
 
-    if (!activeAccountId && accountsRegistry.length > 0) {
-      activeAccountId = accountsRegistry[0].id;
-      setActiveAccountIdCookie(activeAccountId);
-    }
-
-    if (activeAccountId) {
-      const acc = accountsRegistry.find(a => a.id === activeAccountId);
-      const accData = getAccountData(activeAccountId);
-
-      if (accData) {
-        state.username = accData.username || (acc ? acc.displayName : "Scholar");
-        if (accData.stats) state.stats = accData.stats;
-        if (accData.favorites) state.favorites = accData.favorites;
-        if (accData.recentLookups) state.recentLookups = accData.recentLookups;
-        if (accData.theme) setTheme(accData.theme);
-      } else if (acc) {
-        state.username = acc.displayName;
+    const savedStats = localStorage.getItem("vocab_stats");
+    if (savedStats) {
+      state.stats = JSON.parse(savedStats);
+      // Clean undefined fields in older saves
+      if (state.stats.totalQuestionsPlayed === undefined) {
+        state.stats.totalQuestionsPlayed = state.stats.quizzesPlayed * 5;
       }
-    } else {
-      state.username = "Guest Scholar";
     }
 
-    if (!state.stats) {
-      state.stats = {
-        lookups: 0,
-        quizzesPlayed: 0,
-        correctAnswers: 0,
-        totalQuestionsPlayed: 0,
-        streak: 1,
-        lastActiveDate: null
-      };
-    }
+    const savedFavorites = localStorage.getItem("vocab_favorites");
+    if (savedFavorites) state.favorites = JSON.parse(savedFavorites);
 
+    const savedRecentLookups = localStorage.getItem("vocab_recent_lookups");
+    if (savedRecentLookups) state.recentLookups = JSON.parse(savedRecentLookups);
+
+    // Maintain Theme preference
     const savedTheme = localStorage.getItem("vocab_theme") || "theme-cosmic-dark";
-    setTheme(savedTheme);
+    if (savedTheme === "light" || savedTheme === "light-theme") {
+      setTheme("theme-solar-light");
+    } else if (savedTheme === "dark" || savedTheme === "dark-theme") {
+      setTheme("theme-cosmic-dark");
+    } else {
+      setTheme(savedTheme);
+    }
+
     calculateStreak();
     updateHeaderProfileUI();
   }
@@ -337,8 +447,16 @@ document.addEventListener("DOMContentLoaded", () => {
     tabs: document.querySelectorAll(".tab-content"),
     navLinks: document.querySelectorAll(".nav-link"),
     
-    // Dashboard Panel
     usernameDisplay: document.getElementById("username-display"),
+    bannerMascotContainer: document.getElementById("banner-mascot-container"),
+    bannerTitle: document.getElementById("banner-title"),
+    bannerSubtitle: document.getElementById("banner-subtitle"),
+    quizMascotCompanion: document.getElementById("quiz-mascot-companion"),
+    quizMascotSpeech: document.getElementById("quiz-mascot-speech"),
+    quizMascotImg: document.getElementById("quiz-mascot-img"),
+    fcMascotCompanion: document.getElementById("fc-mascot-companion"),
+    fcMascotSpeech: document.getElementById("fc-mascot-speech"),
+    fcMascotImg: document.getElementById("fc-mascot-img"),
     streakCountVal: document.getElementById("streak-count-val"),
     statsLookups: document.getElementById("stats-lookups"),
     statsQuestions: document.getElementById("stats-questions"),
@@ -1049,225 +1167,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Dropdown items
-  const btnOpenSettings = document.getElementById("btn-open-settings");
-  if (btnOpenSettings) {
-    btnOpenSettings.addEventListener("click", () => {
-      if (userAccountContainer) userAccountContainer.classList.remove("open");
-      showSettingsModal();
-    });
-  }
-
-  const btnSwitchAccount = document.getElementById("btn-switch-account");
-  if (btnSwitchAccount) {
-    btnSwitchAccount.addEventListener("click", () => {
-      if (userAccountContainer) userAccountContainer.classList.remove("open");
-      showAuthModal("login");
-    });
-  }
-
-  const btnExportBackup = document.getElementById("btn-export-backup");
-  if (btnExportBackup) {
-    btnExportBackup.addEventListener("click", () => {
-      if (userAccountContainer) userAccountContainer.classList.remove("open");
-      exportAccountJSON();
-    });
-  }
-
-  const btnLogoutAccount = document.getElementById("btn-logout-account");
-  if (btnLogoutAccount) {
-    btnLogoutAccount.addEventListener("click", () => {
-      if (userAccountContainer) userAccountContainer.classList.remove("open");
-      logoutAccount();
-    });
-  }
-
-  // Auth Modal Listeners
-  const tabLoginBtn = document.getElementById("tab-login-btn");
-  if (tabLoginBtn) {
-    tabLoginBtn.addEventListener("click", () => switchAuthTab("login"));
-  }
-
-  const tabSignupBtn = document.getElementById("tab-signup-btn");
-  if (tabSignupBtn) {
-    tabSignupBtn.addEventListener("click", () => switchAuthTab("signup"));
-  }
-
-  const loginAccSelect = document.getElementById("login-account-select");
-  if (loginAccSelect) {
-    loginAccSelect.addEventListener("change", checkSelectPinGroup);
-  }
-
-  const toggleLoginPinBtn = document.getElementById("toggle-login-pin");
-  if (toggleLoginPinBtn) {
-    toggleLoginPinBtn.addEventListener("click", () => {
-      const pinInput = document.getElementById("login-pin-input");
-      if (pinInput) {
-        pinInput.type = pinInput.type === "password" ? "text" : "password";
-      }
-    });
-  }
-
-  const loginForm = document.getElementById("login-form");
-  if (loginForm) {
-    loginForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const select = document.getElementById("login-account-select");
-      const pinInput = document.getElementById("login-pin-input");
-      const errorMsg = document.getElementById("login-error-msg");
-      const errorText = document.getElementById("login-error-text");
-
-      if (errorMsg) errorMsg.style.display = "none";
-
-      try {
-        await loginToAccount(select.value, pinInput ? pinInput.value : "");
-        if (pinInput) pinInput.value = "";
-      } catch (err) {
-        if (errorMsg && errorText) {
-          errorText.textContent = err.message;
-          errorMsg.style.display = "flex";
-        }
-      }
-    });
-  }
-
-  const signupForm = document.getElementById("signup-form");
-  if (signupForm) {
-    signupForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const handleInput = document.getElementById("signup-username-input");
-      const nameInput = document.getElementById("signup-displayname-input");
-      const pinInput = document.getElementById("signup-pin-input");
-      const errorMsg = document.getElementById("signup-error-msg");
-      const errorText = document.getElementById("signup-error-text");
-
-      const activeChip = document.querySelector("#avatar-picker-container .avatar-chip.active");
-      const avatar = activeChip ? activeChip.getAttribute("data-avatar") : "🎓";
-
-      if (errorMsg) errorMsg.style.display = "none";
-
-      try {
-        await createLocalAccount(
-          handleInput.value,
-          nameInput.value,
-          avatar,
-          pinInput ? pinInput.value : ""
-        );
-        handleInput.value = "";
-        nameInput.value = "";
-        if (pinInput) pinInput.value = "";
-      } catch (err) {
-        if (errorMsg && errorText) {
-          errorText.textContent = err.message;
-          errorMsg.style.display = "flex";
-        }
-      }
-    });
-  }
-
-  const btnGuestAccess = document.getElementById("btn-guest-access");
-  if (btnGuestAccess) {
-    btnGuestAccess.addEventListener("click", () => {
-      hideAuthModal();
-      if (!activeAccountId) {
-        state.username = "Guest Scholar";
-        updateHeaderProfileUI();
-        updateDashboardUI();
-        showToast("Continuing in temporary Guest mode.");
-      }
-    });
-  }
-
-  // Avatar pickers
-  document.querySelectorAll(".avatar-picker-row").forEach(container => {
-    container.addEventListener("click", (e) => {
-      const chip = e.target.closest(".avatar-chip");
-      if (chip) {
-        container.querySelectorAll(".avatar-chip").forEach(c => c.classList.remove("active"));
-        chip.classList.add("active");
-      }
-    });
-  });
-
-  // Settings Modal Listeners
-  const closeSettingsModalBtn = document.getElementById("close-settings-modal");
-  if (closeSettingsModalBtn) {
-    closeSettingsModalBtn.addEventListener("click", hideSettingsModal);
-  }
-
-  const editProfileForm = document.getElementById("edit-profile-form");
-  if (editProfileForm) {
-    editProfileForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const editName = document.getElementById("edit-display-name");
-      const activeChip = document.querySelector("#edit-avatar-picker-container .avatar-chip.active");
-      const newAvatar = activeChip ? activeChip.getAttribute("data-avatar") : "🎓";
-
-      if (editName && editName.value.trim().length > 0) {
-        state.username = editName.value.trim();
-        const activeAcc = accountsRegistry.find(a => a.id === activeAccountId);
-        if (activeAcc) {
-          activeAcc.displayName = state.username;
-          activeAcc.avatar = newAvatar;
-          saveAccountsRegistry();
-        }
-        saveStateToLocalStorage();
-        updateHeaderProfileUI();
-        updateDashboardUI();
-        hideSettingsModal();
-        showToast("Profile updated successfully!");
-      }
-    });
-  }
-
-  const updatePinForm = document.getElementById("update-pin-form");
-  if (updatePinForm) {
-    updatePinForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const newPinInput = document.getElementById("new-pin-input");
-      const activeAcc = accountsRegistry.find(a => a.id === activeAccountId);
-
-      if (activeAcc && newPinInput) {
-        activeAcc.pinHash = newPinInput.value ? await hashPin(newPinInput.value) : "";
-        saveAccountsRegistry();
-        newPinInput.value = "";
-        hideSettingsModal();
-        showToast(activeAcc.pinHash ? "Security PIN updated!" : "Security PIN removed!");
-      }
-    });
-  }
-
-  const btnSettingsExport = document.getElementById("btn-settings-export");
-  if (btnSettingsExport) {
-    btnSettingsExport.addEventListener("click", exportAccountJSON);
-  }
-
-  const importJsonFile = document.getElementById("import-json-file");
-  if (importJsonFile) {
-    importJsonFile.addEventListener("change", (e) => {
-      if (e.target.files && e.target.files[0]) {
-        importAccountJSON(e.target.files[0]);
-        e.target.value = "";
-      }
-    });
-  }
-
-  const btnDeleteAccount = document.getElementById("btn-delete-account");
-  if (btnDeleteAccount) {
-    btnDeleteAccount.addEventListener("click", () => {
-      if (confirm("Are you sure you want to delete this local account? All progress will be removed from this browser.")) {
-        deleteAccount(activeAccountId);
-      }
-    });
-  }
-
 
   // ==========================================
   // 3. Welcome Banner & Stats Calculation
   // ==========================================
 
   function getVocabularyLevel(lookups, quizzes, accuracy) {
+    const isRutgers = document.body.classList.contains("theme-rutgers-scarlet");
     const totalPoints = lookups * 2 + quizzes * 10 + (accuracy >= 80 ? 25 : 0);
+    
+    if (isRutgers) {
+      if (totalPoints > 200) return "Knight Commander";
+      if (totalPoints > 100) return "Scarlet Knight";
+      if (totalPoints > 40) return "Squire";
+      if (totalPoints > 10) return "Page";
+      return "Novice Recruit";
+    }
+    
     if (totalPoints > 200) return "Lexicographer";
     if (totalPoints > 100) return "Word Master";
     if (totalPoints > 40) return "Scholar";
@@ -1276,19 +1192,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateDashboardUI() {
-    // Username Display with direct change capability
-    els.usernameDisplay.innerText = state.username;
-    
-    // Bind click to change username directly
-    els.usernameDisplay.onclick = () => {
-      const inputName = prompt("Enter your custom Scholar name:", state.username);
-      if (inputName && inputName.trim().length > 0) {
-        state.username = inputName.trim();
-        els.usernameDisplay.innerText = state.username;
-        saveStateToLocalStorage();
-        showToast(`Welcome, ${state.username}! Name updated successfully.`);
-      }
-    };
+    // Username and welcome banner dynamic styling based on active theme
+    const activeTheme = localStorage.getItem("vocab_theme") || "theme-rutgers-scarlet";
+    updateBannerForTheme(activeTheme);
 
     els.streakCountVal.innerText = state.stats.streak;
     els.statsLookups.innerText = state.stats.lookups;
@@ -1301,9 +1207,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     els.statsAccuracy.innerText = accuracy + "%";
 
-    // Vocabulary Level
+    // Vocabulary Level / Knight's Rank
     const levelStr = getVocabularyLevel(state.stats.lookups, state.stats.quizzesPlayed, accuracy);
     els.statsLevel.innerText = levelStr;
+
+    // Dynamically rename the stat card label for Rutgers Theme
+    const levelLabel = document.querySelector(".icon-gold + .stat-data .stat-label");
+    if (levelLabel) {
+      if (document.body.classList.contains("theme-rutgers-scarlet")) {
+        levelLabel.textContent = "Knight's Rank";
+      } else {
+        levelLabel.textContent = "Vocabulary Level";
+      }
+    }
 
     // Render Favorite Words scrollable list
     renderFavorites();
@@ -2008,6 +1924,17 @@ document.addEventListener("DOMContentLoaded", () => {
     els.quizNextBtn.disabled = true;
     els.quizExplanation.style.display = "none";
 
+    // Update Mascot to Idle
+    if (els.quizMascotSpeech && els.quizMascotImg) {
+      const idles = MASCOT_DIALOGUES.quiz.idle;
+      els.quizMascotSpeech.innerText = idles[Math.floor(Math.random() * idles.length)];
+      
+      // Reset animations
+      els.quizMascotImg.classList.remove("animate-bounce-knight", "animate-shake-knight");
+      // Force reflow
+      void els.quizMascotImg.offsetWidth;
+    }
+
     // Progress
     els.quizQCurrent.innerText = qIndex + 1;
     els.quizQTotal.innerText = qTotal;
@@ -2053,6 +1980,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (isCorrect) {
       state.quiz.score += 1;
+    }
+
+    // Mascot Interactivity (celebrate or console)
+    if (els.quizMascotSpeech && els.quizMascotImg) {
+      els.quizMascotImg.classList.remove("animate-bounce-knight", "animate-shake-knight");
+      void els.quizMascotImg.offsetWidth; // force reflow
+
+      if (isCorrect) {
+        const congrats = MASCOT_DIALOGUES.quiz.correct;
+        els.quizMascotSpeech.innerText = congrats[Math.floor(Math.random() * congrats.length)];
+        els.quizMascotImg.classList.add("animate-bounce-knight");
+      } else {
+        const consolations = MASCOT_DIALOGUES.quiz.incorrect;
+        els.quizMascotSpeech.innerText = consolations[Math.floor(Math.random() * consolations.length)];
+        els.quizMascotImg.classList.add("animate-shake-knight");
+      }
     }
 
     // Add classes on buttons
@@ -2232,6 +2175,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const wordObj = fcState.deck[fcState.currentIndex];
 
+    // Dynamic Companion Dialogue for Flashcards
+    if (els.fcMascotSpeech && els.fcMascotImg) {
+      const isFirst = fcState.currentIndex === 0;
+      if (isFirst) {
+        els.fcMascotSpeech.innerHTML = `Let's drill <strong style="color: var(--primary-light);">${wordObj.word}</strong>. Do you know this word? Flip the card to check!`;
+      } else {
+        const lastWasMastered = els.fcMascotImg.classList.contains("animate-bounce-knight");
+        if (lastWasMastered) {
+          els.fcMascotSpeech.innerHTML = `By my sword, excellent! Next up is <strong style="color: var(--primary-light);">${wordObj.word}</strong>. Try to recall it!`;
+        } else {
+          els.fcMascotSpeech.innerHTML = `No retreats! Let's conquer <strong style="color: var(--primary-light);">${wordObj.word}</strong>! You can do this!`;
+        }
+      }
+      // Reset classes for the new card transition
+      els.fcMascotImg.classList.remove("animate-bounce-knight", "animate-shake-knight");
+    }
+
     // Reset card flip class state
     els.flashcardElement.classList.remove("flipped");
 
@@ -2265,6 +2225,13 @@ document.addEventListener("DOMContentLoaded", () => {
   els.fcActionSuccess.addEventListener("click", (e) => {
     e.stopPropagation(); // stop card from flipping on button click
 
+    // Mascot celebration trigger
+    if (els.fcMascotImg) {
+      els.fcMascotImg.classList.remove("animate-bounce-knight", "animate-shake-knight");
+      void els.fcMascotImg.offsetWidth;
+      els.fcMascotImg.classList.add("animate-bounce-knight");
+    }
+
     // Mastered removes word from current active deck
     state.flashcards.masteredCount += 1;
     els.fcMasteredCount.innerText = state.flashcards.masteredCount;
@@ -2281,6 +2248,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Action Fail (Need Practice) click
   els.fcActionFail.addEventListener("click", (e) => {
     e.stopPropagation(); // stop card from flipping on button click
+
+    // Mascot console/shake trigger
+    if (els.fcMascotImg) {
+      els.fcMascotImg.classList.remove("animate-bounce-knight", "animate-shake-knight");
+      void els.fcMascotImg.offsetWidth;
+      els.fcMascotImg.classList.add("animate-shake-knight");
+    }
 
     // Need Practice pushes word to end of current flashcards deck queue
     const currentWord = state.flashcards.deck[state.flashcards.currentIndex];
@@ -2318,6 +2292,8 @@ document.addEventListener("DOMContentLoaded", () => {
   els.fcRestartDeckBtn.addEventListener("click", initFlashcardDeck);
 
 
+
+
   // ==========================================
   // 9. Custom Fluid Confetti Canvas Overlay
   // ==========================================
@@ -2337,7 +2313,20 @@ document.addEventListener("DOMContentLoaded", () => {
       canvas.height = window.innerHeight;
     });
 
-    const colors = ["#8b5cf6", "#a78bfa", "#3b82f6", "#60a5fa", "#10b981", "#34d399", "#f59e0b"];
+    let colors = ["#8b5cf6", "#a78bfa", "#3b82f6", "#60a5fa", "#10b981", "#34d399", "#f59e0b"];
+    if (document.body.classList.contains("theme-rutgers-scarlet")) {
+      colors = ["#cc0033", "#ff4d6a", "#111111", "#ffffff", "#868f98"];
+    } else if (document.body.classList.contains("theme-cosmic-dark")) {
+      colors = ["#ef4444", "#f97316", "#dc2626", "#fda4af", "#ff7300"];
+    } else if (document.body.classList.contains("theme-sunset-glow")) {
+      colors = ["#f43f5e", "#fb923c", "#e11d48", "#fda4af", "#ff9966"];
+    } else if (document.body.classList.contains("theme-aurora-wave")) {
+      colors = ["#0d9488", "#10b981", "#2dd4bf", "#99f6e4", "#059669"];
+    } else if (document.body.classList.contains("theme-cyberpunk-neon")) {
+      colors = ["#ff007f", "#00f0ff", "#ff00ff", "#00ffff", "#ff66b2"];
+    } else if (document.body.classList.contains("theme-solar-light")) {
+      colors = ["#ff5e62", "#ff9966", "#f43f5e", "#ffeedd", "#ff3b40"];
+    }
     const particles = [];
     
     // Create 120 confetti pieces
@@ -2399,6 +2388,19 @@ document.addEventListener("DOMContentLoaded", () => {
   
   loadStateFromLocalStorage();
   updateDashboardUI();
+
+  // Handle multi-page query parameter/hash routing
+  const urlParams = new URLSearchParams(window.location.search);
+  const tabParam = urlParams.get('tab') || window.location.hash.substring(1);
+  if (tabParam) {
+    if (tabParam === 'dictionary' || tabParam === 'dictionary-tab') {
+      switchTab('dictionary-tab');
+    } else if (tabParam === 'practice' || tabParam === 'practice-tab') {
+      switchTab('practice-tab');
+    } else if (tabParam === 'dashboard' || tabParam === 'dashboard-tab') {
+      switchTab('dashboard-tab');
+    }
+  }
   
   // Show active database notification briefly on startup
   setTimeout(() => {
